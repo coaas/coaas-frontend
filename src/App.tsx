@@ -1,3 +1,11 @@
 import { FC } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
 
-export const App: FC = () => <div>App</div>;
+import { queryClient } from './api';
+import { Scenes } from './scenes';
+
+export const App: FC = () => (
+  <QueryClientProvider client={queryClient}>
+    <Scenes />
+  </QueryClientProvider>
+);
