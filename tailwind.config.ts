@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 import tailwindcssAnimate from 'tailwindcss-animate';
 
 export default {
@@ -10,6 +11,9 @@ export default {
     screens: {
       xl: { max: '1780px' },
       sm: { max: '500px' },
+    },
+    fontFamily: {
+      inter: ['Inter', ...fontFamily.sans],
     },
     colors: {
       background: '#2D2C33',
