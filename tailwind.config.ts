@@ -4,6 +4,8 @@ import tailwindcssAnimate from 'tailwindcss-animate';
 
 export default {
   content: [
+    // TODO: временный вариант (будет исправляться)
+    './src/components/*.{ts,tsx}',
     './src/scenes/components/*.{ts,tsx}',
     './src/scenes/components/**/**/*.{ts,tsx}',
   ],
