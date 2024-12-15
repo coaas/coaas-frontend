@@ -3,12 +3,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 import tailwindcssAnimate from 'tailwindcss-animate';
 
 export default {
-  content: [
-    // TODO: временный вариант (будет исправляться)
-    './src/components/*.{ts,tsx}',
-    './src/scenes/components/*.{ts,tsx}',
-    './src/scenes/components/**/**/*.{ts,tsx}',
-  ],
+  content: ['./src/**/*.{ts,tsx}'],
   theme: {
     screens: {
       xl: { max: '1780px' },
@@ -26,6 +21,7 @@ export default {
       stroke: {
         DEFAULT: '#4E608D',
         gray: '#43424A',
+        blue: '#507EF5',
       },
       blue: {
         DEFAULT: '#507EF5',
