@@ -1,0 +1,1 @@
+export { CubeIcon } from './CubeIcon';
