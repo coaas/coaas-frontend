@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { Button } from '@components/Button';
+
 import { useNamespacesMutation } from './useNamespacesMutation';
 
 // В дальнейшем, естественно запросы изменятся
@@ -26,9 +28,9 @@ export const Namespaces: FC = () => {
   return (
     <>
       <p>{`API Health: ${getStatusString(isPending, error, status)}`}</p>
-      <button onClick={onButtonClick} disabled={isPending}>
+      <Button onClick={onButtonClick} disabled={isPending}>
         Check API Health
-      </button>
+      </Button>
     </>
   );
 };
