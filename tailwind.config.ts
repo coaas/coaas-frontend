@@ -5,6 +5,9 @@ import tailwindcssAnimate from 'tailwindcss-animate';
 export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
+    backgroundImage: {
+      net: "url('src/assets/images/net.svg')",
+    },
     screens: {
       xl: { max: '1780px' },
       sm: { max: '500px' },
@@ -20,7 +23,10 @@ export default {
       },
       stroke: {
         DEFAULT: '#4E608D',
-        gray: '#43424A',
+        gray: {
+          DEFAULT: '#43424A',
+          dark: '#4C4958',
+        },
         blue: '#507EF5',
       },
       blue: {

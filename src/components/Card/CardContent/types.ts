@@ -1,10 +1,5 @@
 import { SimpleInfoCardProps } from './components';
 
-type GenericCardContentProps<TType, TProps> = {
-  type: TType;
-  props: TProps;
-};
-
 export enum CardType {
   /**
    * Простая карточка с информацией (как для проекта, неймспейса и тд)
@@ -12,7 +7,7 @@ export enum CardType {
   simpleInfo = 'simpleInfo',
 }
 
-export type CardContentProps = GenericCardContentProps<
+export type CardContentProps = GenericProps<
   CardType.simpleInfo,
   SimpleInfoCardProps
 >;
