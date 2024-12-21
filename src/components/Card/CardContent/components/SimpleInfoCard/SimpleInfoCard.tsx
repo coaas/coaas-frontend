@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { cn } from '@utils/styles';
-import { CubeIcon } from '@icons/CubeIcon';
+import { Icon, IconType } from '@components/Icon';
 
 import { DEFAULT_SHAPE } from './constants';
 import { SimpleInfoCardProps } from './types';
@@ -20,7 +20,7 @@ export const SimpleInfoCard: FC<SimpleInfoCardProps> = ({ data, settings }) => {
         'p-5 flex-col': !isRect,
       })}
     >
-      <CubeIcon size={iconSize} />
+      <Icon type={IconType.cube} props={{ size: iconSize }} />
       <div
         className={cn('flex flex-col gap-1', {
           'ml-8': isRect,

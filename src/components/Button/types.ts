@@ -7,3 +7,5 @@ export type ButtonProps = {
   asChild?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof BUTTON_VARIANTS>;
+
+export type ButtonVariant = 'default' | 'outline' | 'secondary';
