@@ -1,0 +1,1 @@
+export { getParsedData } from './getParsedData';

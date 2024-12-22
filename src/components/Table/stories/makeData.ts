@@ -21,6 +21,5 @@ export const fetchData = async (start: number, size: number) => {
 
   return {
     data: dbData.slice(start, start + size),
-    totalRowsCount: dbData.length,
   };
 };

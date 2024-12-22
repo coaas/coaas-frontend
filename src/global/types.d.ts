@@ -15,3 +15,5 @@ declare type WithId<TId = string> = {
 declare type WithClassname = {
   className?: string;
 };
+
+declare type Timestamp = string;

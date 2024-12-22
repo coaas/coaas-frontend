@@ -1,1 +1,0 @@
-export { useNamespacesMutation } from './useNamespacesMutation';

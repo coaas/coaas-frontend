@@ -1,5 +1,3 @@
-import { QueryFunction, QueryKey } from '@tanstack/react-query';
-
 import { CellData } from '../CellContent';
 
 export type RowData = {
@@ -7,30 +5,21 @@ export type RowData = {
   isMarked?: boolean;
 };
 
-export type ColumnData = {
+export type ColumnData = WithId & {
   title: string;
-  id: string;
   size?: number;
 };
 
-export type ResponseData = {
+export type TableData = {
   rows: RowData[];
-  totalRowsCount: number;
 };
 
-export type TableQueryFn = QueryFunction<ResponseData, QueryKey, unknown>;
-
-export type UseTableParams = {
+export type UseTableParams<TData extends TableData> = {
   /**
    * стабильный массив столбцов
    */
   COLUMNS: ColumnData[];
-  /**
-   * уникальный в приложении ключ для кэширования запросов
-   */
-  queryKey: QueryKey;
-  /**
-   * Функция, возвращающая новую порци данных
-   */
-  queryFn: TableQueryFn;
+  fetchNextPage: () => void;
+  isLoading: boolean;
+  data?: TData;
 };

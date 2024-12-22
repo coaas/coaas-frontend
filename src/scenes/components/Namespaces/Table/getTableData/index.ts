@@ -1,0 +1,1 @@
+export { getTableData } from './getTableData';

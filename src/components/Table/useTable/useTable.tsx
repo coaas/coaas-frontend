@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import {
   ColumnDef,
   getCoreRowModel,
@@ -10,10 +9,15 @@ import {
 } from '@tanstack/react-table';
 
 import { CellContent, CellData } from '../CellContent';
-import { ResponseData, RowData, UseTableParams } from './types';
+import { RowData, TableData, UseTableParams } from './types';
 import { OVERSCAN, ROW_HEIGHT, SCROLL_POS_TO_FETCH } from './constants';
 
-export const useTable = ({ COLUMNS, queryFn, queryKey }: UseTableParams) => {
+export const useTable = <TData extends TableData>({
+  COLUMNS,
+  data,
+  fetchNextPage,
+  isLoading,
+}: UseTableParams<TData>) => {
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
   const columns = useMemo<ColumnDef<RowData>[]>(
@@ -30,22 +34,7 @@ export const useTable = ({ COLUMNS, queryFn, queryKey }: UseTableParams) => {
     [],
   );
 
-  const { data, fetchNextPage, isFetching, isLoading } =
-    useInfiniteQuery<ResponseData>({
-      queryKey,
-      queryFn,
-      initialPageParam: 0,
-      getNextPageParam: (_lastGroup, groups) => groups.length,
-      refetchOnWindowFocus: false,
-      placeholderData: keepPreviousData,
-    });
-
-  const flatData = useMemo(
-    () => data?.pages?.flatMap(page => page.rows) || [],
-    [data],
-  );
-  const totalDBRowCount = data?.pages?.[0]?.totalRowsCount || 0;
-  const totalFetched = flatData.length;
+  const rowsData = data?.rows || [];
 
   const fetchMore = useCallback(
     (containerRefElement?: HTMLDivElement | null) => {
@@ -55,21 +44,20 @@ export const useTable = ({ COLUMNS, queryFn, queryKey }: UseTableParams) => {
         // как только остается меньше SCROLL_POS_TO_FETCH до нижней части, запрашиваем новые данные
         if (
           scrollHeight - scrollTop - clientHeight < SCROLL_POS_TO_FETCH &&
-          !isFetching &&
-          totalFetched < totalDBRowCount
+          !isLoading
         ) {
           fetchNextPage();
         }
       }
     },
-    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
+    [fetchNextPage, isLoading],
   );
 
   // при монтировании на всякий чекаем, нужно ли получить данные
   useEffect(() => fetchMore(tableWrapperRef.current), [fetchMore]);
 
   const table = useReactTable({
-    data: flatData,
+    data: rowsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -97,6 +85,5 @@ export const useTable = ({ COLUMNS, queryFn, queryKey }: UseTableParams) => {
     table,
     rowVirtualizer,
     rows,
-    isFetching,
   };
 };
