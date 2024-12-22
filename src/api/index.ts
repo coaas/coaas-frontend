@@ -1,1 +1,1 @@
-export { api, queryClient } from './constants';
+export { api, queryClient, IS_MOCK_ACTIVE } from './constants';

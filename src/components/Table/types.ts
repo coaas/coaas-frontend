@@ -1,6 +1,6 @@
-import { RowData, UseTableParams } from './useTable';
+import { TableData, RowData, UseTableParams } from './useTable';
 
-export type TableProps = WithClassname &
-  UseTableParams & {
+export type TableProps<TData extends TableData = TableData> = WithClassname &
+  UseTableParams<TData> & {
     onRowClick?: (row: RowData) => void;
   };

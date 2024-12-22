@@ -27,8 +27,20 @@ export const SimpleInfoCard: FC<SimpleInfoCardProps> = ({ data, settings }) => {
           'mt-7': !isRect,
         })}
       >
-        <p className="text-xl font-semibold text-white">{title}</p>
-        {!!subtitle && <p className="text-base text-gray">{subtitle}</p>}
+        <p
+          className="text-xl font-semibold text-white whitespace-nowrap overflow-hidden text-ellipsis"
+          title={title}
+        >
+          {title}
+        </p>
+        {!!subtitle && (
+          <p
+            title={subtitle}
+            className="text-base text-gray whitespace-nowrap overflow-hidden text-ellipsis"
+          >
+            {subtitle}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -10,14 +10,21 @@ const COMMON_STYLES =
 export const CellContent: FC<CellContentProps> = ({ cell }) => {
   switch (cell.type) {
     case CellType.text: {
-      return <p className={COMMON_STYLES}>{cell.data.title}</p>;
+      const { title } = cell.data;
+
+      return (
+        <p title={title} className={COMMON_STYLES}>
+          {title}
+        </p>
+      );
     }
 
     case CellType.tag: {
-      const { type } = cell.data;
+      const { type, title } = cell.data;
 
       return (
         <p
+          title={title}
           className={cn(
             'py-1 px-2 rounded-md border-[1px] font-medium text-xs whitespace-nowrap border-stroke-blue',
             {
@@ -26,21 +33,34 @@ export const CellContent: FC<CellContentProps> = ({ cell }) => {
             },
           )}
         >
-          {cell.data.title}
+          {title}
         </p>
       );
     }
 
     case CellType.number: {
+      const { value } = cell.data;
+      const title = `${Number(value.toFixed(2))}`;
+
       return (
-        <p className={cn(COMMON_STYLES, 'font-normal text-stroke-blue')}>
-          {Number(cell.data.value.toFixed(2))}
+        <p
+          title={title}
+          className={cn(COMMON_STYLES, 'font-normal text-stroke-blue')}
+        >
+          {title}
         </p>
       );
     }
 
     case CellType.date: {
-      return <p className={COMMON_STYLES}>{cell.data.date.toLocaleString()}</p>;
+      const { date } = cell.data;
+      const title = date.toLocaleString();
+
+      return (
+        <p title={title} className={COMMON_STYLES}>
+          {title}
+        </p>
+      );
     }
 
     default: {

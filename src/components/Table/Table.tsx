@@ -1,23 +1,19 @@
-import { FC } from 'react';
 import { flexRender } from '@tanstack/react-table';
 
 import { cn } from '@utils/styles';
 
 import { TableProps } from './types';
-import { useTable } from './useTable';
+import { TableData, useTable } from './useTable';
 
-export const Table: FC<TableProps> = ({ className, onRowClick, ...props }) => {
-  const {
-    isLoading,
-    onScroll,
-    tableWrapperRef,
-    table,
-    rowVirtualizer,
-    rows,
-    isFetching,
-  } = useTable(props);
+export const Table = <TData extends TableData>({
+  className,
+  onRowClick,
+  ...props
+}: TableProps<TData>) => {
+  const { isLoading, onScroll, tableWrapperRef, table, rowVirtualizer, rows } =
+    useTable(props);
 
-  if (isLoading) {
+  if (isLoading && !rows.length) {
     // TODO: заменить на скелетоны, когда они появятся
     return <>Loading...</>;
   }
@@ -27,13 +23,13 @@ export const Table: FC<TableProps> = ({ className, onRowClick, ...props }) => {
       <div
         onScroll={onScroll}
         ref={tableWrapperRef}
-        className="overflow-auto relative h-[600px]"
+        className="overflow-auto relative h-[500px]"
       >
         <table className="grid">
           <thead className="grid sticky top-0 z-10">
             {table.getHeaderGroups().map(headerGroup => (
               <tr
-                className="flex w-full px-4 py-3 rounded-md border-stroke-gray-dark border-[1px] bg-area-dark"
+                className="flex w-full px-4 py-3 rounded-md border-stroke-gray-dark border-[1px] bg-background"
                 key={headerGroup.id}
               >
                 {headerGroup.headers.map(header => (
@@ -76,7 +72,7 @@ export const Table: FC<TableProps> = ({ className, onRowClick, ...props }) => {
                     'px-4 py-5 flex absolute w-full rounded-md box-border border-[1px]',
                     {
                       'cursor-pointer': onRowClick,
-                      'bg-area-dark border-area-dark hover:bg-area-dark/70':
+                      'bg-background border-background hover:bg-background/70':
                         !isMarked,
                       'bg-stroke-gray-dark/90 border-stroke-gray-dark hover:bg-stroke-gray-dark/70':
                         isMarked,
@@ -103,7 +99,7 @@ export const Table: FC<TableProps> = ({ className, onRowClick, ...props }) => {
         </table>
       </div>
       {/* TODO: заменить на скелетоны, когда они появятся */}
-      {isFetching && <div>Fetching More...</div>}
+      {isLoading && <div>Fetching More...</div>}
     </div>
   );
 };
