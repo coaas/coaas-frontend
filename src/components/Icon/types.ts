@@ -4,10 +4,7 @@ export enum IconType {
   cube = 'cube',
 }
 
-export type IconProps = GenericProps<
-  IconType.cube | IconType.layers | IconType.metrics,
-  SquareIconProps
->;
+export type IconProps = GenericProps<IconType, SquareIconProps>;
 
 export type SquareIconProps = WithClassname & {
   size: number;
