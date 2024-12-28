@@ -1,7 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 body {
-  @apply bg-background text-white font-inter;
+    @apply bg-background text-white font-inter;
+}
+
+.text-black {
+    color: black;
 }

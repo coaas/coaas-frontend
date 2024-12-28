@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import { Namespaces } from './components';
+import { Login } from './components/Login';
 
 const router = createBrowserRouter(
   [
@@ -16,6 +17,10 @@ const router = createBrowserRouter(
     {
       path: '/namespaces',
       element: <Namespaces />,
+    },
+    {
+      path: '/login',
+      element: <Login />,
     },
   ],
   {
