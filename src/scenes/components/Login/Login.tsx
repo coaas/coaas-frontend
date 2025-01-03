@@ -1,5 +1,5 @@
 import { api, auth_api } from '@api/constants.ts';
-import { set_access } from '@api/auth.ts';
+import { setAccess } from '@api/auth.ts';
 
 export const Login = () => {
   const submit = async (data: FormData) => {
@@ -18,15 +18,14 @@ export const Login = () => {
         const data = (await resp.json()) as {
           access_token: string;
         };
-        console.log(data);
-        set_access(data['access_token']);
+        setAccess(data['access_token']);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const check_login = async () => {
+  const checkLogin = async () => {
     const resp = await api.post('UserService/GetUser', {
       credentials: 'include',
       json: {},
@@ -66,7 +65,7 @@ export const Login = () => {
       <button
         onClick={event => {
           event.preventDefault();
-          check_login();
+          checkLogin();
         }}
       >
         Check login
