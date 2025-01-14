@@ -1,7 +1,6 @@
 import ky from 'ky';
 import { QueryClient } from '@tanstack/react-query';
-
-import Auth from './auth';
+import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
 
 const PREFIX_URL = 'http://api.coaas.ru';
 
@@ -14,14 +13,7 @@ export const authApi = ky.create({
 export const api = ky.create({
   prefixUrl: PREFIX_URL,
   hooks: {
-    beforeRequest: [
-      async request => {
-        if (!Auth.checkAccess() || Auth.isAccessExpired()) {
-          Auth.obtainAccess();
-        }
-        request.headers.set('Authorization', `Bearer ${Auth.getAccess()}`);
-      },
-    ],
+    beforeRequest: [beforeRequest],
   },
 });
 

@@ -1,5 +1,5 @@
 import { api, authApi } from '@api/constants.ts';
-import { setAccess } from '@api/auth.ts';
+import { setAccess } from '@api/setAccess/setAccess';
 
 const submit = async (data: FormData) => {
   const login_path = 'auth/login';
