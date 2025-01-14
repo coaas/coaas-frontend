@@ -16,6 +16,7 @@ const isAccessExpired = (): boolean => {
   const data = jose.decodeJwt(getAccess());
   return data.exp === undefined || data.exp > Date.now() / 1000;
 };
+
 const obtainAccess = async () => {
   const REFRESH_PATH = 'auth/refresh';
   try {
