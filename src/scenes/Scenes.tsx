@@ -7,42 +7,41 @@ import { Layout } from '@components/Layout';
 import { Home } from './components/Home';
 import { Templates } from './components/Templates';
 
-const router = createBrowserRouter(
-  [
-    {
-      element: <Layout />,
-      children: [
-        {
-          path: '/',
-          element: <Home />,
-        },
-        {
-          path: '/namespaces',
-          element: <Namespaces />,
-        },
-        {
-          path: '/templates',
-          element: <Templates />,
-        },
-        {
-          path: '/login',
-          element: <Login />,
-        },
-      ],
-    },
-  ],
+export const routes = [
   {
-    future: {
-      // включаем функционал будущих версий для более легкого обновления в дальнейшем
-      // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-      v7_relativeSplatPath: true,
-    },
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/namespaces',
+        element: <Namespaces />,
+      },
+      {
+        path: '/templates',
+        element: <Templates />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ],
   },
-);
+];
+
+const router = createBrowserRouter(routes, {
+  future: {
+    // включаем функционал будущих версий для более легкого обновления в дальнейшем
+    // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true,
+    v7_relativeSplatPath: true,
+  },
+});
 
 export const Scenes: FC = () => (
   <RouterProvider

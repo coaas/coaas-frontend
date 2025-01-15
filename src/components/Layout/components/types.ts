@@ -1,0 +1,17 @@
+export const enum RouteMap {
+  home = '/',
+  namespaces = '/namespaces',
+  templates = '/templates',
+  projects = '/namespaces/projects',
+  staff = '/namespaces/staff',
+  billing = '/namespaces/billing',
+  services = '/namespaces/projects/services',
+  networks = '/namespaces/projects/networks',
+  volumes = '/namespaces/projects/volumes',
+  configs = '/namespaces/projects/configs',
+  secrets = '/namespaces/projects/secrets',
+  deploy = '/namespaces/projects/deploy',
+  git = '/namespaces/projects/git',
+  registries = '/namespaces/projects/registries',
+  team = '/namespaces/projects/team',
+}

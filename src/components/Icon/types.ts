@@ -7,6 +7,10 @@ export enum IconType {
   settings = 'settings',
   support = 'support',
   doubleArrow = 'doubleArrow',
+  git = 'git',
+  deploy = 'deploy',
+  secret = 'secret',
+  config = 'config',
 }
 
 export type IconProps = GenericProps<IconType, SquareIconProps>;

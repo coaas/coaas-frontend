@@ -2,11 +2,15 @@ import { FC } from 'react';
 
 import { IconProps, IconType } from './types';
 import {
+  ConfigIcon,
   CubeIcon,
+  DeployIcon,
   DoubleArrowIcon,
+  GitIcon,
   GraphIcon,
   LayersIcon,
   MetricsIcon,
+  SecretIcon,
   SettingsIcon,
   SupportIcon,
   TemplateIcon,
@@ -44,6 +48,22 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.doubleArrow: {
       return <DoubleArrowIcon {...props.props} />;
+    }
+
+    case IconType.config: {
+      return <ConfigIcon {...props.props} />;
+    }
+
+    case IconType.deploy: {
+      return <DeployIcon {...props.props} />;
+    }
+
+    case IconType.git: {
+      return <GitIcon {...props.props} />;
+    }
+
+    case IconType.secret: {
+      return <SecretIcon {...props.props} />;
     }
 
     default: {

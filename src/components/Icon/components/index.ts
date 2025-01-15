@@ -6,3 +6,7 @@ export * from './TemplateIcon';
 export * from './SettingsIcon';
 export * from './SupportIcon';
 export * from './DoubleArrowIcon';
+export * from './ConfigIcon';
+export * from './DeployIcon';
+export * from './GitIcon';
+export * from './SecretIcon';
