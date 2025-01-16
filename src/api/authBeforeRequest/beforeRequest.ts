@@ -21,7 +21,7 @@ const obtainAccess = async () => {
   const REFRESH_PATH = 'auth/refresh';
   try {
     const resp = await authApi.put(REFRESH_PATH, {
-      credentials: 'same-origin',
+      credentials: 'include',
     });
     if (resp.ok) {
       const data = await resp.json<{

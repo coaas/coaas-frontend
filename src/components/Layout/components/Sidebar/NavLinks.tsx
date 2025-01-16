@@ -16,6 +16,7 @@ const getCurrentLinks = (path: string) =>
       (path.startsWith(RouteMap.projects) && RouteMap.projects) ||
       RouteMap.home,
   ) || [];
+
 export const NavLinks = ({ sidebarOpened, className }: NavLinksProps) => {
   const { pathname } = useLocation();
 

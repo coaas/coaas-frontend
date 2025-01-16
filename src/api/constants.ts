@@ -2,16 +2,16 @@ import ky from 'ky';
 import { QueryClient } from '@tanstack/react-query';
 import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
 
-const PREFIX_URL = 'http://api.coaas.ru';
-
 export const IS_MOCK_ACTIVE = false;
 
 export const authApi = ky.create({
-  prefixUrl: 'http://auth.coaas.ru/api',
+  prefixUrl: import.meta.env.VITE_AUTH_API_PREFIX,
+  credentials: 'include',
 });
 
 export const api = ky.create({
-  prefixUrl: PREFIX_URL,
+  prefixUrl: import.meta.env.VITE_API_PREFIX,
+  credentials: 'include',
   hooks: {
     beforeRequest: [beforeRequest],
   },

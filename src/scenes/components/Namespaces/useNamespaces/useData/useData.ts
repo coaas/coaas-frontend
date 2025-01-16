@@ -30,7 +30,7 @@ export const useData = () => {
       RequestParams
     >({
       queryKey: ['namespaces'],
-      queryFn: async ({ pageParam }) => await getNamespaces(pageParam),
+      queryFn: ({ pageParam }) => getNamespaces(pageParam),
       initialPageParam: BASE_REQUEST_PARAMS,
       getNextPageParam: ({ nextKey, hasMore }) =>
         hasMore
