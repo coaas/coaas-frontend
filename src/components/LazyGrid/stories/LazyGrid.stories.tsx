@@ -18,18 +18,19 @@ const BASE_REQUEST_PARAMS: RequestParams = {
 };
 
 const Component: FC = () => {
-  const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['cardsWithLazy'],
-    queryFn: ({ pageParam }) => getMockData(pageParam),
-    initialPageParam: BASE_REQUEST_PARAMS,
-    getNextPageParam: ({ nextKey, hasMore }) =>
-      hasMore
-        ? {
-            ...BASE_REQUEST_PARAMS,
-            after: nextKey,
-          }
-        : undefined,
-  });
+  const { data, isFetchingNextPage, isFetching, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: ['cardsWithLazy'],
+      queryFn: ({ pageParam }) => getMockData(pageParam),
+      initialPageParam: BASE_REQUEST_PARAMS,
+      getNextPageParam: ({ nextKey, hasMore }) =>
+        hasMore
+          ? {
+              ...BASE_REQUEST_PARAMS,
+              after: nextKey,
+            }
+          : undefined,
+    });
 
   const pages = data?.pages || [];
   const items = pages.flatMap(({ namespaces }) => namespaces);
@@ -49,6 +50,7 @@ const Component: FC = () => {
   return (
     <div className="py-10 px-8 bg-background">
       <LazyGrid
+        isFetching={isFetching}
         gap={16}
         minItemWidth={260}
         itemHeight={157}

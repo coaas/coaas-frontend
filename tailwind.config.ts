@@ -33,6 +33,7 @@ export default {
         DEFAULT: '#507EF5',
         light: '#7086A6',
       },
+      error: '#FF4F52',
       black: '#000',
       white: '#FFFFFF',
       gray: '#B6B6B6',

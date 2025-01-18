@@ -44,19 +44,20 @@ const COLUMNS: ColumnData[] = [
 const FETCH_SIZE = 50;
 
 const Component: FC = () => {
-  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ['testTable'],
-    queryFn: async ({ pageParam }) => {
-      const start = pageParam * FETCH_SIZE;
-      const responseData = await fetchData(start, FETCH_SIZE);
+  const { data, fetchNextPage, isFetching, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['testTable'],
+      queryFn: async ({ pageParam }) => {
+        const start = pageParam * FETCH_SIZE;
+        const responseData = await fetchData(start, FETCH_SIZE);
 
-      return responseData;
-    },
-    initialPageParam: 0,
-    getNextPageParam: (_lastGroup, groups) => groups.length,
-    refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
-  });
+        return responseData;
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      refetchOnWindowFocus: false,
+      placeholderData: keepPreviousData,
+    });
 
   const parsedData: TableData = {
     rows:
@@ -119,6 +120,7 @@ const Component: FC = () => {
   return (
     <div className="bg-background p-10">
       <Table
+        isLoadingNextPage={isFetchingNextPage}
         COLUMNS={COLUMNS}
         data={parsedData}
         isLoading={isFetching}

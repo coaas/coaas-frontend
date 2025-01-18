@@ -14,5 +14,6 @@ export const api = ky.create({
     beforeRequest: [beforeRequest],
   },
 });
+export const IS_MOCK_ACTIVE = import.meta.env.VITE_IS_MOCK_ACTIVE;
 
 export const queryClient = new QueryClient();

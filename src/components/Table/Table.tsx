@@ -10,12 +10,19 @@ export const Table = <TData extends TableData>({
   onRowClick,
   ...props
 }: TableProps<TData>) => {
-  const { isLoading, onScroll, tableWrapperRef, table, rowVirtualizer, rows } =
-    useTable(props);
+  const {
+    isLoadingFullTable,
+    isLoadingNextPage,
+    onScroll,
+    tableWrapperRef,
+    table,
+    rowVirtualizer,
+    rows,
+  } = useTable(props);
 
-  if (isLoading && !rows.length) {
+  if (isLoadingFullTable) {
     // TODO: заменить на скелетоны, когда они появятся
-    return <>Loading...</>;
+    return <div ref={tableWrapperRef}>Loading...</div>;
   }
 
   return (
@@ -99,7 +106,7 @@ export const Table = <TData extends TableData>({
         </table>
       </div>
       {/* TODO: заменить на скелетоны, когда они появятся */}
-      {isLoading && <div>Fetching More...</div>}
+      {isLoadingNextPage && <div>Fetching More...</div>}
     </div>
   );
 };

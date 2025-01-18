@@ -1,0 +1,1 @@
+export { useCreateNamespaceMutation } from './useCreateNamespaceMutation';
