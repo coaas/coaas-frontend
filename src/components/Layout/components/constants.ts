@@ -11,16 +11,16 @@ export const navLinksHome = [
   },
 ];
 
-export const navLinksNameSpaces = [
+export const navLinksNameSpace = [
   { title: 'Home', href: RouteMap.home, iconType: IconType.cube },
   { title: 'Projects', href: RouteMap.projects, iconType: IconType.cube },
   { title: 'Staff', href: RouteMap.staff, iconType: IconType.graph },
   { title: 'Billing', href: RouteMap.billing, iconType: IconType.template },
 ];
 
-export const navLinksProjects = [
+export const navLinksProject = [
   { title: 'Home', href: RouteMap.home, iconType: IconType.cube },
-  { title: 'Projects', href: RouteMap.services, iconType: IconType.cube },
+  { title: 'Services', href: RouteMap.services, iconType: IconType.cube },
   { title: 'Networks', href: RouteMap.networks, iconType: IconType.graph },
   { title: 'Volumes', href: RouteMap.volumes, iconType: IconType.template },
   { title: 'Configs', href: RouteMap.configs, iconType: IconType.config },
@@ -39,6 +39,6 @@ export const actionButtons = [
 
 export const navLinksMap = new Map([
   [RouteMap.home, navLinksHome],
-  [RouteMap.namespaces, navLinksNameSpaces],
-  [RouteMap.projects, navLinksProjects],
+  [RouteMap.namespace, navLinksNameSpace],
+  [RouteMap.project, navLinksProject],
 ]);

@@ -5,3 +5,16 @@ export type NamespaceData = WithId & {
   membersCount: number;
   createdAt: Timestamp;
 };
+
+export interface NamespaceWithProject {
+  [key: string]: {
+    id: string;
+    name: string;
+    projects: {
+      [key: string]: {
+        id: string;
+        name: string;
+      };
+    };
+  };
+}

@@ -2,7 +2,7 @@ import { Icon, IconType } from '@components/Icon';
 import { cn } from '@utils/styles';
 import { Avatar } from '@components/Avatar';
 
-import { useToggle } from '@utils/hooks/useToggle';
+import { useToggle } from '@utils/lib/use-toggle';
 import { actionButtons } from '../constants';
 import { NavLinks } from './NavLinks';
 

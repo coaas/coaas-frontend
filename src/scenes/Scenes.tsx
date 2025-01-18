@@ -6,6 +6,9 @@ import { Login } from './components/Login';
 import { Layout } from '@components/Layout';
 import { Home } from './components/Home';
 import { Templates } from './components/Templates';
+import { Namespace } from './components/Namespace';
+import { Projects } from './components/Projects';
+import { Project } from './components/Project';
 
 export const routes = [
   {
@@ -18,6 +21,18 @@ export const routes = [
       {
         path: '/namespaces',
         element: <Namespaces />,
+      },
+      {
+        path: '/namespaces/:namespace_slug',
+        element: <Namespace />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects',
+        element: <Projects />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug',
+        element: <Project />,
       },
       {
         path: '/templates',

@@ -5,14 +5,14 @@ import {
   useInfiniteQuery,
 } from '@tanstack/react-query';
 
-import { api, IS_MOCK_ACTIVE } from '@api/constants';
+import { api } from '@api/constants';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 
 const getNamespaces = (params: RequestParams) =>
-  IS_MOCK_ACTIVE
+  import.meta.env.VITE_IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {

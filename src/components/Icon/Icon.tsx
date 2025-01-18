@@ -15,6 +15,7 @@ import {
   SupportIcon,
   TemplateIcon,
 } from './components';
+import { ChevronDown } from './components/ChevronDown';
 
 export const Icon: FC<IconProps> = props => {
   switch (props.type) {
@@ -64,6 +65,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.secret: {
       return <SecretIcon {...props.props} />;
+    }
+
+    case IconType.chevron: {
+      return <ChevronDown {...props.props} />;
     }
 
     default: {
