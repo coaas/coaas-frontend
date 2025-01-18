@@ -1,1 +1,1 @@
-export { Scenes } from './Scenes';
+export * from './Scenes';

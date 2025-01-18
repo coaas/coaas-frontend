@@ -5,7 +5,6 @@ const submit = async (data: FormData) => {
   const login_path = 'auth/login';
   try {
     const resp = await authApi.post(login_path, {
-      credentials: 'same-origin',
       json: {
         identification_method: 'username',
         auth_mode: 'password',
@@ -43,6 +42,7 @@ export const Login = () => {
     <div className="flex flex-col">
       <form
         onSubmit={e => {
+          e.preventDefault();
           submit(new FormData(e.target as HTMLFormElement));
         }}
         className={'flex flex-col space-y-2 w-40 mx-auto'}

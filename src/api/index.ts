@@ -1,2 +1,2 @@
-export { api, queryClient, IS_MOCK_ACTIVE } from './constants';
+export { api, queryClient } from './constants';
 export { setAccess } from '@api/setAccess/setAccess';
