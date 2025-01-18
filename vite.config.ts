@@ -17,7 +17,6 @@ export default defineConfig(({ mode }) => {
             secure: false,
             ws: true,
             followRedirects: true,
-            cookieDomainRewrite: 'localhost:3000',
             rewrite: path => path.replace(/^\/api/, ''),
             configure: (proxy, _options) => {
               proxy.on('error', err => {

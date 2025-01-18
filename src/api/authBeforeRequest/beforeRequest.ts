@@ -1,20 +1,20 @@
 import { KyRequest } from 'ky';
 import * as jose from 'jose';
 
+import cookies from 'js-cookie';
 import { ACCESS_TOKEN_KEY } from '@api/authBeforeRequest/contants';
 import { authApi } from '@api/constants';
 import { setAccess } from '@api/setAccess/setAccess';
 
-const checkAccess = (): boolean =>
-  localStorage.getItem(ACCESS_TOKEN_KEY) !== undefined;
+const checkAccess = () => localStorage.getItem(ACCESS_TOKEN_KEY) !== null;
 
-const getAccess = (): string => {
+const getAccess = () => {
   return localStorage.getItem(ACCESS_TOKEN_KEY) as string;
 };
 
-const isAccessExpired = (): boolean => {
+const isAccessExpired = () => {
   const data = jose.decodeJwt(getAccess());
-  return data.exp === undefined || data.exp > Date.now() / 1000;
+  return data.exp === undefined || data.exp < Date.now() / 1000;
 };
 
 const obtainAccess = async () => {
@@ -40,4 +40,6 @@ export const beforeRequest = async (request: KyRequest) => {
     obtainAccess();
   }
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
+
+  request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
 };

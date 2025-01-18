@@ -14,11 +14,7 @@ import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 const getNamespaces = (params: RequestParams) =>
   import.meta.env.VITE_IS_MOCK_ACTIVE
     ? getMockData(params)
-    : api
-        .post(ENDPOINT, {
-          body: JSON.stringify(params),
-        })
-        .json<ResponseData>();
+    : api.post(ENDPOINT, { json: params }).json<ResponseData>();
 
 export const useData = () => {
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =

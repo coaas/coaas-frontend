@@ -14,6 +14,6 @@ export const enum RouteMap {
   secrets = '/namespaces/:namespace_slug/projects/:project_slug/secrets',
   deploy = '/namespaces/:namespace_slug/projects/:project_slug/deploy',
   git = '/namespaces/:namespace_slug/projects/:project_slug/git',
-  registries = '//namespaces/:namespace_slug/projects/:project_slug/registries',
+  registries = '/namespaces/:namespace_slug/projects/:project_slug/registries',
   team = '/namespaces/:namespace_slug/projects/:project_slug/team',
 }
