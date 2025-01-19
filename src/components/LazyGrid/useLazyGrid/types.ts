@@ -1,5 +1,6 @@
 export type UseLazyGridParams = {
   fetchNextPage: () => void;
+  isFetching: boolean;
   isFetchingNextPage: boolean;
   /**
    * текущее кол-во элементов

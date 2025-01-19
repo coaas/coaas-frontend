@@ -6,17 +6,12 @@ import { LazyGridItemProps } from '@components/LazyGrid';
 
 import { useData } from './useData';
 import { CardGridItem } from './CardGridItem';
-import { getParsedData } from './getParsedData';
+import { getParsedData, useCreateNamespace } from './utils';
 import { ANIMATIONS, TABS } from './constants';
-import { fetcher } from '@utils/lib/use-query';
-import { CreateNamespaceDto } from '@globalTypes/namespaces';
-import { createNamespace, getUserNamespacesAndProjects } from '@api/queries';
-import { useQueryClient } from '@tanstack/react-query';
 
 export const useNamespaces = () => {
-  const { data, isFetching, fetchNextPage, isFetchingNextPage } = useData();
-
-  const queryClient = useQueryClient();
+  const { data, isFetching, fetchNextPage, refetch, isFetchingNextPage } =
+    useData();
 
   const tabsProps = useTabs({ tabs: TABS });
 
@@ -33,26 +28,7 @@ export const useNamespaces = () => {
 
   const dataCount = namespaces.length;
 
-  const handleCreateNamespace = async (
-    dto: CreateNamespaceDto,
-    cb?: () => void,
-  ) => {
-    try {
-      await fetcher(createNamespace, { method: 'POST' }, dto);
-      queryClient.invalidateQueries({
-        predicate: ({ queryKey }) => {
-          const firstKey = queryKey[0];
-          return (
-            firstKey === getUserNamespacesAndProjects.endpoint ||
-            firstKey === 'namespaces'
-          );
-        },
-      });
-      cb?.();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { onFormSubmit } = useCreateNamespace({ refetch });
 
   return {
     dataCount,
@@ -64,6 +40,6 @@ export const useNamespaces = () => {
     fetchNextPage,
     isFetchingNextPage,
     namespaces,
-    handleCreateNamespace,
+    onFormSubmit,
   };
 };

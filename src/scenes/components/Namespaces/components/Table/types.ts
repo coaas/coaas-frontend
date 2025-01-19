@@ -3,7 +3,7 @@ import { NamespaceData } from '@globalTypes/namespaces';
 
 export type TableProps = Pick<
   TableComponentProps,
-  'fetchNextPage' | 'isLoading'
+  'fetchNextPage' | 'isLoading' | 'isLoadingNextPage'
 > & {
   namespaces: NamespaceData[];
 };

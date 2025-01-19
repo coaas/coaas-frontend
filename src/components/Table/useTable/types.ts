@@ -21,5 +21,6 @@ export type UseTableParams<TData extends TableData> = {
   COLUMNS: ColumnData[];
   fetchNextPage: () => void;
   isLoading: boolean;
+  isLoadingNextPage: boolean;
   data?: TData;
 };

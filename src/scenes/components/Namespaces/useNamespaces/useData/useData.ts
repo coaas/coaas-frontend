@@ -1,18 +1,17 @@
 import {
   InfiniteData,
-  keepPreviousData,
   QueryKey,
   useInfiniteQuery,
 } from '@tanstack/react-query';
 
-import { api } from '@api/constants';
+import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
-import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
+import { BASE_REQUEST_PARAMS, ENDPOINT, QUERY_KEY } from './constants';
 
 const getNamespaces = (params: RequestParams) =>
-  import.meta.env.VITE_IS_MOCK_ACTIVE
+  IS_MOCK_ACTIVE
     ? getMockData(params)
     : api.post(ENDPOINT, { json: params }).json<ResponseData>();
 
@@ -25,7 +24,7 @@ export const useData = () => {
       QueryKey,
       RequestParams
     >({
-      queryKey: ['namespaces'],
+      queryKey: QUERY_KEY,
       queryFn: ({ pageParam }) => getNamespaces(pageParam),
       initialPageParam: BASE_REQUEST_PARAMS,
       getNextPageParam: ({ nextKey, hasMore }) =>
@@ -36,10 +35,23 @@ export const useData = () => {
             }
           : undefined,
       refetchOnWindowFocus: false,
-      refetchOnMount: true,
-      staleTime: Infinity,
-      placeholderData: keepPreviousData,
     });
 
-  return { data, fetchNextPage, isFetching, isFetchingNextPage };
+  const refetch = async () => {
+    // сбрасываем пагинацию на первую страницу
+    queryClient.setQueryData(
+      QUERY_KEY,
+      (oldData?: InfiniteData<ResponseData>) =>
+        oldData && {
+          pages: oldData.pages.slice(0, 1),
+          pageParams: oldData.pageParams.slice(0, 1),
+        },
+    );
+
+    await queryClient.invalidateQueries({
+      queryKey: QUERY_KEY,
+    });
+  };
+
+  return { data, fetchNextPage, refetch, isFetching, isFetchingNextPage };
 };

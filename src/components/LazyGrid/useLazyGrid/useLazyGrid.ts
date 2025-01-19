@@ -7,6 +7,7 @@ import { useElementSizes } from '@utils/layout';
 
 export const useLazyGrid = ({
   fetchNextPage,
+  isFetching,
   isFetchingNextPage,
   count,
   gap,
@@ -29,14 +30,14 @@ export const useLazyGrid = ({
 
         // как только остается меньше SCROLL_POS_TO_FETCH до нижней части, запрашиваем новые данные
         if (
-          !isFetchingNextPage &&
+          !isFetching &&
           scrollHeight - scrollTop - clientHeight < SCROLL_POS_TO_FETCH
         ) {
           fetchNextPage();
         }
       }
     },
-    [fetchNextPage, isFetchingNextPage],
+    [fetchNextPage, isFetching],
   );
 
   const grid = useGrid({
@@ -53,5 +54,7 @@ export const useLazyGrid = ({
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) =>
     fetchMore(e.target as HTMLDivElement);
 
-  return { wrapperRef, grid, onScroll, isFetchingNextPage };
+  const isFetchingAllGrid = isFetching && !isFetchingNextPage;
+
+  return { wrapperRef, grid, onScroll, isFetchingAllGrid, isFetchingNextPage };
 };
