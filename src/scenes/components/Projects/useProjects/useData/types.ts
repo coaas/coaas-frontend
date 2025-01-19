@@ -1,7 +1,7 @@
 import { ProjectData } from '@globalTypes/projects';
 
 type NextKey = WithId & {
-  createdAt: Timestamp;
+  created_at: Timestamp;
 };
 
 export type RequestParams = {
