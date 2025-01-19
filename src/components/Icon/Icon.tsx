@@ -10,6 +10,7 @@ import {
   GraphIcon,
   LayersIcon,
   MetricsIcon,
+  SearchIcon,
   SecretIcon,
   SettingsIcon,
   SupportIcon,
@@ -69,6 +70,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.chevron: {
       return <ChevronDown {...props.props} />;
+    }
+
+    case IconType.search: {
+      return <SearchIcon {...props.props} />;
     }
 
     default: {
