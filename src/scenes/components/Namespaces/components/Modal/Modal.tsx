@@ -32,8 +32,7 @@ export const Modal: FC<ModalProps> = ({
   );
 
   const mutation = useCheckSlugMutation({
-    onError: () => setIsSlugValid(false),
-    onSuccess: () => setIsSlugValid(true),
+    setIsSlugValid,
   });
 
   const formValues = watch();

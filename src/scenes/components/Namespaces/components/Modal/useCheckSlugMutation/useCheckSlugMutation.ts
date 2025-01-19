@@ -1,28 +1,30 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { UseCheckSlugMutationParams } from './types';
 import { api, IS_MOCK_ACTIVE } from '@api/constants';
 
-const ENDPOINT = 'api/NamespacesManager/NamespaceSlugExists';
+import { ResponseData, UseCheckSlugMutationParams } from './types';
 
-const mutationFn = (slug: string) => {
+const ENDPOINT = 'NamespacesManager/NamespaceSlugExists';
+
+const mutationFn = (slug: string): Promise<ResponseData> => {
   if (IS_MOCK_ACTIVE) {
-    return new Promise((resolve, reject) =>
-      setTimeout(() => (Math.random() > 0.5 ? resolve({}) : reject()), 1000),
+    return new Promise(resolve =>
+      setTimeout(() => resolve({ success: Math.random() > 0.5 }), 1000),
     );
   }
 
-  return api.post(ENDPOINT, {
-    body: JSON.stringify({ slug }),
-  });
+  return api
+    .post(ENDPOINT, {
+      body: JSON.stringify({ slug }),
+    })
+    .json<ResponseData>();
 };
 
 export const useCheckSlugMutation = ({
-  onSuccess,
-  onError,
+  setIsSlugValid,
 }: UseCheckSlugMutationParams) =>
   useMutation({
     mutationFn,
-    onSuccess,
-    onError,
+    onSuccess: ({ success }) => setIsSlugValid(!success),
+    onError: () => setIsSlugValid(false),
   });

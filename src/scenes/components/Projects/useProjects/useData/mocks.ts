@@ -9,8 +9,8 @@ const projects: ProjectData[] = (() =>
     name: faker.string.alpha(15),
     description: faker.word.words(20),
     slug: faker.string.uuid(),
-    membersCount: faker.number.int(1000),
-    createdAt: faker.date.anytime().toISOString(),
+    members_count: faker.number.int(1000),
+    created_at: faker.date.anytime().toISOString(),
     id: faker.string.uuid(),
   })))();
 
@@ -38,7 +38,7 @@ export const getMockData = async ({
     hasMore,
     nextKey: {
       id: nextItem.id,
-      createdAt: nextItem.createdAt,
+      created_at: nextItem.created_at,
     },
   };
 };

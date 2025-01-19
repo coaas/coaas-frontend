@@ -1,4 +1,7 @@
 export type UseCheckSlugMutationParams = {
-  onSuccess: () => void;
-  onError: () => void;
+  setIsSlugValid: (isSlugValid: boolean) => void;
+};
+
+export type ResponseData = {
+  success: boolean;
 };

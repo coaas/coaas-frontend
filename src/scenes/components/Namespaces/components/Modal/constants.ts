@@ -15,4 +15,4 @@ export const FIELDS: Field[] = [
   },
 ];
 
-export const SLUG_CHECK_DEBOUNCE = 200;
+export const SLUG_CHECK_DEBOUNCE = 1000;

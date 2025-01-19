@@ -13,7 +13,11 @@ export const api = ky.create({
   hooks: {
     beforeRequest: [beforeRequest],
   },
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
 export const IS_MOCK_ACTIVE = import.meta.env.VITE_IS_MOCK_ACTIVE;
 
 export const queryClient = new QueryClient();
