@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
 
 export const authApi = ky.create({
-  prefixUrl: import.meta.env.VITE_API_PREFIX,
+  prefixUrl: import.meta.env.VITE_API_AUTH_PREFIX,
   credentials: 'include',
 });
 

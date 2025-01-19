@@ -10,7 +10,7 @@ import {
   DynamicPathParams,
 } from '@utils/lib/create-dynamic-path';
 
-interface NavLinksProps extends ComponentPropsWithoutRef<'ul'> {
+interface Props extends ComponentPropsWithoutRef<'ul'> {
   sidebarOpened: boolean;
 }
 
@@ -36,7 +36,7 @@ const getCurrentLinks = ({
   );
 };
 
-export const NavLinks = ({ sidebarOpened, className }: NavLinksProps) => {
+export const NavLinks = ({ sidebarOpened, className }: Props) => {
   const { pathname } = useLocation();
   const { namespace_slug, project_slug } = useParams<PageParams>();
 

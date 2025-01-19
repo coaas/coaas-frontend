@@ -6,6 +6,12 @@ export type NamespaceData = WithId & {
   createdAt: Timestamp;
 };
 
+export type CreateNamespaceDto = {
+  slug: string;
+  name: string;
+  description: string;
+};
+
 export interface NamespaceWithProject {
   [key: string]: {
     id: string;

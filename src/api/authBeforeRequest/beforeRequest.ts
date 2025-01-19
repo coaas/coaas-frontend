@@ -1,10 +1,13 @@
 import { KyRequest } from 'ky';
 import * as jose from 'jose';
+import { Mutex } from 'async-mutex';
 
 import cookies from 'js-cookie';
 import { ACCESS_TOKEN_KEY } from '@api/authBeforeRequest/contants';
 import { authApi } from '@api/constants';
 import { setAccess } from '@api/setAccess/setAccess';
+
+const mutex = new Mutex();
 
 const checkAccess = () => localStorage.getItem(ACCESS_TOKEN_KEY) !== null;
 
@@ -18,6 +21,13 @@ const isAccessExpired = () => {
 };
 
 const obtainAccess = async () => {
+  if (mutex.isLocked()) {
+    await mutex.waitForUnlock();
+    return;
+  }
+
+  const release = await mutex.acquire();
+
   const REFRESH_PATH = 'auth/refresh';
   try {
     const resp = await authApi.post(REFRESH_PATH, {
@@ -32,12 +42,14 @@ const obtainAccess = async () => {
     }
   } catch (error) {
     console.error(error);
+  } finally {
+    release();
   }
 };
 
 export const beforeRequest = async (request: KyRequest) => {
   if (!checkAccess() || isAccessExpired()) {
-    obtainAccess();
+    await obtainAccess();
   }
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
 
