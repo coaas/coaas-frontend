@@ -12,6 +12,7 @@ export enum IconType {
   secret = 'secret',
   config = 'config',
   chevron = 'chevron',
+  search = 'search',
 }
 
 export type IconProps = GenericProps<IconType, SquareIconProps>;
