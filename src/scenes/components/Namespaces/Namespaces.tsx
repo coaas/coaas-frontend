@@ -1,17 +1,13 @@
 import { FC, useState } from 'react';
 
-import { Button } from '@components/Button';
 import { LazyGrid } from '@components/LazyGrid';
-import { Tabs, TabsType } from '@components/Tabs';
 
 import { Table, Modal } from './components';
-import { TabId, useNamespaces } from './useNamespaces';
+import { useNamespaces } from './useNamespaces';
+import { SceneWithTabs } from '../SceneWithTabs';
 
 export const Namespaces: FC = () => {
   const {
-    tabsProps,
-    containerRef,
-    currentTab,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
@@ -25,6 +21,11 @@ export const Namespaces: FC = () => {
 
   const onCreateNamespaceBtnClick = () => setIsModalOpen(true);
 
+  const buttonData = {
+    title: 'Create namespace',
+    onClick: onCreateNamespaceBtnClick,
+  };
+
   return (
     <>
       <Modal
@@ -32,37 +33,29 @@ export const Namespaces: FC = () => {
         onIsOpenChange={setIsModalOpen}
         onFormSubmit={onFormSubmit}
       />
-      <section className="p-10 flex justify-center">
-        <div className="w-full">
-          <div className="flex justify-between items-center">
-            <Button onClick={onCreateNamespaceBtnClick}>
-              Create namespace
-            </Button>
-            <Tabs {...tabsProps} type={TabsType.icon} />
-          </div>
-          <div className="mt-6" ref={containerRef}>
-            {currentTab.id === TabId.tableView ? (
-              <Table
-                isLoading={isFetching}
-                isLoadingNextPage={isFetchingNextPage}
-                fetchNextPage={fetchNextPage}
-                namespaces={namespaces}
-              />
-            ) : (
-              <LazyGrid
-                gap={16}
-                minItemWidth={260}
-                itemHeight={157}
-                Item={GridItem}
-                isFetching={isFetching}
-                isFetchingNextPage={isFetchingNextPage}
-                fetchNextPage={fetchNextPage}
-                count={dataCount}
-              />
-            )}
-          </div>
-        </div>
-      </section>
+      <SceneWithTabs
+        button={buttonData}
+        TableView={
+          <Table
+            isLoading={isFetching}
+            isLoadingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            namespaces={namespaces}
+          />
+        }
+        CardsView={
+          <LazyGrid
+            gap={16}
+            minItemWidth={260}
+            itemHeight={157}
+            Item={GridItem}
+            isFetching={isFetching}
+            isFetchingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            count={dataCount}
+          />
+        }
+      />
     </>
   );
 };

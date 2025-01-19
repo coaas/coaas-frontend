@@ -8,9 +8,9 @@ import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
-import { BASE_REQUEST_PARAMS, ENDPOINT, QUERY_KEY } from './constants';
+import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 
-const getNamespaces = (params: RequestParams) =>
+const getProjects = (params: RequestParams) =>
   IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
@@ -19,7 +19,9 @@ const getNamespaces = (params: RequestParams) =>
         })
         .json<ResponseData>();
 
-export const useData = () => {
+export const useData = (namespaceSlug?: string) => {
+  const queryKey = [`${namespaceSlug}_projects`];
+
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
       ResponseData,
@@ -28,8 +30,8 @@ export const useData = () => {
       QueryKey,
       RequestParams
     >({
-      queryKey: QUERY_KEY,
-      queryFn: async ({ pageParam }) => await getNamespaces(pageParam),
+      queryKey,
+      queryFn: async ({ pageParam }) => await getProjects(pageParam),
       initialPageParam: BASE_REQUEST_PARAMS,
       getNextPageParam: ({ nextKey, hasMore }) =>
         hasMore
@@ -44,7 +46,7 @@ export const useData = () => {
   const refetch = async () => {
     // сбрасываем пагинацию на первую страницу
     queryClient.setQueryData(
-      QUERY_KEY,
+      queryKey,
       (oldData?: InfiniteData<ResponseData>) =>
         oldData && {
           pages: oldData.pages.slice(0, 1),
@@ -52,9 +54,7 @@ export const useData = () => {
         },
     );
 
-    await queryClient.invalidateQueries({
-      queryKey: QUERY_KEY,
-    });
+    await queryClient.invalidateQueries({ queryKey });
   };
 
   return { data, fetchNextPage, refetch, isFetching, isFetchingNextPage };
