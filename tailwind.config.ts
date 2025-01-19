@@ -50,6 +50,7 @@ export default {
         '900': '#171717',
         '950': '#0a0a0a',
       },
+      error: '#ef4444',
     },
     extend: {},
   },

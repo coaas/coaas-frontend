@@ -2,36 +2,15 @@
 // import { getUserNamespacesAndProjects } from '@api/endpoints';
 import { Icon, IconType } from '@components/Icon';
 import { Popover } from '@components/Popover';
-import { NamespaceWithProject } from '@globalTypes/namespaces';
 import { createDynamicPath } from '@utils/lib/create-dynamic-path';
 import { objectKeys } from '@utils/lib/object-keys';
 import { useToggle } from '@utils/lib/use-toggle';
 import { Link, useParams } from 'react-router-dom';
 import { RouteMap } from '../types';
 import { cn } from '@utils/styles';
-
-const USERNAME = 'ivanov';
-
-// const fetcher = () => api.post(getUserNamespacesAndProjects).json();
-
-const namespacesAndProjects: { namespaces: NamespaceWithProject } = {
-  namespaces: {
-    yandex: {
-      id: 'aaaa-aaaa-aaaa-aaaa',
-      name: 'Яндекс',
-      projects: {
-        taxi: {
-          id: '',
-          name: 'Такси',
-        },
-        eda: {
-          id: '',
-          name: 'Еда',
-        },
-      },
-    },
-  },
-};
+import { useQuery } from '@utils/lib/use-query';
+import { getUserNamespacesAndProjects } from '@api/queries';
+import { useUser } from '@utils/lib/use-user';
 
 export const Navbar = () => {
   const { state, off, setState } = useToggle();
@@ -41,10 +20,17 @@ export const Navbar = () => {
     project_slug: currentProjectSlug,
   } = useParams<PageParams>();
 
-  const namespacesSlugs = objectKeys(namespacesAndProjects.namespaces);
+  const { data } = useQuery({
+    query: getUserNamespacesAndProjects,
+  });
 
-  const currentNamespace =
-    namespacesAndProjects.namespaces[currentNamespaceSlug || ''];
+  const user = useUser();
+
+  if (!data) return null;
+
+  const namespacesSlugs = objectKeys(data.namespaces);
+
+  const currentNamespace = data.namespaces[currentNamespaceSlug || ''];
 
   const currentNamespaceProjectsSlugs = objectKeys(
     currentNamespace?.projects || {},
@@ -70,11 +56,10 @@ export const Navbar = () => {
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
                 {namespacesSlugs.map(namespaceSlug => {
-                  const namespace =
-                    namespacesAndProjects.namespaces[namespaceSlug];
+                  const namespace = data.namespaces[namespaceSlug];
                   if (!namespace) return null;
                   return (
-                    <li>
+                    <li key={namespaceSlug}>
                       <Link
                         className={cn(
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5',
@@ -110,7 +95,7 @@ export const Navbar = () => {
                   const project = currentNamespace?.projects[projectSlug];
                   if (!project) return null;
                   return (
-                    <li>
+                    <li key={projectSlug}>
                       <Link
                         className={cn(
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5',
@@ -141,7 +126,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-1">
           <Icon type={IconType.cube} props={{ size: 20 }} />
           <span className="text-[15px] leading-5 font-medium text-gray">
-            {USERNAME}
+            {user?.username}
           </span>
         </div>
         {currentNamespace && (

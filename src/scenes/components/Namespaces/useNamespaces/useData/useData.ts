@@ -36,6 +36,8 @@ export const useData = () => {
             }
           : undefined,
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
+      staleTime: Infinity,
       placeholderData: keepPreviousData,
     });
 
