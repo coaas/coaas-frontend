@@ -6,7 +6,7 @@ import { CreateNamespaceParams } from '@scenes/components/Namespaces/types';
 import { UseCreateNamespaceParams } from './types';
 import { mockCreateNamespace } from './mocks';
 
-const ENDPOINT = 'api/NamespacesManager/CreateNamespace';
+const ENDPOINT = 'NamespacesManager/CreateNamespace';
 
 const mutationFn = (params: CreateNamespaceParams) =>
   IS_MOCK_ACTIVE

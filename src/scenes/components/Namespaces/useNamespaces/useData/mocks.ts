@@ -9,8 +9,8 @@ const namespaces: NamespaceData[] = (() =>
     name: faker.string.alpha(15),
     description: faker.word.words(20),
     slug: faker.string.uuid(),
-    membersCount: faker.number.int(1000),
-    createdAt: faker.date.anytime().toISOString(),
+    members_count: faker.number.int(1000),
+    created_at: faker.date.anytime().toISOString(),
     id: faker.string.uuid(),
   })))();
 
