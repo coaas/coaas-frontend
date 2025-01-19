@@ -1,5 +1,3 @@
-// import { api } from '@api/constants';
-// import { getUserNamespacesAndProjects } from '@api/endpoints';
 import { Icon, IconType } from '@components/Icon';
 import { Popover } from '@components/Popover';
 import { createDynamicPath } from '@utils/lib/create-dynamic-path';

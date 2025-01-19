@@ -24,8 +24,17 @@ declare type PageParams = {
 };
 
 /* eslint-disable */
-declare type Query<TData = any, TBody = any> = {
+declare type Query<TData = unknown, TBody = unknown> = {
   endpoint: string;
   method?: 'POST';
 };
 /* eslint-enable */
+
+declare type Option<TValue = string> = {
+  label: string;
+  value: TValue;
+};
+
+declare type Filters = {
+  [key: string]: Option[];
+};
