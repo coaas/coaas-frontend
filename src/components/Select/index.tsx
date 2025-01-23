@@ -7,7 +7,7 @@ import { ComponentPropsWithoutRef, useState } from 'react';
 
 interface Props<TOption>
   extends Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue'> {
-  defaultOption?: Option<TOption>;
+  defaultLabel?: string;
   options: Option<TOption>[];
   onOptionChange: (option: Option<TOption>, close?: () => void) => void;
   defaultValue?: Option<TOption> | Option<TOption>[] | null;
@@ -16,7 +16,7 @@ interface Props<TOption>
 
 export function Select<T extends string | number>({
   options,
-  defaultOption,
+  defaultLabel,
   onOptionChange,
   className,
   multiple,
@@ -31,7 +31,7 @@ export function Select<T extends string | number>({
   const labelStr =
     (Array.isArray(items)
       ? items.map(({ label }) => label).join(', ')
-      : items?.label) || defaultOption?.label;
+      : items?.label) || defaultLabel;
 
   const handleClickOption = (option: Option<T>) => {
     setItems(items => {
@@ -53,12 +53,7 @@ export function Select<T extends string | number>({
       setOpen={setState}
       offsetNum={1}
       render={() => (
-        <div
-          className={cn(
-            'flex flex-col  rounded-md border-stroke border',
-            className,
-          )}
-        >
+        <div className="flex flex-col rounded-md border-stroke border max-h-[400px] overflow-auto">
           {options.map(option => {
             const { label } = option;
 
@@ -83,7 +78,9 @@ export function Select<T extends string | number>({
                 <span className="text-sm leading-6 font-inter font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden">
                   {label}
                 </span>
-                {selected && <Check className="text-white size-[16px]" />}
+                {selected && (
+                  <Check className="text-white size-[16px] shrink-0" />
+                )}
               </button>
             );
           })}
@@ -92,7 +89,7 @@ export function Select<T extends string | number>({
     >
       <button
         className={cn(
-          'text-stroke bg-stroke-gray-light px-[14px] w-full py-2 flex items-center justify-between gap-[14px] rounded-md border-stroke border',
+          'text-stroke bg-stroke-gray-light px-[14px] w-full py-1 flex items-center justify-between gap-[14px] rounded-md border-stroke border',
           className,
         )}
         type="button"
@@ -105,7 +102,7 @@ export function Select<T extends string | number>({
           props={{
             size: 16,
             color: 'currentColor',
-            className: cn('transition-transform', {
+            className: cn('transition-transform shrink-0', {
               'rotate-180': state,
             }),
           }}

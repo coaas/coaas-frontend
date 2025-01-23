@@ -30,11 +30,16 @@ declare type Query<TData = unknown, TBody = unknown> = {
 };
 /* eslint-enable */
 
+declare interface AfterKey {
+  id: string;
+  created_at: string;
+}
+declare interface NextKey {
+  id: string;
+  created_at: string;
+}
+
 declare type Option<TValue = string> = {
   label: string;
   value: TValue;
-};
-
-declare type Filters = {
-  [key: string]: Option[];
 };

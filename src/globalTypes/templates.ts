@@ -1,20 +1,26 @@
 export interface GetTemplatesDto {
   query?: string;
-  filters: Filters;
+  filters: TemplatesFiltersRequest;
   limit?: number;
   after_key?: AfterKey;
 }
 
-export interface Filters {
+export interface TemplatesFiltersRequest {
   types: number[];
+  status: number[];
   categories: string[];
   languages: string[];
 }
 
-export interface AfterKey {
-  id: string;
-  created_at: string;
-}
+export type GetTemplateFiltersResponse = {
+  categories: Filter[];
+  languages: Filter[];
+};
+
+export type Filter = {
+  key: string;
+  value: string;
+};
 
 export interface TemplatesData {
   templates: Template[];
@@ -40,9 +46,4 @@ export interface Template {
 export interface Author {
   id: string;
   username: string;
-}
-
-export interface NextKey {
-  id: string;
-  created_at: string;
 }
