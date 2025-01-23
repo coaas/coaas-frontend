@@ -108,6 +108,7 @@ export const Templates = () => {
           ) : (
             <Select
               key={filterKey}
+              withSearch
               onOptionChange={option => handleFilterChange(option, filterKey)}
               defaultLabel={filterKey}
               defaultValue={searchParams
