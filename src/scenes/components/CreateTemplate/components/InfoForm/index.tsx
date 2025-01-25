@@ -100,48 +100,46 @@ export const InfoForm = () => {
         name="languages"
         control={control}
         render={({ field: { value, onChange }, fieldState }) => (
-          <FormField
-            error={fieldState.error?.message}
-            label="Languages"
-            className="flex flex-wrap gap-[10px]"
-          >
+          <FormField error={fieldState.error?.message} label="Languages">
             {() => (
-              <Select
-                className="max-w-[137px] py-[6px]"
-                onOptionChange={option =>
-                  onChange(
-                    value.includes(option.value)
-                      ? value.filter(item => item !== option.value)
-                      : [...value, option.value],
-                  )
-                }
-                options={filters.languages.map(({ key, value }) => ({
-                  label: key,
-                  value,
-                }))}
-                defaultLabel="Add language"
-                multiple
-                withSearch
-                variant="formView"
-              >
-                {(options, setSelectItems) => (
-                  <>
-                    {options.map(option => (
-                      <TagLikeButton
-                        onClick={() => {
-                          const newItems = value.filter(
-                            v => v !== option.value,
-                          );
-                          onChange(newItems);
-                          setSelectItems(newItems);
-                        }}
-                      >
-                        {option.label}
-                      </TagLikeButton>
-                    ))}
-                  </>
-                )}
-              </Select>
+              <div className="flex flex-wrap gap-[10px]">
+                <Select
+                  className="max-w-[137px] py-[6px]"
+                  onOptionChange={option =>
+                    onChange(
+                      value.includes(option.value)
+                        ? value.filter(item => item !== option.value)
+                        : [...value, option.value],
+                    )
+                  }
+                  options={filters.languages.map(({ key, value }) => ({
+                    label: key,
+                    value,
+                  }))}
+                  defaultLabel="Add language"
+                  multiple
+                  withSearch
+                  variant="formView"
+                >
+                  {(options, setSelectItems) => (
+                    <>
+                      {options.map(option => (
+                        <TagLikeButton
+                          onClick={() => {
+                            const newItems = value.filter(
+                              v => v !== option.value,
+                            );
+                            onChange(newItems);
+                            setSelectItems(newItems);
+                          }}
+                        >
+                          {option.label}
+                        </TagLikeButton>
+                      ))}
+                    </>
+                  )}
+                </Select>
+              </div>
             )}
           </FormField>
         )}

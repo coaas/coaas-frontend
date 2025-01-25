@@ -18,11 +18,6 @@ declare type WithClassname = {
 
 declare type Timestamp = string;
 
-declare type PageParams = {
-  namespace_slug?: string;
-  project_slug?: string;
-};
-
 /* eslint-disable */
 declare type Query<TData = unknown, TBody = unknown> = {
   endpoint: string;
