@@ -2,13 +2,14 @@ import { getTemplateFilters, getTemplates } from '@api/queries';
 import { Banner } from '@components/Banner';
 import { Select } from '@components/Select';
 import { useIQuery, useQuery } from '@utils/lib/use-query';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { TemplateStatus, templateTypes } from './constants';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';
 import { Search } from '@components/Search';
 import { Button } from '@components/Button';
 import { Card, CardType } from '@components/Card';
 import { TemplatesList } from './components/TemplatesList';
+import { RouteMap } from '@components/Layout/components/types';
 
 export const Templates = () => {
   const search = useLocation().search;
@@ -27,7 +28,7 @@ export const Templates = () => {
   const templateFilters = {
     ...filters,
     types: templateTypes,
-    status: TemplateStatus,
+    status: templateStatus,
   };
 
   const {
@@ -38,10 +39,10 @@ export const Templates = () => {
     isFetching,
   } = useIQuery(getTemplates, {
     filters: {
-      categories: (categories && categories.split(',')) || [],
-      languages: (languages && languages.split(',')) || [],
-      types: (types && types.split(',').map(Number)) || [],
-      status: (status && status.split(',').map(Number)) || [],
+      categories: (categories && JSON.parse(categories)) || [],
+      languages: (languages && JSON.parse(languages)) || [],
+      types: (types && JSON.parse(types)) || [],
+      status: (status && JSON.parse(types)) || [],
     },
     query,
   });
@@ -65,9 +66,8 @@ export const Templates = () => {
   ) => {
     setSearchParams(params => {
       const optionValue = option.value.toString();
-      const currentFilters = (params.get(filterKey) || '')
-        .split(',')
-        .filter(Boolean);
+      const currentFilters: (string | number)[] =
+        JSON.parse(params.get(filterKey) || '[]') || [];
       const singleItem = currentFilters.length <= 1;
       const hasFilter = currentFilters.includes(optionValue);
       if (hasFilter) {
@@ -76,11 +76,14 @@ export const Templates = () => {
         } else {
           params.set(
             filterKey,
-            currentFilters.filter(f => f !== optionValue).join(','),
+            JSON.stringify(currentFilters.filter(f => f !== optionValue)),
           );
         }
       } else {
-        params.set(filterKey, currentFilters.concat(optionValue).join(','));
+        params.set(
+          filterKey,
+          JSON.stringify(currentFilters.concat(optionValue)),
+        );
       }
       return params;
     });
@@ -102,30 +105,27 @@ export const Templates = () => {
         {objectEntries(templateFilters).map(([filterKey, options]) =>
           filtersLoading ? (
             <div
-              className="animate-pulse bg-area-dark rounded-md border-stroke border flex-1 min-w-[140px] min-h-[34px]"
+              className="animate-pulse bg-stroke-gray rounded-md border-stroke border flex-1 min-w-[140px] min-h-[34px]"
               key={filterKey}
             />
           ) : (
             <Select
               key={filterKey}
-              withSearch
+              variant="filterView"
               onOptionChange={option => handleFilterChange(option, filterKey)}
               defaultLabel={filterKey}
-              defaultValue={searchParams
-                .get(filterKey)
-                ?.split(',')
-                .map(value => ({
-                  label: options.find(el => el.value === value)?.key || '',
-                  value,
-                }))}
+              defaultValue={JSON.parse(searchParams.get(filterKey) || '[]')}
               options={options.map(({ key, value }) => ({ label: key, value }))}
               className="flex-1 max-w-[130px]"
               multiple
+              withChevron
             />
           ),
         )}
       </div>
-      <Button className="block mt-[14px]">Create template</Button>
+      <Link className="block mt-[14px]" to={RouteMap.templatesCreate}>
+        <Button>Create template</Button>
+      </Link>
       <TemplatesList
         className="flex flex-col gap-4 mt-[25px]"
         isFetching={isFetching || templatesLoading}

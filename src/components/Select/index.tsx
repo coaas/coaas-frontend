@@ -4,19 +4,31 @@ import { useToggle } from '@utils/lib/use-toggle';
 import { cn } from '@utils/styles';
 import debounce from 'debounce';
 import { Check } from 'lucide-react';
-import { ChangeEvent, ComponentPropsWithoutRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ComponentPropsWithoutRef,
+  ReactElement,
+  useState,
+} from 'react';
+import { SelectVariant, SelectVariants } from './styles';
 
 interface Props<TOption>
-  extends Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue'> {
+  extends Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'children'> {
   defaultLabel?: string;
   options: Option<TOption>[];
   onOptionChange: (option: Option<TOption>, close?: () => void) => void;
-  defaultValue?: Option<TOption> | Option<TOption>[] | null;
+  defaultValue?: TOption[];
   multiple?: boolean;
   defaultOpen?: boolean;
   withSearch?: boolean;
   onSearchChange?: (value: string) => void;
   delay?: number;
+  variant?: SelectVariant;
+  children?: (
+    options: Option<TOption>[],
+    onChange: React.Dispatch<React.SetStateAction<TOption[]>>,
+  ) => ReactElement;
+  withChevron?: boolean;
 }
 
 export function Select<T extends string | number>({
@@ -29,31 +41,31 @@ export function Select<T extends string | number>({
   multiple,
   defaultOpen,
   withSearch,
-  defaultValue = multiple ? [] : null,
+  defaultValue = [],
+  variant = 'filterView',
+  children,
+  withChevron,
 }: Props<T>) {
   const { state, setState, off } = useToggle(defaultOpen);
-
+  const [items, setItems] = useState(defaultValue);
   const [search, setSearch] = useState('');
 
   const debouncedSearchHandler = debounce(onSearchChange, delay);
 
-  const [items, setItems] = useState<Option<T> | Option<T>[] | null>(
-    defaultValue,
-  );
+  const optionsToPass = options.filter(({ value }) => items.includes(value));
 
   const labelStr =
-    (Array.isArray(items)
-      ? items.map(({ label }) => label).join(', ')
-      : items?.label) || defaultLabel;
+    optionsToPass.map(({ label }) => label).join(', ') || defaultLabel;
 
   const handleClickOption = (option: Option<T>) => {
     setItems(items => {
-      if (Array.isArray(items)) {
-        return items.find(item => item.value === option.value)
-          ? items.filter(i => i.value !== option.value)
-          : [...items, option];
+      const optionSelected = items.includes(option.value);
+      if (multiple) {
+        return optionSelected
+          ? items.filter(item => item !== option.value)
+          : [...items, option.value];
       }
-      return option.value === items?.value ? null : option;
+      return optionSelected ? [] : [option.value];
     });
 
     onOptionChange(option);
@@ -71,75 +83,84 @@ export function Select<T extends string | number>({
   );
 
   return (
-    <Popover
-      close={off}
-      open={state}
-      setOpen={setState}
-      offsetNum={1}
-      render={() => (
-        <div className="flex flex-col rounded-md border-stroke border max-h-[400px] overflow-auto">
-          {withSearch && (
-            <input
-              onChange={handleSearch}
-              value={search}
-              key={state.toString()}
-              className="flex justify-between gap-2 items-center first:rounded-t-md last:rounded-b-md transition-colors bg-stroke-gray-light py-2 px-[14px] [&:not(:last-child)]:border-b border-stroke outline-none focus-visible:bg-stroke-gray"
+    <>
+      <Popover
+        close={off}
+        open={state}
+        setOpen={setState}
+        offsetNum={1}
+        render={() => (
+          <div
+            className={cn(
+              SelectVariants({ variant }),
+              'flex flex-col rounded-md  border max-h-[400px] overflow-auto bg-stroke-gray',
+            )}
+          >
+            {withSearch && (
+              <input
+                onChange={handleSearch}
+                value={search}
+                key={state.toString()}
+                className={cn(
+                  SelectVariants({ variant }),
+                  'flex justify-between gap-2 items-center first:rounded-t-md last:rounded-b-md transition-colors  py-2 px-[14px] [&:not(:last-child)]:border-b outline-none focus-visible:bg-stroke-gray text-white',
+                )}
+              />
+            )}
+            {filteredOptions.map(option => {
+              const { label, value } = option;
+
+              const selected = items.length > 0 && items.includes(value);
+
+              return (
+                <button
+                  key={option.value}
+                  onClick={() => handleClickOption(option)}
+                  className={cn(
+                    SelectVariants({ variant }),
+                    'flex justify-between gap-2 items-center first:rounded-t-md last:rounded-b-md transition-colors py-2 px-[14px] [&:not(:last-child)]:border-b ',
+                  )}
+                  data-selected={selected}
+                  type="button"
+                >
+                  <span className="text-sm leading-6 font-inter font-normal whitespace-nowrap text-[current-color] text-ellipsis overflow-hidden">
+                    {label}
+                  </span>
+                  {selected && (
+                    <Check className="text-[currentColor] size-[16px] shrink-0" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      >
+        <button
+          className={cn(
+            SelectVariants({ variant }),
+            'px-[14px] w-full py-1 flex items-center justify-between gap-[14px] rounded-md border',
+            className,
+          )}
+          type="button"
+        >
+          <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer">
+            {labelStr}
+          </label>
+          {withChevron && (
+            <Icon
+              type={IconType.chevron}
+              props={{
+                size: 16,
+                color: 'currentColor',
+                className: cn('transition-transform shrink-0', {
+                  'rotate-180': state,
+                }),
+              }}
             />
           )}
-          {filteredOptions.map(option => {
-            const { label } = option;
-
-            const selected = Boolean(
-              Array.isArray(items)
-                ? items.find(item => item.value === option.value)
-                : items?.value === option.value,
-            );
-
-            return (
-              <button
-                key={option.value}
-                onClick={() => handleClickOption(option)}
-                className={cn(
-                  'flex justify-between gap-2 items-center first:rounded-t-md last:rounded-b-md transition-colors bg-stroke-gray-light py-2 px-[14px] [&:not(:last-child)]:border-b border-stroke',
-                  {
-                    'bg-stroke-blue border-blue': selected,
-                  },
-                )}
-                type="button"
-              >
-                <span className="text-sm leading-6 font-inter font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden">
-                  {label}
-                </span>
-                {selected && (
-                  <Check className="text-white size-[16px] shrink-0" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    >
-      <button
-        className={cn(
-          'text-stroke bg-stroke-gray-light px-[14px] w-full py-1 flex items-center justify-between gap-[14px] rounded-md border-stroke border',
-          className,
-        )}
-        type="button"
-      >
-        <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer">
-          {labelStr}
-        </label>
-        <Icon
-          type={IconType.chevron}
-          props={{
-            size: 16,
-            color: 'currentColor',
-            className: cn('transition-transform shrink-0', {
-              'rotate-180': state,
-            }),
-          }}
-        />
-      </button>
-    </Popover>
+        </button>
+      </Popover>
+      {children?.(optionsToPass, setItems)}
+    </>
   );
 }
