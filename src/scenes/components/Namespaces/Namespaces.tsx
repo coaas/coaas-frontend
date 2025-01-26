@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 
 import { LazyGrid } from '@components/LazyGrid';
+import { Button } from '@components/Button';
 
 import { Table, Modal } from './components';
 import { useNamespaces } from './useNamespaces';
@@ -21,11 +22,6 @@ export const Namespaces: FC = () => {
 
   const onCreateNamespaceBtnClick = () => setIsModalOpen(true);
 
-  const buttonData = {
-    title: 'Create namespace',
-    onClick: onCreateNamespaceBtnClick,
-  };
-
   return (
     <>
       <Modal
@@ -34,7 +30,9 @@ export const Namespaces: FC = () => {
         onFormSubmit={onFormSubmit}
       />
       <SceneWithTabs
-        button={buttonData}
+        Button={
+          <Button onClick={onCreateNamespaceBtnClick}>Create namespace</Button>
+        }
         TableView={
           <Table
             isLoading={isFetching}

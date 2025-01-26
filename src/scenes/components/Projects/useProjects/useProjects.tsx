@@ -8,10 +8,10 @@ import { CardGridItem } from './CardGridItem';
 import { getParsedData } from './utils';
 
 export const useProjects = () => {
-  const { namespaceSlug } = useParams();
+  const { namespace_slug } = useParams();
 
   const { data, isFetching, fetchNextPage, isFetchingNextPage } =
-    useData(namespaceSlug);
+    useData(namespace_slug);
 
   const { projects } = getParsedData(data);
 

@@ -10,17 +10,23 @@ import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 
-const getProjects = (params: RequestParams) =>
+const getProjects = (params: RequestParams, namespaceSlug?: string) =>
   IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
+          prefixUrl: '/api',
           body: JSON.stringify(params),
+          headers: {
+            'x-namespace-slug': namespaceSlug,
+          },
         })
         .json<ResponseData>();
 
 export const useData = (namespaceSlug?: string) => {
   const queryKey = [`${namespaceSlug}_projects`];
+
+  console.log('namespaceSlug', namespaceSlug);
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
@@ -31,7 +37,8 @@ export const useData = (namespaceSlug?: string) => {
       RequestParams
     >({
       queryKey,
-      queryFn: async ({ pageParam }) => await getProjects(pageParam),
+      queryFn: async ({ pageParam }) =>
+        await getProjects(pageParam, namespaceSlug),
       initialPageParam: BASE_REQUEST_PARAMS,
       getNextPageParam: ({ nextKey, hasMore }) =>
         hasMore

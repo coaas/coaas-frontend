@@ -1,10 +1,12 @@
 import { FC } from 'react';
 
+import { Button } from '@components/Button';
 import { LazyGrid } from '@components/LazyGrid';
 
 import { SceneWithTabs } from '../SceneWithTabs';
 import { useProjects } from './useProjects';
 import { Table } from './Table';
+import { NavLink } from 'react-router-dom';
 
 export const Projects: FC = () => {
   const {
@@ -16,14 +18,13 @@ export const Projects: FC = () => {
     projects,
   } = useProjects();
 
-  const buttonData = {
-    title: 'Create project',
-    onClick: () => {},
-  };
-
   return (
     <SceneWithTabs
-      button={buttonData}
+      Button={
+        <NavLink to="create">
+          <Button>Create project</Button>
+        </NavLink>
+      }
       TableView={
         <Table
           isLoading={isFetching}
