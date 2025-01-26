@@ -9,6 +9,7 @@ import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
+import { useState } from 'react';
 
 const getProjects = (params: RequestParams, namespaceSlug?: string) =>
   IS_MOCK_ACTIVE
@@ -24,9 +25,9 @@ const getProjects = (params: RequestParams, namespaceSlug?: string) =>
         .json<ResponseData>();
 
 export const useData = (namespaceSlug?: string) => {
-  const queryKey = [`${namespaceSlug}_projects`];
+  const [searchValue, setSearchValue] = useState('');
 
-  console.log('namespaceSlug', namespaceSlug);
+  const queryKey = [`${namespaceSlug}_projects`, searchValue];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
@@ -38,12 +39,16 @@ export const useData = (namespaceSlug?: string) => {
     >({
       queryKey,
       queryFn: async ({ pageParam }) =>
-        await getProjects(pageParam, namespaceSlug),
-      initialPageParam: BASE_REQUEST_PARAMS,
+        await getProjects({ ...pageParam, query: searchValue }, namespaceSlug),
+      initialPageParam: {
+        ...BASE_REQUEST_PARAMS,
+        query: searchValue,
+      },
       getNextPageParam: ({ nextKey, hasMore }) =>
         hasMore
           ? {
               ...BASE_REQUEST_PARAMS,
+              query: searchValue,
               after: nextKey,
             }
           : undefined,
@@ -64,5 +69,17 @@ export const useData = (namespaceSlug?: string) => {
     await queryClient.invalidateQueries({ queryKey });
   };
 
-  return { data, fetchNextPage, refetch, isFetching, isFetchingNextPage };
+  const onChangeSearch = (search: string) => {
+    setSearchValue(search);
+    refetch();
+  };
+
+  return {
+    data,
+    fetchNextPage,
+    onChangeSearch,
+    refetch,
+    isFetching,
+    isFetchingNextPage,
+  };
 };

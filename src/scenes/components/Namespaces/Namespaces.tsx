@@ -16,6 +16,7 @@ export const Namespaces: FC = () => {
     dataCount,
     namespaces,
     onFormSubmit,
+    onChangeSearch,
   } = useNamespaces();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +31,8 @@ export const Namespaces: FC = () => {
         onFormSubmit={onFormSubmit}
       />
       <SceneWithTabs
+        onChangeSearch={onChangeSearch}
+        searchPlaceholder="Search namespaces"
         Button={
           <Button onClick={onCreateNamespaceBtnClick}>Create namespace</Button>
         }

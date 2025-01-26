@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { Button } from '@components/Button';
 import { LazyGrid } from '@components/LazyGrid';
@@ -6,7 +7,6 @@ import { LazyGrid } from '@components/LazyGrid';
 import { SceneWithTabs } from '../SceneWithTabs';
 import { useProjects } from './useProjects';
 import { Table } from './Table';
-import { NavLink } from 'react-router-dom';
 
 export const Projects: FC = () => {
   const {
@@ -16,10 +16,13 @@ export const Projects: FC = () => {
     GridItem,
     dataCount,
     projects,
+    onChangeSearch,
   } = useProjects();
 
   return (
     <SceneWithTabs
+      onChangeSearch={onChangeSearch}
+      searchPlaceholder="Search projects"
       Button={
         <NavLink to="create">
           <Button>Create project</Button>
