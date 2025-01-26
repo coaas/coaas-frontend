@@ -10,8 +10,13 @@ import { getParsedData } from './utils';
 export const useProjects = () => {
   const { namespace_slug } = useParams();
 
-  const { data, isFetching, fetchNextPage, isFetchingNextPage } =
-    useData(namespace_slug);
+  const {
+    data,
+    isFetching,
+    onChangeSearch,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useData(namespace_slug);
 
   const { projects } = getParsedData(data);
 
@@ -28,5 +33,6 @@ export const useProjects = () => {
     fetchNextPage,
     isFetchingNextPage,
     projects,
+    onChangeSearch,
   };
 };
