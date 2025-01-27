@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import {
   Card,
@@ -15,7 +16,7 @@ export const CardGridItem: FC<CardGridItemProps> = ({
   idx,
   projects,
 }) => {
-  const { name, description } = projects[idx];
+  const { name, description, slug } = projects[idx];
 
   const cardPropsData: SimpleInfoCardProps = {
     data: {
@@ -27,7 +28,11 @@ export const CardGridItem: FC<CardGridItemProps> = ({
   const CardWrapperComponent: CardWrapper = ({
     className: innerClassName,
     children,
-  }) => <div className={cn(className, innerClassName)}>{children}</div>;
+  }) => (
+    <div className={cn(className, innerClassName)}>
+      <NavLink to={slug}>{children}</NavLink>
+    </div>
+  );
 
   return (
     <Card

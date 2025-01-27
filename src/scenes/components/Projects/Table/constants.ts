@@ -1,5 +1,7 @@
 import { ColumnData } from '@components/Table';
 
+export const SLUG_ID = 'slug';
+
 export const COLUMNS: ColumnData[] = [
   {
     title: 'Name',
@@ -13,7 +15,7 @@ export const COLUMNS: ColumnData[] = [
   },
   {
     title: 'Slug',
-    id: 'slug',
+    id: SLUG_ID,
     size: 180,
   },
   {

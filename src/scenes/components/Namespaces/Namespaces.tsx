@@ -3,9 +3,9 @@ import { FC, useState } from 'react';
 import { LazyGrid } from '@components/LazyGrid';
 import { Button } from '@components/Button';
 
+import { SceneWithTabs } from '../SceneWithTabs';
 import { Table, Modal } from './components';
 import { useNamespaces } from './useNamespaces';
-import { SceneWithTabs } from '../SceneWithTabs';
 
 export const Namespaces: FC = () => {
   const {
