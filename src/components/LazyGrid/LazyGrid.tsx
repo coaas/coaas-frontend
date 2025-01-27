@@ -7,7 +7,12 @@ import { LazyGridProps } from './types';
 import { useLazyGrid } from './useLazyGrid';
 
 export const LazyGrid: FC<LazyGridProps> = ({ className, Item, ...props }) => {
-  const { wrapperRef, onScroll, grid, isFetchingNextPage } = useLazyGrid(props);
+  const { wrapperRef, onScroll, grid, isFetchingAllGrid, isFetchingNextPage } =
+    useLazyGrid(props);
+
+  if (isFetchingAllGrid) {
+    return <div ref={wrapperRef}>Loading...</div>;
+  }
 
   return (
     <div
@@ -19,7 +24,7 @@ export const LazyGrid: FC<LazyGridProps> = ({ className, Item, ...props }) => {
         {idx => <Item key={idx} className="h-full w-full" idx={idx} />}
       </Grid>
       {/* TODO: заменить на скелетоны, когда те появятся */}
-      {isFetchingNextPage && <div>Loading...</div>}
+      {isFetchingNextPage && <div>More items...</div>}
     </div>
   );
 };

@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import {
   InfiniteData,
-  keepPreviousData,
   QueryKey,
   useInfiniteQuery,
 } from '@tanstack/react-query';
 
-import { api, IS_MOCK_ACTIVE } from '@api/constants';
+import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
@@ -21,6 +21,10 @@ const getNamespaces = (params: RequestParams) =>
         .json<ResponseData>();
 
 export const useData = () => {
+  const [searchValue, setSearchValue] = useState('');
+
+  const queryKey = ['namespaces', searchValue];
+
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
       ResponseData,
@@ -29,19 +33,51 @@ export const useData = () => {
       QueryKey,
       RequestParams
     >({
-      queryKey: ['namespaces'],
-      queryFn: async ({ pageParam }) => await getNamespaces(pageParam),
-      initialPageParam: BASE_REQUEST_PARAMS,
+      queryKey: queryKey,
+      queryFn: async ({ pageParam }) =>
+        await getNamespaces({ ...pageParam, query: searchValue }),
+      initialPageParam: {
+        ...BASE_REQUEST_PARAMS,
+        query: searchValue,
+      },
       getNextPageParam: ({ nextKey, hasMore }) =>
         hasMore
           ? {
               ...BASE_REQUEST_PARAMS,
+              query: searchValue,
               after: nextKey,
             }
           : undefined,
       refetchOnWindowFocus: false,
-      placeholderData: keepPreviousData,
     });
 
-  return { data, fetchNextPage, isFetching, isFetchingNextPage };
+  const refetch = async () => {
+    // сбрасываем пагинацию на первую страницу
+    queryClient.setQueryData(
+      queryKey,
+      (oldData?: InfiniteData<ResponseData>) =>
+        oldData && {
+          pages: oldData.pages.slice(0, 1),
+          pageParams: oldData.pageParams.slice(0, 1),
+        },
+    );
+
+    await queryClient.invalidateQueries({
+      queryKey: queryKey,
+    });
+  };
+
+  const onChangeSearch = (search: string) => {
+    setSearchValue(search);
+    refetch();
+  };
+
+  return {
+    data,
+    onChangeSearch,
+    fetchNextPage,
+    refetch,
+    isFetching,
+    isFetchingNextPage,
+  };
 };

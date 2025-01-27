@@ -17,6 +17,7 @@ export const useTable = <TData extends TableData>({
   data,
   fetchNextPage,
   isLoading,
+  isLoadingNextPage,
 }: UseTableParams<TData>) => {
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -78,8 +79,11 @@ export const useTable = <TData extends TableData>({
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) =>
     fetchMore(e.target as HTMLDivElement);
 
+  const isLoadingFullTable = isLoading && !isLoadingNextPage;
+
   return {
-    isLoading,
+    isLoadingFullTable,
+    isLoadingNextPage,
     onScroll,
     tableWrapperRef,
     table,

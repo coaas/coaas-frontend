@@ -1,35 +1,66 @@
 import { FC } from 'react';
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { Namespaces } from './components';
+import { CreateProject, Namespaces } from './components';
+import { Login } from './components/Login';
+import { Layout } from '@components/Layout';
+import { Home } from './components/Home';
+import { Templates } from './components/Templates';
+import { Namespace } from './components/Namespace';
+import { Projects } from './components/Projects';
+import { Project } from './components/Project';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <Navigate to="/namespaces" replace />,
-    },
-    {
-      path: '/namespaces',
-      element: <Namespaces />,
-    },
-  ],
+export const routes = [
   {
-    future: {
-      // включаем функционал будущих версий для более легкого обновления в дальнейшем
-      // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-      v7_relativeSplatPath: true,
-    },
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/namespaces',
+        element: <Namespaces />,
+      },
+      {
+        path: '/namespaces/:namespace_slug',
+        element: <Namespace />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects',
+        element: <Projects />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/create',
+        element: <CreateProject />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug',
+        element: <Project />,
+      },
+      {
+        path: '/templates',
+        element: <Templates />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ],
   },
-);
+];
+
+const router = createBrowserRouter(routes, {
+  future: {
+    // включаем функционал будущих версий для более легкого обновления в дальнейшем
+    // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true,
+    v7_relativeSplatPath: true,
+  },
+});
 
 export const Scenes: FC = () => (
   <RouterProvider

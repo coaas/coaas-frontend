@@ -1,23 +1,20 @@
 import { FC } from 'react';
 
-import { useTabs } from '@components/Tabs';
-import { useFadeInOut } from '@utils/animations';
 import { LazyGridItemProps } from '@components/LazyGrid';
 
 import { useData } from './useData';
 import { CardGridItem } from './CardGridItem';
-import { getParsedData } from './getParsedData';
-import { ANIMATIONS, TABS } from './constants';
+import { getParsedData, useCreateNamespace } from './utils';
 
 export const useNamespaces = () => {
-  const { data, isFetching, fetchNextPage, isFetchingNextPage } = useData();
-
-  const tabsProps = useTabs({ tabs: TABS });
-
-  const { containerRef, animatedData: currentTab } = useFadeInOut({
-    animations: ANIMATIONS,
-    data: tabsProps.currentTab,
-  });
+  const {
+    data,
+    isFetching,
+    onChangeSearch,
+    fetchNextPage,
+    refetch,
+    isFetchingNextPage,
+  } = useData();
 
   const { namespaces } = getParsedData(data);
 
@@ -27,15 +24,16 @@ export const useNamespaces = () => {
 
   const dataCount = namespaces.length;
 
+  const { onFormSubmit } = useCreateNamespace({ refetch });
+
   return {
     dataCount,
-    tabsProps,
-    currentTab,
-    containerRef,
     isFetching,
     GridItem,
     fetchNextPage,
     isFetchingNextPage,
     namespaces,
+    onFormSubmit,
+    onChangeSearch,
   };
 };

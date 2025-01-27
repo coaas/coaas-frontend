@@ -1,0 +1,1 @@
+export { SceneWithTabs } from './SceneWithTabs';

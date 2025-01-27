@@ -1,51 +1,62 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
-import { Button } from '@components/Button';
 import { LazyGrid } from '@components/LazyGrid';
-import { Tabs, TabsType } from '@components/Tabs';
+import { Button } from '@components/Button';
 
-import { Table } from './Table';
-import { TabId, useNamespaces } from './useNamespaces';
+import { SceneWithTabs } from '../SceneWithTabs';
+import { Table, Modal } from './components';
+import { useNamespaces } from './useNamespaces';
 
 export const Namespaces: FC = () => {
   const {
-    tabsProps,
-    containerRef,
-    currentTab,
     isFetching,
+    isFetchingNextPage,
     fetchNextPage,
     GridItem,
     dataCount,
     namespaces,
+    onFormSubmit,
+    onChangeSearch,
   } = useNamespaces();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onCreateNamespaceBtnClick = () => setIsModalOpen(true);
+
   return (
-    <section className="p-10 flex justify-center">
-      <div className="w-[1500px] max-w-[80%]">
-        <div className="flex justify-between items-center">
-          <Button>Create namespace</Button>
-          <Tabs {...tabsProps} type={TabsType.icon} />
-        </div>
-        <div className="mt-6" ref={containerRef}>
-          {currentTab.id === TabId.tableView ? (
-            <Table
-              isLoading={isFetching}
-              fetchNextPage={fetchNextPage}
-              namespaces={namespaces}
-            />
-          ) : (
-            <LazyGrid
-              gap={16}
-              minItemWidth={260}
-              itemHeight={157}
-              Item={GridItem}
-              isFetchingNextPage={isFetching}
-              fetchNextPage={fetchNextPage}
-              count={dataCount}
-            />
-          )}
-        </div>
-      </div>
-    </section>
+    <>
+      <Modal
+        isOpen={isModalOpen}
+        onIsOpenChange={setIsModalOpen}
+        onFormSubmit={onFormSubmit}
+      />
+      <SceneWithTabs
+        onChangeSearch={onChangeSearch}
+        searchPlaceholder="Search namespaces"
+        Button={
+          <Button onClick={onCreateNamespaceBtnClick}>Create namespace</Button>
+        }
+        TableView={
+          <Table
+            isLoading={isFetching}
+            isLoadingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            namespaces={namespaces}
+          />
+        }
+        CardsView={
+          <LazyGrid
+            gap={16}
+            minItemWidth={260}
+            itemHeight={157}
+            Item={GridItem}
+            isFetching={isFetching}
+            isFetchingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            count={dataCount}
+          />
+        }
+      />
+    </>
   );
 };

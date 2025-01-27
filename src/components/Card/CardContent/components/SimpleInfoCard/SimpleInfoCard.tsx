@@ -20,9 +20,11 @@ export const SimpleInfoCard: FC<SimpleInfoCardProps> = ({ data, settings }) => {
         'p-5 flex-col': !isRect,
       })}
     >
-      <Icon type={IconType.cube} props={{ size: iconSize }} />
+      <div>
+        <Icon type={IconType.cube} props={{ size: iconSize }} />
+      </div>
       <div
-        className={cn('flex flex-col gap-1', {
+        className={cn('flex flex-col gap-1 min-w-0', {
           'ml-8': isRect,
           'mt-7': !isRect,
         })}
