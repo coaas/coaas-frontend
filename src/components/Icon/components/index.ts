@@ -11,3 +11,4 @@ export * from './DeployIcon';
 export * from './GitIcon';
 export * from './SecretIcon';
 export * from './SearchIcon';
+export * from './HintIcon';

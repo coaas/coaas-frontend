@@ -1,5 +1,8 @@
+import { Icon, IconType } from '@components/Icon';
+import { Popover } from '@components/Popover';
+import { useToggle } from '@utils/lib/use-toggle';
 import { cn } from '@utils/styles';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 interface Props {
   label?: string;
@@ -7,6 +10,7 @@ interface Props {
   children: (error?: string) => ReactElement;
   className?: string;
   clickable?: boolean;
+  hint?: ReactNode;
 }
 
 export const FormField = ({
@@ -15,18 +19,45 @@ export const FormField = ({
   label,
   className,
   clickable,
+  hint,
 }: Props) => {
+  const {
+    state: hintOpened,
+    setState: setHintOpen,
+    off: closeHint,
+  } = useToggle();
+
   const WrapperTag = clickable ? 'label' : 'div';
 
   return (
     <WrapperTag className={cn('flex justify-between g-4 w-full', className)}>
       {label && (
         <span
-          className={cn('text-sm font-medium font-inter text-white', {
-            'text-error': error,
-          })}
+          className={cn(
+            'text-sm font-medium font-inter text-white flex gap-[6px] items-start',
+            {
+              'text-error': error,
+            },
+          )}
         >
           {label}
+          {hint && (
+            <Popover
+              placement="right-start"
+              open={hintOpened}
+              setOpen={setHintOpen}
+              close={closeHint}
+              render={() => (
+                <div className="rounded-md p-2 border-stroke-gray border bg-area">
+                  {hint}
+                </div>
+              )}
+            >
+              <button type="button">
+                <Icon type={IconType.hint} props={{ size: 14 }} />
+              </button>
+            </Popover>
+          )}
         </span>
       )}
       <div className="w-full flex flex-col gap-1">

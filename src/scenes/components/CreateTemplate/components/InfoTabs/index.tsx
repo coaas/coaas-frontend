@@ -11,10 +11,7 @@ export const InfoTabs = ({
 }: CommonTabsProps<Tab>) => {
   return (
     <div
-      className={cn(
-        'flex  p-[5px] gap-5 border-stroke-gray border rounded-[6px]',
-        className,
-      )}
+      className={cn('flex border-stroke-gray border rounded-[6px]', className)}
     >
       {tabs.map(tab => {
         const selected = tab.id === currentTab.id;
@@ -27,7 +24,7 @@ export const InfoTabs = ({
             onClick={handleClickTab}
             type="button"
             className={cn(
-              'transition-colors text-white text-sm font-medium font-inter text-center py-[5px] rounded-[3px] flex-1',
+              'transition-colors text-white text-sm font-medium font-inter text-center py-[5px] m-[5px] rounded-[3px] flex-1',
               { 'bg-stroke-gray': selected },
             )}
           >

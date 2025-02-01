@@ -1,3 +1,4 @@
+import { ImageForm } from './components/ImageForm';
 import { InfoForm } from './components/InfoForm';
 
 export const CreateTemplate = () => {
@@ -9,6 +10,7 @@ export const CreateTemplate = () => {
             Creating Template
           </h2>
           <InfoForm />
+          <ImageForm />
         </div>
       </div>
     </section>

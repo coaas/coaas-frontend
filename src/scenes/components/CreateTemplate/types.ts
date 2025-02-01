@@ -1,5 +1,5 @@
 export interface CreateTemplateForm {
-  info: Info;
+  info: TemplateInfo;
   managed: Managed;
   custom: Custom;
   settings: Settings;
@@ -7,13 +7,20 @@ export interface CreateTemplateForm {
   mapper: Mapper;
 }
 
-export interface Info {
+export interface TemplateInfo {
   name: string;
   description: string;
   docs: string;
-  type: number;
   categories: string[];
   languages: string[];
+}
+
+export interface DockerImage {
+  type: number;
+  state: number;
+  id: string;
+  managed?: Managed;
+  custom?: Custom;
 }
 
 export interface Managed {

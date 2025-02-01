@@ -1,15 +1,14 @@
 import { Controller, useForm } from 'react-hook-form';
-import { Info } from '../../types';
+import { TemplateInfo } from '../../types';
 import { FormField } from '../FormField';
 import { Input } from '@components/Input';
-import { commonValidationRules, InfoTabsData } from '../../constants';
+import { commonValidationRules } from '../../constants';
 import { TextArea } from '@components/TextArea';
 import { Select } from '@components/Select';
 import { useQuery } from '@utils/lib/use-query';
 import { getTemplateFilters } from '@api/queries';
 
 import { TagLikeButton } from '../TaglikeButton';
-import { InfoTabs } from '../InfoTabs';
 
 export const InfoForm = () => {
   const { data: filters = { categories: [], languages: [] } } = useQuery({
@@ -20,8 +19,8 @@ export const InfoForm = () => {
     formState: { errors },
     register,
     control,
-  } = useForm<Info>({
-    defaultValues: { categories: [], languages: [], type: 0 },
+  } = useForm<TemplateInfo>({
+    defaultValues: { categories: [], languages: [] },
   });
 
   return (
@@ -144,37 +143,19 @@ export const InfoForm = () => {
           </FormField>
         )}
       />
-      <div className="flex flex-col gap-[15px]">
-        <h3 className="text-2xl font-semibold font-inter text-white">
-          Template type
-        </h3>
-        <Controller
-          control={control}
-          name="type"
-          render={({ field: { onChange, value } }) => (
-            <InfoTabs
-              currentTab={
-                InfoTabsData.find(tab => tab.value === value) || InfoTabsData[0]
-              }
-              onTabChange={({ value }) => onChange(value)}
-              tabs={InfoTabsData}
-            />
-          )}
-        />
-        <FormField
-          clickable
-          error={errors.name?.message}
-          label="DockerHUB Image URL"
-          className="flex-col gap-[6px] [&>div>div]:max-w-full"
-        >
-          {error => (
-            <Input
-              {...register('docs', commonValidationRules)}
-              invalid={Boolean(error)}
-            />
-          )}
-        </FormField>
-      </div>
+      <FormField
+        clickable
+        error={errors.docs?.message}
+        label="Documentation"
+        className="flex-col gap-[6px] [&>div>div]:max-w-full"
+      >
+        {error => (
+          <Input
+            {...register('docs', commonValidationRules)}
+            invalid={Boolean(error)}
+          />
+        )}
+      </FormField>
     </form>
   );
 };
