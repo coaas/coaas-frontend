@@ -34,7 +34,7 @@ export const FormField = ({
       {label && (
         <span
           className={cn(
-            'text-sm font-medium font-inter text-white flex gap-[6px] items-start',
+            'text-sm font-medium font-inter text-white flex gap-[6px] items-center max-h-fit',
             {
               'text-error': error,
             },
@@ -47,6 +47,7 @@ export const FormField = ({
               open={hintOpened}
               setOpen={setHintOpen}
               close={closeHint}
+              openOnHover
               render={() => (
                 <div className="rounded-md p-2 border-stroke-gray border bg-area">
                   {hint}

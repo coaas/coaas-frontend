@@ -1,24 +1,20 @@
-import { Controller, useForm } from 'react-hook-form';
-import { InfoTabs } from '../InfoTabs';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { FormTabs } from '../../components/FormTabs';
 import { commonValidationRules, InfoTabsData, versions } from '../../constants';
-import { FormField } from '../FormField';
-import { DockerImage } from '../../types';
+import { FormField } from '../../components/FormField';
+import { CreateTemplateForm, TemplateType } from '../../types';
 import { Input } from '@components/Input';
-import { TagLikeButton } from '../TaglikeButton';
-import { Select } from '@components/Select';
-import { TemplateType } from './types';
 
-export const ImageForm = () => {
+import { TaggedSelect } from '../../components/TaggedSelect';
+
+export const DockerImageStep = () => {
   const {
     control,
     formState: { errors },
     register,
-    watch,
-  } = useForm<DockerImage>({
-    defaultValues: { type: 0, managed: { versions: [] } },
-  });
+  } = useFormContext<CreateTemplateForm>();
 
-  const selectedType = watch('type');
+  const selectedType = useWatch({ control, name: 'image.type' });
 
   return (
     <form className="flex flex-col gap-[15px] mt-[25px]">
@@ -27,9 +23,9 @@ export const ImageForm = () => {
       </h3>
       <Controller
         control={control}
-        name="type"
+        name="image.type"
         render={({ field: { onChange, value } }) => (
-          <InfoTabs
+          <FormTabs
             currentTab={
               InfoTabsData.find(tab => tab.value === value) || InfoTabsData[0]
             }
@@ -45,62 +41,23 @@ export const ImageForm = () => {
           </h4>
           <FormField
             clickable
-            error={errors.managed?.url?.message}
+            error={errors.image?.managed?.url?.message}
             label="DockerHUB Image URL"
             className="flex-col gap-[6px] [&>div>div]:max-w-full"
           >
             {error => (
               <Input
-                {...register('managed.url', commonValidationRules)}
+                {...register('image.managed.url', commonValidationRules)}
                 invalid={Boolean(error)}
               />
             )}
           </FormField>
-          <Controller
-            name="managed.versions"
+          <TaggedSelect
+            options={versions}
             control={control}
-            render={({ field: { value, onChange }, fieldState }) => (
-              <FormField error={fieldState.error?.message} label="Versions">
-                {() => (
-                  <div className="flex flex-wrap gap-[10px]">
-                    <Select
-                      className="max-w-[137px]  py-[6px]"
-                      onOptionChange={option =>
-                        onChange(
-                          value.includes(option.value)
-                            ? value.filter(item => item !== option.value)
-                            : [...value, option.value],
-                        )
-                      }
-                      options={versions}
-                      defaultLabel="Add version"
-                      multiple
-                      withSearch
-                      variant="formView"
-                    >
-                      {(options, setSelectItems) => (
-                        <>
-                          {options.map(option => (
-                            <TagLikeButton
-                              key={option.value}
-                              onClick={() => {
-                                const newItems = value.filter(
-                                  v => v !== option.value,
-                                );
-                                onChange(newItems);
-                                setSelectItems(newItems);
-                              }}
-                            >
-                              {option.label}
-                            </TagLikeButton>
-                          ))}
-                        </>
-                      )}
-                    </Select>
-                  </div>
-                )}
-              </FormField>
-            )}
+            name="image.managed.versions"
+            fieldLabel="Versions"
+            selectLabel="Add version"
           />
         </div>
       )}
@@ -111,7 +68,7 @@ export const ImageForm = () => {
           </h4>
           <FormField
             clickable
-            error={errors.custom?.dockerfiles?.development?.message}
+            error={errors.image?.custom?.dockerfiles?.development?.message}
             label="Development"
             hint={
               <p className="max-w-[300px] text-sm">
@@ -126,7 +83,7 @@ export const ImageForm = () => {
             {error => (
               <Input
                 {...register(
-                  'custom.dockerfiles.development',
+                  'image.custom.dockerfiles.development',
                   commonValidationRules,
                 )}
                 placeholder="Dockerfile"
@@ -136,12 +93,15 @@ export const ImageForm = () => {
           </FormField>
           <FormField
             clickable
-            error={errors.custom?.dockerfiles?.test?.message}
+            error={errors.image?.custom?.dockerfiles?.test?.message}
             label="Test"
           >
             {error => (
               <Input
-                {...register('custom.dockerfiles.test', commonValidationRules)}
+                {...register(
+                  'image.custom.dockerfiles.test',
+                  commonValidationRules,
+                )}
                 placeholder="tests.Dockerfile"
                 invalid={Boolean(error)}
               />
@@ -149,13 +109,13 @@ export const ImageForm = () => {
           </FormField>
           <FormField
             clickable
-            error={errors.custom?.dockerfiles?.production?.message}
+            error={errors.image?.custom?.dockerfiles?.production?.message}
             label="Production"
           >
             {error => (
               <Input
                 {...register(
-                  'custom.dockerfiles.production',
+                  'image.custom.dockerfiles.production',
                   commonValidationRules,
                 )}
                 placeholder="prod.Dockerfile"

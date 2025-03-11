@@ -3,7 +3,7 @@ import { cn } from '@utils/styles';
 
 type Tab = { label: string; value: number; id: string };
 
-export const InfoTabs = ({
+export const FormTabs = ({
   currentTab,
   onTabChange,
   tabs,

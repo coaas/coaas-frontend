@@ -1,7 +1,6 @@
 export interface CreateTemplateForm {
   info: TemplateInfo;
-  managed: Managed;
-  custom: Custom;
+  image: DockerImage;
   settings: Settings;
   dependencies: string[];
   mapper: Mapper;
@@ -16,11 +15,16 @@ export interface TemplateInfo {
 }
 
 export interface DockerImage {
-  type: number;
+  type: TemplateType;
   state: number;
   id: string;
   managed?: Managed;
   custom?: Custom;
+}
+
+export const enum TemplateType {
+  managed = 0,
+  custom = 1,
 }
 
 export interface Managed {
