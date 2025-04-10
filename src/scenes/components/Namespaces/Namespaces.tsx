@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
 
 import { LazyGrid } from '@components/LazyGrid';
+import { Button } from '@components/Button';
 
+import { SceneWithTabs } from '../SceneWithTabs';
 import { Table, Modal } from './components';
 import { useNamespaces } from './useNamespaces';
-import { SceneWithTabs } from '../SceneWithTabs';
 
 export const Namespaces: FC = () => {
   const {
@@ -15,16 +16,13 @@ export const Namespaces: FC = () => {
     dataCount,
     namespaces,
     onFormSubmit,
+    onChangeSearch,
   } = useNamespaces();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onCreateNamespaceBtnClick = () => setIsModalOpen(true);
 
-  const buttonData = {
-    title: 'Create namespace',
-    onClick: onCreateNamespaceBtnClick,
-  };
 
   return (
     <>
@@ -34,7 +32,11 @@ export const Namespaces: FC = () => {
         onFormSubmit={onFormSubmit}
       />
       <SceneWithTabs
-        button={buttonData}
+        onChangeSearch={onChangeSearch}
+        searchPlaceholder="Search namespaces"
+        Button={
+          <Button onClick={onCreateNamespaceBtnClick}>Create namespace</Button>
+        }
         TableView={
           <Table
             isLoading={isFetching}

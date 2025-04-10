@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { Namespaces } from './components';
+import { CreateProject, Namespaces } from './components';
 import { Login } from './components/Login';
 import { Layout } from '@components/Layout';
 import { Home } from './components/Home';
@@ -33,7 +33,11 @@ export const routes = [
         element: <Projects />,
       },
       {
-        path: RouteMap.project,
+        path: '/namespaces/:namespace_slug/projects/create',
+        element: <CreateProject />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug',
         element: <Project />,
       },
       {

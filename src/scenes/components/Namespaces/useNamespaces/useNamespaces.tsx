@@ -7,8 +7,14 @@ import { CardGridItem } from './CardGridItem';
 import { getParsedData, useCreateNamespace } from './utils';
 
 export const useNamespaces = () => {
-  const { data, isFetching, fetchNextPage, refetch, isFetchingNextPage } =
-    useData();
+  const {
+    data,
+    isFetching,
+    onChangeSearch,
+    fetchNextPage,
+    refetch,
+    isFetchingNextPage,
+  } = useData();
 
   const { namespaces } = getParsedData(data);
 
@@ -28,5 +34,6 @@ export const useNamespaces = () => {
     isFetchingNextPage,
     namespaces,
     onFormSubmit,
+    onChangeSearch,
   };
 };

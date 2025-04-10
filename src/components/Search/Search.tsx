@@ -20,7 +20,7 @@ export const Search: FC<SearchSectionProps> = ({ className, ...props }) => {
   return (
     <div
       className={cn(
-        'w-full flex items-center py-1 px-3 cursor-pointer box-border border-stroke-gray-dark border-[2px] rounded-md bg-inherit',
+        'w-full flex items-center py-2 px-3 cursor-pointer box-border border-stroke-gray-dark border-[2px] rounded-md bg-inherit',
         {
           'border-stroke-gray': isSearchFocused,
         },
@@ -39,7 +39,7 @@ export const Search: FC<SearchSectionProps> = ({ className, ...props }) => {
         onChange={onInputChange}
         aria-label="search"
         placeholder={props.config?.placeholder}
-        className="w-full font-normal text-sm leading-[24px] ml-2 text-white outline-none border-none cursor-text px-2 bg-[inherit] "
+        className="w-full font-normal text-sm ml-2 text-white outline-none border-none cursor-text py-1 px-2 bg-background"
       />
     </div>
   );

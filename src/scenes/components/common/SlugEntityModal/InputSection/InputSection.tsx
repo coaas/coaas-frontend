@@ -13,7 +13,7 @@ export const InputSection: FC<InputSectionProps> = ({
   isSlugValid,
   onSlugChange,
 }) => {
-  const localizeId = `input_namespaces_${id}`;
+  const localizeId = `input_with_slug_${id}`;
 
   return (
     <>

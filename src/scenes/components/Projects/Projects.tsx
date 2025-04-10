@@ -1,5 +1,7 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
+import { Button } from '@components/Button';
 import { LazyGrid } from '@components/LazyGrid';
 
 import { SceneWithTabs } from '../SceneWithTabs';
@@ -14,16 +16,18 @@ export const Projects: FC = () => {
     GridItem,
     dataCount,
     projects,
+    onChangeSearch,
   } = useProjects();
-
-  const buttonData = {
-    title: 'Create project',
-    onClick: () => {},
-  };
 
   return (
     <SceneWithTabs
-      button={buttonData}
+      onChangeSearch={onChangeSearch}
+      searchPlaceholder="Search projects"
+      Button={
+        <NavLink to="create">
+          <Button>Create project</Button>
+        </NavLink>
+      }
       TableView={
         <Table
           isLoading={isFetching}
