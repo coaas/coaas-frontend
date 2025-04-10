@@ -1,5 +1,3 @@
-// import { api } from '@api/constants';
-// import { getUserNamespacesAndProjects } from '@api/endpoints';
 import { Icon, IconType } from '@components/Icon';
 import { Popover } from '@components/Popover';
 import { createDynamicPath } from '@utils/lib/create-dynamic-path';
@@ -15,10 +13,10 @@ import { useUser } from '@utils/lib/use-user';
 export const Navbar = () => {
   const { state, off, setState } = useToggle();
 
-  const {
-    namespace_slug: currentNamespaceSlug,
-    project_slug: currentProjectSlug,
-  } = useParams<PageParams>();
+  const params = useParams();
+
+  const currentNamespaceSlug = params.namespace_slug;
+  const currentProjectSlug = params.project_slug;
 
   const { data } = useQuery({
     query: getUserNamespacesAndProjects,
@@ -47,7 +45,7 @@ export const Navbar = () => {
       render={({ close }) => (
         <div
           onClick={close}
-          className="py-[14px] px-[22px] border-stroke-gray-dark border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background"
+          className="py-[14px] px-[22px] border-stroke-gray-dark border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background max-h-[400px] overflow-auto"
         >
           {namespacesSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
@@ -56,6 +54,11 @@ export const Navbar = () => {
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
                 {namespacesSlugs.map(namespaceSlug => {
+                  console.log(
+                    createDynamicPath(RouteMap.namespace, {
+                      namespace_slug: namespaceSlug.toString(),
+                    }),
+                  );
                   const namespace = data.namespaces[namespaceSlug];
                   if (!namespace) return null;
                   return (
@@ -69,8 +72,7 @@ export const Navbar = () => {
                               currentNamespaceSlug !== namespaceSlug,
                           },
                         )}
-                        to={createDynamicPath({
-                          path: RouteMap.namespace,
+                        to={createDynamicPath(RouteMap.namespace, {
                           namespace_slug: namespaceSlug.toString(),
                         })}
                       >
@@ -105,9 +107,8 @@ export const Navbar = () => {
                               currentNamespaceSlug !== projectSlug,
                           },
                         )}
-                        to={createDynamicPath({
-                          path: RouteMap.project,
-                          namespace_slug: currentNamespaceSlug,
+                        to={createDynamicPath(RouteMap.project, {
+                          ...params,
                           project_slug: projectSlug.toString(),
                         })}
                       >

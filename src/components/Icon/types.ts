@@ -13,6 +13,7 @@ export enum IconType {
   config = 'config',
   chevron = 'chevron',
   search = 'search',
+  hint = 'hint',
 }
 
 export type IconProps = GenericProps<IconType, SquareIconProps>;

@@ -23,6 +23,7 @@ export const Namespaces: FC = () => {
 
   const onCreateNamespaceBtnClick = () => setIsModalOpen(true);
 
+
   return (
     <>
       <Modal

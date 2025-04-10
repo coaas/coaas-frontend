@@ -9,6 +9,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useHover,
   useInteractions,
   useRole,
 } from '@floating-ui/react';
@@ -27,6 +28,7 @@ interface PopoverProps {
   close: () => void;
   placement?: Placement;
   offsetNum?: number;
+  openOnHover?: boolean;
 }
 
 export const Popover = ({
@@ -37,6 +39,7 @@ export const Popover = ({
   close,
   placement = 'bottom-start',
   offsetNum = 10,
+  openOnHover = false,
 }: PopoverProps) => {
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -50,12 +53,13 @@ export const Popover = ({
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
+  const hover = useHover(context, { enabled: openOnHover });
 
-  // Merge all the interactions into prop getters
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
     dismiss,
     role,
+    hover,
   ]);
 
   return (

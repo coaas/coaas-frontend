@@ -40,7 +40,7 @@ export const CellContent: FC<CellContentProps> = ({ cell }) => {
 
     case CellType.number: {
       const { value } = cell.data;
-      const title = `${Number(value.toFixed(2))}`;
+      const title = `${Number((value || 0).toFixed(2))}`;
 
       return (
         <p

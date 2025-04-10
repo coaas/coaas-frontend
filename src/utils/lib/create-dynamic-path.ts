@@ -1,14 +1,4 @@
-export type DynamicPathParams = {
-  path: string;
-  namespace_slug?: string;
-  project_slug?: string;
-};
+import { Params } from 'react-router-dom';
 
-export const createDynamicPath = ({
-  path,
-  namespace_slug = '',
-  project_slug = '',
-}: DynamicPathParams) =>
-  path
-    .replace(':namespace_slug', namespace_slug)
-    .replace(':project_slug', project_slug);
+export const createDynamicPath = (path: string, params: Params) =>
+  path.replace(/:(\w+)/g, (_, g1) => params[g1] || '');
