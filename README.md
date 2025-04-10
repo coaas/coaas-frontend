@@ -46,12 +46,11 @@
     }
     ```
 
-## Gitflow
+## Gitflow ([TBD](https://habr.com/ru/companies/avito/articles/680522/))
 
 - Общий порядок работы:
-  1. Получаем задачу с id `$taskId`
-  2) Подтягиваем актуальный `develop` и создаем от него ветку с названием `$taskId`
-  3) Выполняем таску
-  4) Создаем коммит с комментарием на русском языке, придерживаясь [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/#summary): `git commit -m 'fix: пофиксил кривую верстку в Header'` или `git commit -m 'feat: реализовал компонент таблицы'`
-  5) Пушим в одноименную remote ветку и создаем ПР в `develop`
-  6) Добавляем ревьюверов вручную и тегаем их в ТГ с просьбой глянуть ПР
+  1) Подтягиваем актуальный `master` и создаем от него ветку согласно [конвенциям](https://medium.com/@abhay.pixolo/naming-conventions-for-git-branches-a-cheatsheet-8549feca2534)
+  2) Выполняем таску
+  3) Создаем коммит с комментарием на английском языке, придерживаясь [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/#summary): `git commit -m 'fix: fixed very important thing'` или `git commit -m 'feat: added new feature'`
+  4) Пушим в одноименную remote ветку и создаем ПР в `master`
+  5) Добавляем ревьюверов вручную и тегаем их в ТГ с просьбой глянуть ПР
