@@ -1,31 +1,19 @@
 import { Icon } from '@components/Icon';
 
 import { ComponentPropsWithoutRef } from 'react';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink, Params, useLocation, useParams } from 'react-router-dom';
 import { navLinksMap } from '../constants';
 import { cn } from '@utils/index';
 import { RouteMap } from '../types';
-import {
-  createDynamicPath,
-  DynamicPathParams,
-} from '@utils/lib/create-dynamic-path';
+import { createDynamicPath } from '@utils/lib/create-dynamic-path';
 
 interface Props extends ComponentPropsWithoutRef<'ul'> {
   sidebarOpened: boolean;
 }
 
-const getCurrentLinks = ({
-  path,
-  namespace_slug = '',
-  project_slug = '',
-}: DynamicPathParams) => {
-  const namespacePath = RouteMap.namespace.replace(
-    ':namespace_slug',
-    namespace_slug,
-  );
-  const projectPath = RouteMap.project
-    .replace(':namespace_slug', namespace_slug)
-    .replace(':project_slug', project_slug);
+const getCurrentLinks = (path: string, params: Params) => {
+  const namespacePath = createDynamicPath(RouteMap.namespace, params);
+  const projectPath = createDynamicPath(RouteMap.project, params);
 
   return (
     navLinksMap.get(
@@ -38,13 +26,9 @@ const getCurrentLinks = ({
 
 export const NavLinks = ({ sidebarOpened, className }: Props) => {
   const { pathname } = useLocation();
-  const { namespace_slug, project_slug } = useParams<PageParams>();
+  const params = useParams();
 
-  const currentLinks = getCurrentLinks({
-    path: pathname,
-    namespace_slug,
-    project_slug,
-  });
+  const currentLinks = getCurrentLinks(pathname, params);
 
   return (
     <nav>
@@ -61,11 +45,7 @@ export const NavLinks = ({ sidebarOpened, className }: Props) => {
                   },
                 )
               }
-              to={createDynamicPath({
-                path: href,
-                namespace_slug,
-                project_slug,
-              })}
+              to={createDynamicPath(href, params)}
             >
               <Icon
                 props={{

@@ -7,6 +7,10 @@ export default {
   theme: {
     backgroundImage: {
       net: "url('src/assets/images/net.svg')",
+      card: 'linear-gradient(180deg, rgba(50, 53, 72, 0.7) 0%, rgba(50, 53, 72, 0.2) 75%)',
+    },
+    boxShadow: {
+      card: '0px 1px 2px 0px #0000000D',
     },
     screens: {
       xl: { max: '1780px' },
@@ -26,6 +30,8 @@ export default {
         gray: {
           DEFAULT: '#43424A',
           dark: '#4C4958',
+          light: '#4E608D33',
+          lighter: '#B6B6B640',
         },
         blue: '#507EF5',
       },
@@ -51,7 +57,6 @@ export default {
         '900': '#171717',
         '950': '#0a0a0a',
       },
-      error: '#ef4444',
     },
     extend: {},
   },

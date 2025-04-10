@@ -8,6 +8,7 @@ import {
   DoubleArrowIcon,
   GitIcon,
   GraphIcon,
+  HintIcon,
   LayersIcon,
   MetricsIcon,
   SearchIcon,
@@ -74,6 +75,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.search: {
       return <SearchIcon {...props.props} />;
+    }
+
+    case IconType.hint: {
+      return <HintIcon {...props.props} />;
     }
 
     default: {

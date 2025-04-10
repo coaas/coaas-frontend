@@ -8,7 +8,7 @@ export type User = {
 
 export type UMethod = 0 | 1 | 2 | 3;
 
-export type GetUserDto = {
-  login: string;
-  method: UMethod;
-};
+// export type GetUserDto = {
+//   login: string;
+//   method: UMethod;
+// };

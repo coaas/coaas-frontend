@@ -11,11 +11,16 @@ export const Banner: FC<BannerProps> = ({
   className,
   buttons,
 }) => (
-  <div className={cn('bg-area-dark rounded-lg p-7', className)}>
+  <div
+    className={cn(
+      'bg-area-dark rounded-lg p-7 border-stroke border-[1.5px]',
+      className,
+    )}
+  >
     <div className="bg-net bg-right bg-no-repeat">
-      <h4 className="font-semibold text-3xl text-white">{title}</h4>
+      <h4 className="font-semibold text-3xl text-blue">{title}</h4>
       {!!subtitle && (
-        <p className="font-normal text-base text-white mt-3 max-w-[70%]">
+        <p className="font-normal text-base text-white whitespace-pre mt-3 max-w-[70%]">
           {subtitle}
         </p>
       )}

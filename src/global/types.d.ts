@@ -18,14 +18,23 @@ declare type WithClassname = {
 
 declare type Timestamp = string;
 
-declare type PageParams = {
-  namespace_slug?: string;
-  project_slug?: string;
-};
-
 /* eslint-disable */
-declare type Query<TData = any, TBody = any> = {
+declare type Query<TData = unknown, TBody = unknown> = {
   endpoint: string;
   method?: 'POST';
 };
 /* eslint-enable */
+
+declare interface AfterKey {
+  id: string;
+  created_at: string;
+}
+declare interface NextKey {
+  id: string;
+  created_at: string;
+}
+
+declare type Option<TValue = string> = {
+  label: string;
+  value: TValue;
+};

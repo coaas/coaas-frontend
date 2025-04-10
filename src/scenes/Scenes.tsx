@@ -9,25 +9,27 @@ import { Templates } from './components/Templates';
 import { Namespace } from './components/Namespace';
 import { Projects } from './components/Projects';
 import { Project } from './components/Project';
+import { RouteMap } from '@components/Layout/components/types';
+import { CreateTemplate } from './components/CreateTemplate';
 
 export const routes = [
   {
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: RouteMap.home,
         element: <Home />,
       },
       {
-        path: '/namespaces',
+        path: RouteMap.namespaces,
         element: <Namespaces />,
       },
       {
-        path: '/namespaces/:namespace_slug',
+        path: RouteMap.namespace,
         element: <Namespace />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects',
+        path: RouteMap.projects,
         element: <Projects />,
       },
       {
@@ -39,11 +41,12 @@ export const routes = [
         element: <Project />,
       },
       {
-        path: '/templates',
+        path: RouteMap.templates,
         element: <Templates />,
       },
+      { path: RouteMap.templatesCreate, element: <CreateTemplate /> },
       {
-        path: '/login',
+        path: RouteMap.login,
         element: <Login />,
       },
     ],
