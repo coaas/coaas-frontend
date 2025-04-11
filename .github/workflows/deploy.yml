@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - feature/deploy
   workflow_dispatch:
 jobs:
   build_and_push:
