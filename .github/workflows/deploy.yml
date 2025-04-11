@@ -22,5 +22,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run: |
-          docker build -t ghcr.io/coaas/coaas-frontend .
-          docker push ghcr.io/coaas/coaas-frontend:latest
+          docker build -t ghcr.io/coaas/coaas-frontend:${{ github.sha }} .
+          docker push ghcr.io/coaas/coaas-frontend:${{ github.sha }}
