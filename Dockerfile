@@ -24,6 +24,5 @@ RUN rm -rf ./* && rm /etc/nginx/conf.d/default.conf
 RUN mkdir /etc/nginx/ssl && chmod 700 /etc/nginx/ssl
 COPY --from=builder /app/dist/ .
 COPY --from=builder /app/nginx.conf /etc/nginx
-COPY --from=builder /app/load_config.sh /app/load_config.sh
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
