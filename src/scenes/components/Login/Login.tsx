@@ -26,7 +26,7 @@ const submit = async (data: FormData) => {
 
 export const Login = () => {
   const checkLogin = async () => {
-    const path = 'UserService/GetUser';
+    const path = 'UserService/GetCurrentUserData';
     const resp = await api.post(path, {
       credentials: 'include',
       json: {},
