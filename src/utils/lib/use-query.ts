@@ -1,81 +1,125 @@
 import { api } from '@api/constants';
 import {
-  useQuery as useQueryBase,
-  useInfiniteQuery as useInfinityQueryBase,
+  useQuery,
+  useInfiniteQuery,
   UseQueryOptions,
   UseInfiniteQueryOptions,
+  QueryKey,
+  InfiniteData,
 } from '@tanstack/react-query';
 
-type UseQueryParams<TData, TBody> = {
-  query: Query<TData, TBody>;
-  body?: TBody;
-  options?: Omit<UseQueryOptions<TData, TBody>, 'queryKey' | 'queryFn'>;
-};
-
-type UseInfinityQueryParams<TData, TBody> = {
-  options?: Omit<UseInfiniteQueryOptions<TData, TBody>, 'queryKey' | 'queryFn'>;
-};
-
-export const fetcher = async <TData, TBody>(
-  endpoint: string,
-  request: RequestInit,
-  body?: TBody,
-) => api(endpoint, { ...request, json: body || {} }).json<TData>();
-
-export function useQuery<TData, TBody>({
-  query,
-  body,
+export const useApiQuery = <TData, TPayload = undefined>({
+  request,
+  payload,
   options,
-}: UseQueryParams<TData, TBody>) {
-  const { endpoint, method = 'POST' } = query;
+}: ApiQueryParams<TData, TPayload>) => {
+  const { endpoint, method = 'POST' } = request;
 
-  const queryKeys = [endpoint, body && JSON.stringify(body)].filter(Boolean);
+  const queryKey: QueryKey = [
+    endpoint,
+    payload && JSON.stringify(payload),
+  ].filter(Boolean);
 
-  const queryResult = useQueryBase({
-    queryKey: queryKeys,
-    queryFn: () => fetcher<TData, TBody>(endpoint, { method }, body),
+  return useQuery({
+    queryKey,
+    queryFn: () => api(endpoint, { method, json: payload || {} }).json<TData>(),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: Infinity,
     ...options,
   });
-
-  return queryResult;
-}
-
-type BaseMeta = {
-  has_more: boolean;
-  next_key: NextKey;
 };
 
-export function useIQuery<TBody, TData>(
-  query: Query<TData, TBody>,
-  body: TBody,
-  options?: UseInfinityQueryParams<TData & BaseMeta, TBody>,
-) {
-  const { endpoint, method = 'POST' } = query;
+type InfiniteApiQueryResult<
+  TData extends PaginatedResponse<TItem>,
+  TItem = TData extends PaginatedResponse<infer Item> ? Item : never,
+> = ReturnType<
+  typeof useInfiniteQuery<
+    TData,
+    Error,
+    InfiniteData<TData>,
+    QueryKey,
+    NextKey | null
+  >
+> & {
+  entries: TItem[];
+};
 
-  const queryKeys = [endpoint, body && JSON.stringify(body)].filter(Boolean);
+export const useInfiniteApiQuery = <
+  TData extends PaginatedResponse<TItem>,
+  TPayload = unknown,
+  TItem = TData extends PaginatedResponse<infer Item> ? Item : never,
+>(
+  params: InfiniteApiQueryParams<TData, TPayload, TItem>,
+): InfiniteApiQueryResult<TData, TItem> => {
+  const { request, payload, options } = params;
+  const { endpoint, method = 'POST' } = request;
 
-  const queryResult = useInfinityQueryBase({
-    queryKey: queryKeys,
-    initialPageParam: { next_key: { id: '', created_at: '' } },
-    queryFn: () => {
-      const response = fetcher<TData & BaseMeta, TBody>(
-        endpoint,
-        { method },
-        body,
-      );
-      return response;
+  const queryKey: QueryKey = [
+    endpoint,
+    payload && JSON.stringify(payload),
+  ].filter(Boolean);
+
+  const query = useInfiniteQuery({
+    queryKey,
+    initialPageParam: null,
+    queryFn: ({ pageParam }) => {
+      const requestPayload = {
+        ...payload,
+        after_key: pageParam,
+        limit: 20,
+      };
+
+      return api(endpoint, { method, json: requestPayload }).json<TData>();
     },
-
-    getNextPageParam: ({ has_more, next_key }) =>
-      has_more ? { next_key } : undefined,
+    getNextPageParam: lastPage =>
+      lastPage.has_more ? lastPage.next_key : undefined,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: Infinity,
     ...options,
   });
 
-  return queryResult;
-}
+  const entries = query.data?.pages.flatMap(page => page.items ?? []) ?? [];
+
+  return {
+    ...query,
+    entries,
+  };
+};
+
+type NextKey = {
+  id: string;
+  created_at: string;
+};
+
+type PaginationParams = {
+  limit?: number;
+  after_key?: NextKey | null;
+};
+
+type ApiQueryParams<TData, TPayload> = {
+  request: ApiRequest<TData, TPayload>;
+  payload?: TPayload;
+  options?: Omit<UseQueryOptions<TData>, 'queryKey' | 'queryFn'>;
+};
+
+type InfiniteApiQueryParams<
+  TData extends PaginatedResponse<TItem>,
+  TPayload,
+  TItem = unknown,
+> = {
+  request: ApiRequest<TData, TPayload & PaginationParams>;
+  payload?: TPayload;
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      TData,
+      Error,
+      InfiniteData<TData>,
+      TData,
+      QueryKey,
+      NextKey | null
+    >,
+    'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+  >;
+};

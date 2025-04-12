@@ -1,7 +1,7 @@
 import { getTemplateFilters, getTemplates } from '@api/queries';
 import { Banner } from '@components/Banner';
 import { Select } from '@components/Select';
-import { useIQuery, useQuery } from '@utils/lib/use-query';
+import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-query';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';
@@ -21,8 +21,8 @@ export const Templates = () => {
   const {
     data: filters = { categories: [], languages: [] },
     isLoading: filtersLoading,
-  } = useQuery({
-    query: getTemplateFilters,
+  } = useApiQuery({
+    request: getTemplateFilters,
   });
 
   const templateFilters = {
@@ -32,23 +32,23 @@ export const Templates = () => {
   };
 
   const {
-    data: templatesData,
+    entries,
     isLoading: templatesLoading,
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
-  } = useIQuery(getTemplates, {
-    filters: {
-      categories: (categories && JSON.parse(categories)) || [],
-      languages: (languages && JSON.parse(languages)) || [],
-      types: (types && JSON.parse(types)) || [],
-      status: (status && JSON.parse(types)) || [],
+  } = useInfiniteApiQuery({
+    request: getTemplates,
+    payload: {
+      filters: {
+        categories: (categories && JSON.parse(categories)) || [],
+        languages: (languages && JSON.parse(languages)) || [],
+        types: (types && JSON.parse(types)) || [],
+        status: (status && JSON.parse(status)) || [],
+      },
+      query,
     },
-    query,
   });
-
-  const templates =
-    templatesData?.pages?.flatMap(({ templates }) => templates) || [];
 
   const handleSearchChange = (value: string) =>
     setSearchParams(params => {
@@ -133,7 +133,7 @@ export const Templates = () => {
         fetchNextPage={fetchNextPage}
         scrollThreshold={200}
       >
-        {templates.map(({ name, description }) => (
+        {entries.map(({ name, description }) => (
           <Card
             type={CardType.simpleInfo}
             Wrapper={({ children, className }) => (

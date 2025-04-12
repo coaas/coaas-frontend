@@ -6,7 +6,7 @@ import { useToggle } from '@utils/lib/use-toggle';
 import { Link, useParams } from 'react-router-dom';
 import { RouteMap } from '../types';
 import { cn } from '@utils/styles';
-import { useQuery } from '@utils/lib/use-query';
+import { useApiQuery } from '@utils/lib/use-query';
 import { getUserNamespacesAndProjects } from '@api/queries';
 import { useUser } from '@utils/lib/use-user';
 
@@ -18,8 +18,8 @@ export const Navbar = () => {
   const currentNamespaceSlug = params.namespace_slug;
   const currentProjectSlug = params.project_slug;
 
-  const { data } = useQuery({
-    query: getUserNamespacesAndProjects,
+  const { data } = useApiQuery({
+    request: getUserNamespacesAndProjects,
   });
 
   const user = useUser();

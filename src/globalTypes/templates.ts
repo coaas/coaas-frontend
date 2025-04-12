@@ -22,12 +22,6 @@ export type Filter = {
   value: string;
 };
 
-export interface TemplatesData {
-  templates: Template[];
-  has_more: boolean;
-  next_key: NextKey;
-}
-
 export interface Template {
   id: string;
   created_at: string;
