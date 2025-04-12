@@ -2,25 +2,28 @@ import { NamespaceWithProject, User } from '@globalTypes/index';
 import {
   GetTemplateFiltersResponse,
   GetTemplatesDto,
-  TemplatesData,
+  Template,
 } from '@globalTypes/templates';
 
 export const createNamespace = 'NamespacesManager/CreateNamespace';
 
-export const getUserNamespacesAndProjects: Query<{
+export const getUserNamespacesAndProjects: ApiRequest<{
   namespaces: NamespaceWithProject;
 }> = {
   endpoint: 'NamespacesManager/GetUserNamespacesAndProjectsList',
 };
 
-export const getCurrentUserData: Query<User> = {
+export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
 };
 
-export const getTemplates: Query<TemplatesData, GetTemplatesDto> = {
+export const getTemplates: ApiRequest<
+  PaginatedResponse<Template>,
+  GetTemplatesDto
+> = {
   endpoint: 'TemplateHubService/ListTemplates',
 };
 
-export const getTemplateFilters: Query<GetTemplateFiltersResponse> = {
+export const getTemplateFilters: ApiRequest<GetTemplateFiltersResponse> = {
   endpoint: 'TemplateHubService/GetFilters',
 };

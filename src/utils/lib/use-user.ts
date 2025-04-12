@@ -1,9 +1,9 @@
 import { getCurrentUserData } from '@api/queries';
-import { useQuery } from './use-query';
+import { useApiQuery } from './use-query';
 
 export const useUser = () => {
-  const { data } = useQuery({
-    query: getCurrentUserData,
+  const { data } = useApiQuery({
+    request: getCurrentUserData,
   });
 
   return data;

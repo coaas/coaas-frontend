@@ -4,13 +4,13 @@ import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
 import { commonValidationRules } from '../../constants';
 import { TextArea } from '@components/TextArea';
-import { useQuery } from '@utils/lib/use-query';
+import { useApiQuery } from '@utils/lib/use-query';
 import { getTemplateFilters } from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
 
 export const InfoStep = () => {
-  const { data: filters = { categories: [], languages: [] } } = useQuery({
-    query: getTemplateFilters,
+  const { data: filters = { categories: [], languages: [] } } = useApiQuery({
+    request: getTemplateFilters,
   });
 
   const {

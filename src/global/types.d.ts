@@ -19,11 +19,17 @@ declare type WithClassname = {
 declare type Timestamp = string;
 
 /* eslint-disable */
-declare type Query<TData = unknown, TBody = unknown> = {
+declare type ApiRequest<TData = unknown, TBody = unknown> = {
   endpoint: string;
   method?: 'POST';
 };
 /* eslint-enable */
+
+declare type PaginatedResponse<T> = {
+  items: T[];
+  has_more: boolean;
+  next_key: NextKey | null;
+};
 
 declare interface AfterKey {
   id: string;
