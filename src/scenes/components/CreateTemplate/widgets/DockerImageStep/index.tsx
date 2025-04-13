@@ -14,7 +14,10 @@ export const DockerImageStep = () => {
     formState: { errors },
     register,
   } = useForm<TemplateDockerImage>({
-    defaultValues: { type: TemplateType.managed, managed: { versions: [] } },
+    defaultValues: {
+      type: TemplateType.managed,
+      managed: { versions: ['latest'] },
+    },
   });
 
   const selectedType = useWatch({ control, name: 'type' });

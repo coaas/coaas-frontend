@@ -24,6 +24,7 @@ export const dependencies = [
   { label: 'Nginx', value: 'Nginx' },
   { label: 'Telegram Bot', value: 'Telegram Bot' },
   { label: 'Prometheus', value: 'Prometheus' },
+  { label: 'PostgreSQL', value: 'PostgreSQL' },
 ];
 
 export const conditionItems = [

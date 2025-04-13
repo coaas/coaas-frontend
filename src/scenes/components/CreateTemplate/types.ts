@@ -1,5 +1,3 @@
-
-
 export interface TemplateInfo {
   name: string;
   description: string;

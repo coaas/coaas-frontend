@@ -50,6 +50,7 @@ export const TaggedSelect = <T extends FieldValues>({
                   : [...value, option.value],
               )
             }
+            defaultValue={value}
             options={options}
             defaultLabel={selectLabel}
             multiple

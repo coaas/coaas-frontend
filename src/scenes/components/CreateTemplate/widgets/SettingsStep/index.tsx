@@ -94,7 +94,7 @@ export const SettingsStep = () => {
           },
         },
       },
-      dependencies: [],
+      dependencies: ['PostgreSQL'],
     },
   });
 

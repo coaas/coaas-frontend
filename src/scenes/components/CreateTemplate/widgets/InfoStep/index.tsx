@@ -7,6 +7,7 @@ import { TextArea } from '@components/TextArea';
 import { useApiQuery } from '@utils/lib/use-api-query';
 import { getTemplateFilters } from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
+import { TemplateNameField } from './template-name-field';
 
 export const InfoStep = () => {
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
@@ -17,17 +18,18 @@ export const InfoStep = () => {
     formState: { errors },
     register,
     control,
+    setError,
   } = useForm<TemplateInfo>({
-    defaultValues: { categories: [], languages: [] },
+    defaultValues: { name: '', categories: [], languages: [] },
   });
 
   return (
     <form className="flex flex-col gap-5">
-      <FormField clickable error={errors.name?.message} label="Name">
-        {error => (
-          <Input {...register('name', requiredRule)} invalid={Boolean(error)} />
-        )}
-      </FormField>
+      <TemplateNameField
+        control={control}
+        name="name"
+        onError={message => setError('name', { message })}
+      />
       <FormField
         clickable
         error={errors.description?.message}

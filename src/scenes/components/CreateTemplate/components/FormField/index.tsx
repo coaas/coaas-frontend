@@ -1,6 +1,4 @@
-import { Icon, IconType } from '@components/Icon';
-import { Popover } from '@components/Popover';
-import { useToggle } from '@utils/lib/use-toggle';
+import { Hint } from '@components/Hint';
 import { cn } from '@utils/styles';
 import { ReactElement, ReactNode } from 'react';
 
@@ -21,12 +19,6 @@ export const FormField = ({
   clickable,
   hint,
 }: Props) => {
-  const {
-    state: hintOpened,
-    setState: setHintOpen,
-    off: closeHint,
-  } = useToggle();
-
   const WrapperTag = clickable ? 'label' : 'div';
 
   return (
@@ -41,24 +33,7 @@ export const FormField = ({
           )}
         >
           {label}
-          {hint && (
-            <Popover
-              placement="right-start"
-              open={hintOpened}
-              setOpen={setHintOpen}
-              close={closeHint}
-              openOnHover
-              render={() => (
-                <div className="rounded-md p-2 border-stroke-gray border bg-area">
-                  {hint}
-                </div>
-              )}
-            >
-              <button type="button">
-                <Icon type={IconType.hint} props={{ size: 14 }} />
-              </button>
-            </Popover>
-          )}
+          {hint && <Hint hint={hint} />}
         </span>
       )}
       <div className="w-full flex flex-col gap-1">
