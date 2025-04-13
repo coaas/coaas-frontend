@@ -1,7 +1,7 @@
 export interface CreateTemplateForm {
   info: TemplateInfo;
-  image: DockerImage;
-  settings: Settings;
+  image: TemplateDockerImage;
+  settings: TemplateSettings;
   dependencies: string[];
   mapper: Mapper;
 }
@@ -14,7 +14,7 @@ export interface TemplateInfo {
   languages: string[];
 }
 
-export interface DockerImage {
+export interface TemplateDockerImage {
   type: TemplateType;
   state: number;
   id: string;
@@ -43,7 +43,12 @@ export interface Dockerfiles {
   production: string;
 }
 
-export interface Settings {
+export interface TemplateSettings {
+  settings: Settings;
+  dependencies: string[];
+}
+
+interface Settings {
   secrets: Secret[];
   configs: Config[];
   env_vars: EnvVar[];
@@ -55,12 +60,10 @@ export interface Settings {
 
 export interface Secret {
   name: string;
-  value: string;
 }
 
 export interface Config {
   path: string;
-  value: string;
 }
 
 export interface EnvVar {

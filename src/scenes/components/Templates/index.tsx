@@ -1,7 +1,7 @@
 import { getTemplateFilters, getTemplates } from '@api/queries';
 import { Banner } from '@components/Banner';
 import { Select } from '@components/Select';
-import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-query';
+import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-api-query';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';

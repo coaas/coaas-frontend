@@ -34,7 +34,7 @@ export const FormField = ({
       {label && (
         <span
           className={cn(
-            'text-sm font-medium font-inter text-white flex gap-[6px] items-center max-h-fit',
+            'text-sm font-medium font-inter text-white flex gap-[6px] items-center max-h-fit text-nowrap',
             {
               'text-error': error,
             },

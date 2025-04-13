@@ -37,6 +37,7 @@ export default {
       },
       blue: {
         DEFAULT: '#507EF5',
+        soft: '#708DA6',
         light: '#7086A6',
       },
       error: '#FF4F52',

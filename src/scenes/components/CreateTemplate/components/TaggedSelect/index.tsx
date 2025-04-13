@@ -1,20 +1,22 @@
-import { Control, useController } from 'react-hook-form';
-import { CreateTemplateForm } from '../../types';
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
+
 import { FormField } from '../FormField';
 import { Select } from '@components/Select';
 import { TagLikeButton } from '../TaglikeButton';
+import { ButtonVariant } from '../TaglikeButton/styles';
 
-interface Props {
+interface Props<T extends FieldValues> {
   fieldLabel?: string;
   selectLabel?: string;
-  control: Control<CreateTemplateForm>;
-  name: 'info.categories' | 'info.languages' | 'image.managed.versions';
+  control: Control<T>;
+  name: Path<T>;
   options: Option<string | number>[];
   className?: string;
   rules?: { required: string };
+  buttonVariant?: ButtonVariant;
 }
 
-export const TaggedSelect = ({
+export const TaggedSelect = <T extends FieldValues>({
   control,
   fieldLabel,
   selectLabel,
@@ -22,7 +24,8 @@ export const TaggedSelect = ({
   options,
   className,
   rules,
-}: Props) => {
+  buttonVariant,
+}: Props<T>) => {
   const {
     field: { value, onChange },
     fieldState: { error },
@@ -41,7 +44,9 @@ export const TaggedSelect = ({
             onOptionChange={option =>
               onChange(
                 value.includes(String(option.value))
-                  ? value.filter(item => item !== option.value)
+                  ? value.filter(
+                      (item: string | number) => item !== option.value,
+                    )
                   : [...value, option.value],
               )
             }
@@ -55,9 +60,12 @@ export const TaggedSelect = ({
               <>
                 {options.map(option => (
                   <TagLikeButton
+                    variant={buttonVariant}
                     key={option.value}
                     onClick={() => {
-                      const newItems = value.filter(v => v !== option.value);
+                      const newItems = value.filter(
+                        (v: string | number) => v !== option.value,
+                      );
                       onChange(newItems);
                       setSelectItems(newItems);
                     }}

@@ -6,6 +6,8 @@ import {
   UseInfiniteQueryOptions,
   QueryKey,
   InfiniteData,
+  UseMutationOptions,
+  useMutation,
 } from '@tanstack/react-query';
 
 export const useApiQuery = <TData, TPayload = undefined>({
@@ -28,21 +30,6 @@ export const useApiQuery = <TData, TPayload = undefined>({
     staleTime: Infinity,
     ...options,
   });
-};
-
-type InfiniteApiQueryResult<
-  TData extends PaginatedResponse<TItem>,
-  TItem = TData extends PaginatedResponse<infer Item> ? Item : never,
-> = ReturnType<
-  typeof useInfiniteQuery<
-    TData,
-    Error,
-    InfiniteData<TData>,
-    QueryKey,
-    NextKey | null
-  >
-> & {
-  entries: TItem[];
 };
 
 export const useInfiniteApiQuery = <
@@ -88,6 +75,24 @@ export const useInfiniteApiQuery = <
   };
 };
 
+export const useApiMutation = <TData, TPayload = undefined>({
+  request,
+  options,
+}: ApiMutationParams<TData, TPayload>) => {
+  const { endpoint, method = 'POST' } = request;
+
+  return useMutation<TData, Error, TPayload>({
+    mutationKey: [endpoint],
+    mutationFn: payload => {
+      const requestOptions =
+        payload instanceof FormData ? { body: payload } : { json: payload };
+
+      return api(endpoint, { method, ...requestOptions }).json<TData>();
+    },
+    ...options,
+  });
+};
+
 type NextKey = {
   id: string;
   created_at: string;
@@ -121,5 +126,28 @@ type InfiniteApiQueryParams<
       NextKey | null
     >,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+  >;
+};
+
+type InfiniteApiQueryResult<
+  TData extends PaginatedResponse<TItem>,
+  TItem = TData extends PaginatedResponse<infer Item> ? Item : never,
+> = ReturnType<
+  typeof useInfiniteQuery<
+    TData,
+    Error,
+    InfiniteData<TData>,
+    QueryKey,
+    NextKey | null
+  >
+> & {
+  entries: TItem[];
+};
+
+type ApiMutationParams<TData, TPayload> = {
+  request: ApiRequest<TData, TPayload>;
+  options?: Omit<
+    UseMutationOptions<TData, Error, TPayload>,
+    'mutationKey' | 'mutationFn'
   >;
 };

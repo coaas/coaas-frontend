@@ -143,7 +143,7 @@ export function Select<T extends string | number>({
           )}
           type="button"
         >
-          <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer">
+          <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer m-auto">
             {labelStr}
           </label>
           {withChevron && (

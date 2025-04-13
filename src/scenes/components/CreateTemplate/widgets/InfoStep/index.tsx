@@ -1,10 +1,10 @@
-import { useFormContext } from 'react-hook-form';
-import { CreateTemplateForm } from '../../types';
+import { useForm } from 'react-hook-form';
+import { TemplateInfo } from '../../types';
 import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
-import { commonValidationRules } from '../../constants';
+import { requiredRule } from '../../constants';
 import { TextArea } from '@components/TextArea';
-import { useApiQuery } from '@utils/lib/use-query';
+import { useApiQuery } from '@utils/lib/use-api-query';
 import { getTemplateFilters } from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
 
@@ -17,26 +17,25 @@ export const InfoStep = () => {
     formState: { errors },
     register,
     control,
-  } = useFormContext<CreateTemplateForm>();
+  } = useForm<TemplateInfo>({
+    defaultValues: { categories: [], languages: [] },
+  });
 
   return (
     <form className="flex flex-col gap-5">
-      <FormField clickable error={errors.info?.name?.message} label="Name">
+      <FormField clickable error={errors.name?.message} label="Name">
         {error => (
-          <Input
-            {...register('info.name', commonValidationRules)}
-            invalid={Boolean(error)}
-          />
+          <Input {...register('name', requiredRule)} invalid={Boolean(error)} />
         )}
       </FormField>
       <FormField
         clickable
-        error={errors.info?.description?.message}
+        error={errors.description?.message}
         label="Description"
       >
         {error => (
           <TextArea
-            {...register('info.description', commonValidationRules)}
+            {...register('description', requiredRule)}
             error={error}
             className="w-full"
           />
@@ -44,7 +43,8 @@ export const InfoStep = () => {
       </FormField>
       <TaggedSelect
         control={control}
-        name="info.categories"
+        rules={requiredRule}
+        name="categories"
         fieldLabel="Categories"
         selectLabel="Add category"
         options={filters.categories.map(({ key, value }) => ({
@@ -54,7 +54,8 @@ export const InfoStep = () => {
       />
       <TaggedSelect
         control={control}
-        name="info.languages"
+        rules={requiredRule}
+        name="languages"
         fieldLabel="Languages"
         selectLabel="Add language"
         options={filters.languages.map(({ key, value }) => ({
@@ -65,15 +66,12 @@ export const InfoStep = () => {
 
       <FormField
         clickable
-        error={errors.info?.docs?.message}
+        error={errors.docs?.message}
         label="Documentation"
         className="flex-col gap-[6px] [&>div>div]:max-w-full"
       >
         {error => (
-          <Input
-            {...register('info.docs', commonValidationRules)}
-            invalid={Boolean(error)}
-          />
+          <Input {...register('docs', requiredRule)} invalid={Boolean(error)} />
         )}
       </FormField>
     </form>

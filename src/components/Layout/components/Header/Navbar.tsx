@@ -6,7 +6,7 @@ import { useToggle } from '@utils/lib/use-toggle';
 import { Link, useParams } from 'react-router-dom';
 import { RouteMap } from '../types';
 import { cn } from '@utils/styles';
-import { useApiQuery } from '@utils/lib/use-query';
+import { useApiQuery } from '@utils/lib/use-api-query';
 import { getUserNamespacesAndProjects } from '@api/queries';
 import { useUser } from '@utils/lib/use-user';
 

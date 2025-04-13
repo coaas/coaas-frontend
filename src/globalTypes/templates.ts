@@ -41,3 +41,10 @@ export interface Author {
   id: string;
   username: string;
 }
+
+export interface UploadArchiveDto {
+  state: number;
+  id: string;
+  filename: string;
+  chunk: string;
+}
