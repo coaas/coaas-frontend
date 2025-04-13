@@ -1,10 +1,4 @@
-export interface CreateTemplateForm {
-  info: TemplateInfo;
-  image: TemplateDockerImage;
-  settings: TemplateSettings;
-  dependencies: string[];
-  mapper: Mapper;
-}
+
 
 export interface TemplateInfo {
   name: string;

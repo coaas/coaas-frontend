@@ -16,7 +16,7 @@ interface Props<TOption>
   extends Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'children'> {
   defaultLabel?: string;
   options: Option<TOption>[];
-  onOptionChange: (option: Option<TOption>, close?: () => void) => void;
+  onOptionChange: (option: Option<TOption>, close: () => void) => void;
   defaultValue?: TOption[];
   multiple?: boolean;
   defaultOpen?: boolean;
@@ -68,7 +68,10 @@ export function Select<T extends string | number>({
       return optionSelected ? [] : [option.value];
     });
 
-    onOptionChange(option);
+    onOptionChange(option, off);
+    if (!multiple) {
+      off();
+    }
   };
 
   const handleSearch = ({
