@@ -39,7 +39,7 @@ export const ArrayField = <T extends FieldValues>({
     name: name,
     control,
     rules: {
-      validate: fields => fields.length > 1 || 'required at least one entity',
+      validate: fields => fields.length > 0 || 'required at least one entity',
     },
   });
 

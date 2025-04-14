@@ -2,28 +2,57 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
 import { requiredRule, InfoTabsData, versions } from '../../constants';
 import { FormField } from '../../components/FormField';
-import { TemplateDockerImage, TemplateType } from '../../types';
 import { Input } from '@components/Input';
 
 import { TaggedSelect } from '../../components/TaggedSelect';
 import { FileInput } from '../../components/InputFile';
+import {
+  StateType,
+  TemplateDockerImage,
+  TemplateType,
+} from '@globalTypes/templates.draft';
+import { DraftIdService } from '../../lib/draft-id-service';
+import { useApiMutation } from '@utils/lib/use-api-query';
+import { saveTemplateDraftImage } from '@api/queries';
+import { FormButton } from '../../components/FormButton';
 
 export const DockerImageStep = () => {
+  const storedDraftId = DraftIdService.getId();
+
+  // const { data: draftResponse } = useApiQuery({
+  //   request: getTemplateDraft,
+  //   payload: { id: storedDraftId },
+  // });
+
+  // const managedImage = draftResponse?.managed;   жду нормальной даты с бека для дефолтных значений.
+  // const customImage = draftResponse?.custom
+
+  // const defaultValues =
+
+  const { mutate, isPending } = useApiMutation({
+    request: saveTemplateDraftImage,
+  });
+
   const {
     control,
     formState: { errors },
     register,
+    handleSubmit,
   } = useForm<TemplateDockerImage>({
     defaultValues: {
+      id: storedDraftId || '',
+      state: StateType.draft,
       type: TemplateType.managed,
       managed: { versions: ['latest'] },
     },
   });
 
+  const onSubmit = handleSubmit(dto => mutate(dto));
+
   const selectedType = useWatch({ control, name: 'type' });
 
   return (
-    <form className="flex flex-col gap-[15px] mt-[25px]">
+    <form onSubmit={onSubmit} className="flex flex-col gap-[15px] mt-[25px]">
       <h3 className="text-2xl font-semibold font-inter text-white">
         Template type
       </h3>
@@ -64,6 +93,7 @@ export const DockerImageStep = () => {
             name="managed.versions"
             fieldLabel="Versions"
             selectLabel="Add version"
+            rules={requiredRule}
           />
         </div>
       )}
@@ -128,6 +158,14 @@ export const DockerImageStep = () => {
           </div>
         </div>
       )}
+      <FormButton
+        disabled={isPending}
+        type="submit"
+        isLoading={isPending}
+        loadingText="Saving..."
+      >
+        Save
+      </FormButton>
     </form>
   );
 };

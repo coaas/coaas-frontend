@@ -1,17 +1,37 @@
 import { useForm } from 'react-hook-form';
-import { TemplateInfo } from '../../types';
+
 import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
 import { requiredRule } from '../../constants';
 import { TextArea } from '@components/TextArea';
-import { useApiQuery } from '@utils/lib/use-api-query';
-import { getTemplateFilters } from '@api/queries';
+import { useApiMutation, useApiQuery } from '@utils/lib/use-api-query';
+import {
+  getTemplateDraft,
+  getTemplateFilters,
+  saveTemplateDraftInfo,
+} from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
 import { TemplateNameField } from './template-name-field';
+import { DraftIdService } from '../../lib/draft-id-service';
+import { StateType, TemplateInfo } from '@globalTypes/templates.draft';
+import { FormButton } from '../../components/FormButton';
 
 export const InfoStep = () => {
+  const storedDraftId = DraftIdService.getId();
+
+  const { data: draftResponse } = useApiQuery({
+    request: getTemplateDraft,
+    payload: { id: storedDraftId },
+  });
+
+  const defaultValues = draftResponse?.info;
+
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
     request: getTemplateFilters,
+  });
+
+  const { mutate, isPending } = useApiMutation({
+    request: saveTemplateDraftInfo,
   });
 
   const {
@@ -19,12 +39,24 @@ export const InfoStep = () => {
     register,
     control,
     setError,
+    handleSubmit,
   } = useForm<TemplateInfo>({
-    defaultValues: { name: '', categories: [], languages: [] },
+    defaultValues: defaultValues || {
+      id: storedDraftId || '',
+      state: StateType.draft,
+      name: '',
+      categories: [],
+      languages: [],
+    },
+  });
+
+  const onSubmit = handleSubmit(data => {
+    //Захендлить все ошибки, , отобразить нотификейшены.
+    mutate(data);
   });
 
   return (
-    <form className="flex flex-col gap-5">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <TemplateNameField
         control={control}
         name="name"
@@ -50,8 +82,8 @@ export const InfoStep = () => {
         fieldLabel="Categories"
         selectLabel="Add category"
         options={filters.categories.map(({ key, value }) => ({
-          label: key,
-          value,
+          label: value,
+          value: key,
         }))}
       />
       <TaggedSelect
@@ -61,11 +93,10 @@ export const InfoStep = () => {
         fieldLabel="Languages"
         selectLabel="Add language"
         options={filters.languages.map(({ key, value }) => ({
-          label: key,
-          value,
+          label: value,
+          value: key,
         }))}
       />
-
       <FormField
         clickable
         error={errors.docs?.message}
@@ -76,6 +107,14 @@ export const InfoStep = () => {
           <Input {...register('docs', requiredRule)} invalid={Boolean(error)} />
         )}
       </FormField>
+      <FormButton
+        disabled={isPending}
+        type="submit"
+        isLoading={isPending}
+        loadingText="Saving..."
+      >
+        Save
+      </FormButton>
     </form>
   );
 };

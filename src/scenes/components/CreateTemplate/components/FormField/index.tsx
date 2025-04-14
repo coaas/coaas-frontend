@@ -36,16 +36,18 @@ export const FormField = ({
           {hint && <Hint hint={hint} />}
         </span>
       )}
-      <div className="w-full flex flex-col gap-1">
-        <div className={'w-full max-w-[511px] ml-auto'}>{children(error)}</div>
-        {error && (
-          <span
-            className="text-error block text-xs"
-            aria-invalid={Boolean(error)}
-          >
-            {error}
-          </span>
-        )}
+      <div className="w-full ">
+        <div className={'w-full max-w-[511px] ml-auto flex flex-col gap-2'}>
+          {children(error)}
+          {error && (
+            <span
+              className="text-error block text-xs "
+              aria-invalid={Boolean(error)}
+            >
+              {error}
+            </span>
+          )}
+        </div>
       </div>
     </WrapperTag>
   );

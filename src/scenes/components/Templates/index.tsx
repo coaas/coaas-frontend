@@ -115,7 +115,10 @@ export const Templates = () => {
               onOptionChange={option => handleFilterChange(option, filterKey)}
               defaultLabel={filterKey}
               defaultValue={JSON.parse(searchParams.get(filterKey) || '[]')}
-              options={options.map(({ key, value }) => ({ label: key, value }))}
+              options={options.map(({ key, value }) => ({
+                label: value,
+                value: key,
+              }))}
               className="flex-1 max-w-[130px]"
               multiple
               withChevron

@@ -1,5 +1,4 @@
 import { Controller, useForm } from 'react-hook-form';
-import { TemplateSettings } from '../../types';
 import { ArrayField } from '../../components/ArrayField';
 import { Input } from '@components/Input';
 import {
@@ -15,6 +14,11 @@ import { DeleteButton } from '../../components/ArrayField/delete-button';
 import { TaggedSelect } from '../../components/TaggedSelect';
 import { FormField } from '../../components/FormField';
 import { Select } from '@components/Select';
+import { StateType, TemplateSettings } from '@globalTypes/templates.draft';
+import { DraftIdService } from '../../lib/draft-id-service';
+import { FormButton } from '../../components/FormButton';
+import { useApiMutation } from '@utils/lib/use-api-query';
+import { saveTemplateDraftSettings } from '@api/queries';
 
 const healthCheckFields = [
   { label: 'Test', name: 'test', asNumber: false },
@@ -51,12 +55,28 @@ const configItems = [
 ] as const;
 
 export const SettingsStep = () => {
+  const storedDraftId = DraftIdService.getId();
+
+  // const { data: draftResponse } = useApiQuery({ ждем нормальную ручку с бека)
+  //   request: getTemplateDraft,
+  //   payload: { id: storedDraftId },
+  // });
+
+  const { mutate, isPending } = useApiMutation({
+    request: saveTemplateDraftSettings,
+  });
+
+  // const defaultValues = draftResponse?.settings;
+
   const {
     control,
     formState: { errors },
     register,
+    handleSubmit,
   } = useForm<TemplateSettings>({
     defaultValues: {
+      id: storedDraftId || '',
+      state: StateType.draft,
       settings: {
         secrets: [{ name: 'DATABASE_URI' }],
         configs: [{ path: '/app/logging.cfg' }],
@@ -98,8 +118,15 @@ export const SettingsStep = () => {
     },
   });
 
+  const onSubmit = handleSubmit(data => {
+    console.log(data);
+    mutate(data);
+  });
+
+  console.log(errors);
+
   return (
-    <>
+    <form onSubmit={onSubmit} className="mt-[25px]">
       <div className="flex flex-col gap-[23px]">
         <h4 className="text-xl font-semibold font-inter text-white">
           Settings
@@ -110,7 +137,7 @@ export const SettingsStep = () => {
           name="settings.secrets"
           btnLabel="Add secret"
           defaultValue={{ name: '' }}
-          error={errors.settings?.secrets?.message}
+          error={errors.settings?.secrets?.root?.message}
           renderField={(field, remove, index) => (
             <div className="flex gap-[10px]" key={field.id}>
               <Input
@@ -130,7 +157,7 @@ export const SettingsStep = () => {
           name="settings.configs"
           btnLabel="Add config"
           defaultValue={{ path: '' }}
-          error={errors.settings?.configs?.message}
+          error={errors.settings?.configs?.root?.message}
           renderField={(field, remove, index) => (
             <div className="flex gap-[10px]" key={field.id}>
               <Input
@@ -150,7 +177,7 @@ export const SettingsStep = () => {
           name="settings.env_vars"
           btnLabel="Add var"
           defaultValue={{ key: '', value: '' }}
-          error={errors.settings?.env_vars?.message}
+          error={errors.settings?.env_vars?.root?.message}
           renderField={(field, remove, index) => (
             <div className="flex gap-[10px]" key={field.id}>
               <Input
@@ -182,6 +209,7 @@ export const SettingsStep = () => {
           name="settings.ports"
           fieldLabel="Ports"
           selectLabel="Add port"
+          rules={{ ...requiredRule, ...numberRule }}
         />
         <TaggedSelect
           options={dependencies}
@@ -190,6 +218,7 @@ export const SettingsStep = () => {
           fieldLabel="Dependencies"
           selectLabel="Add dependence"
           buttonVariant="blue"
+          rules={requiredRule}
         />
       </div>
       <div className="flex flex-col gap-[23px] mt-[25px]">
@@ -398,6 +427,15 @@ export const SettingsStep = () => {
           );
         })}
       </div>
-    </>
+      <FormButton
+        className="mt-5"
+        disabled={isPending}
+        type="submit"
+        isLoading={isPending}
+        loadingText="Saving..."
+      >
+        Save
+      </FormButton>
+    </form>
   );
 };

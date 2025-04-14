@@ -6,6 +6,12 @@ import {
   Template,
   CheckTemplateNameDto,
 } from '@globalTypes/templates';
+import {
+  TemplateDockerImage,
+  TemplateInfo,
+  TemplateSettings,
+} from '@globalTypes/templates.draft';
+import { DraftTemplateResponse } from '@globalTypes/templates.draft.get';
 
 export const createNamespace = 'NamespacesManager/CreateNamespace';
 
@@ -24,6 +30,29 @@ export const getTemplates: ApiRequest<
   GetTemplatesDto
 > = {
   endpoint: 'TemplateHubService/ListTemplates',
+};
+
+export const createTemplateDraft: ApiRequest<{ id: string }> = {
+  endpoint: 'TemplateHubService/CreateDraft',
+};
+
+export const getTemplateDraft: ApiRequest<
+  DraftTemplateResponse,
+  { id: string }
+> = {
+  endpoint: 'TemplateHubService/GetTemplate',
+};
+
+export const saveTemplateDraftInfo: ApiRequest<object, TemplateInfo> = {
+  endpoint: 'TemplateHubService/UpdateInfo',
+};
+
+export const saveTemplateDraftImage: ApiRequest<object, TemplateDockerImage> = {
+  endpoint: 'TemplateHubService/UpdateImage',
+};
+
+export const saveTemplateDraftSettings: ApiRequest<object, TemplateSettings> = {
+  endpoint: 'TemplateHubService/UpdateSettings',
 };
 
 export const getTemplateFilters: ApiRequest<GetTemplateFiltersResponse> = {

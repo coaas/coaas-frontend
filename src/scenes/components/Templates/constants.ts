@@ -1,10 +1,11 @@
 export const templateTypes = [
-  { key: 'managed', value: 0 },
-  { key: 'custom', value: 1 },
+  { key: 0, value: 'managed' },
+  { key: 1, value: 'custom' },
 ];
 
 export const templateStatus = [
-  { key: 'OFFICIAL', value: 0 },
-  { key: 'VERIFIED', value: 1 },
-  { key: 'COMMUNITY', value: 2 },
+  { key: 0, value: 'OFFICIAL' },
+  { key: 1, value: 'VERIFIED' },
+  { key: 2, value: 'COMMUNITY' },
 ];
+// чтоб не путаться : будет изменено когда бек поменяет нейминг.

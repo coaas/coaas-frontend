@@ -1,4 +1,14 @@
-export interface TemplateInfo {
+export interface State {
+  state: StateType;
+  id: string;
+}
+
+export enum StateType {
+  draft = 0,
+  edit = 1,
+}
+
+export interface TemplateInfo extends State {
   name: string;
   description: string;
   docs: string;
@@ -6,12 +16,15 @@ export interface TemplateInfo {
   languages: string[];
 }
 
-export interface TemplateDockerImage {
+export interface TemplateDockerImage extends State {
   type: TemplateType;
-  state: number;
-  id: string;
   managed?: Managed;
   custom?: Custom;
+}
+
+export interface TemplateSettings extends State {
+  settings: Settings;
+  dependencies: string[];
 }
 
 export const enum TemplateType {
@@ -35,12 +48,7 @@ export interface Dockerfiles {
   production: string;
 }
 
-export interface TemplateSettings {
-  settings: Settings;
-  dependencies: string[];
-}
-
-interface Settings {
+export interface Settings {
   secrets: Secret[];
   configs: Config[];
   env_vars: EnvVar[];
@@ -121,11 +129,11 @@ export interface RollbackConfig {
 
 export interface Mapper {
   type: number;
-  custom: Custom2;
+  custom: CustomMapper;
   external: External;
 }
 
-export interface Custom2 {
+export interface CustomMapper {
   blocks: Block[];
 }
 

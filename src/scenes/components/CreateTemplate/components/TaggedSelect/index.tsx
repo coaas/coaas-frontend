@@ -1,4 +1,10 @@
-import { Control, FieldValues, Path, useController } from 'react-hook-form';
+import {
+  Control,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  useController,
+} from 'react-hook-form';
 
 import { FormField } from '../FormField';
 import { Select } from '@components/Select';
@@ -12,7 +18,10 @@ interface Props<T extends FieldValues> {
   name: Path<T>;
   options: Option<string | number>[];
   className?: string;
-  rules?: { required: string };
+  rules?: Omit<
+    RegisterOptions<T>,
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+  >;
   buttonVariant?: ButtonVariant;
 }
 
