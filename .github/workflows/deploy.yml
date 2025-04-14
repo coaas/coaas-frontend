@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run: |
+          echo "${{ secrets.FRONTEND_PROD_ENV }}" > .env
           docker build -t ghcr.io/coaas/coaas-frontend:${{ github.sha }} .
           docker push ghcr.io/coaas/coaas-frontend:${{ github.sha }}
       - name: Send webhook notification
