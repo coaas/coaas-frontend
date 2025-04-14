@@ -11,7 +11,13 @@ import { Namespace } from './components/Namespace';
 import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { RouteMap } from '@components/Layout/components/types';
-import { CreateTemplate } from './components/CreateTemplate';
+import {
+  CreateTemplateLayout,
+  DockerImageStep,
+  MapperStep,
+  SettingsStep,
+} from './components/CreateTemplate';
+import { InfoStep } from './components/CreateTemplate/widgets/InfoStep';
 
 export const routes = [
   {
@@ -34,18 +40,32 @@ export const routes = [
         element: <Projects />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects/create',
+        path: RouteMap.createProject,
         element: <CreateProject />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects/:project_slug',
+        path: RouteMap.project,
         element: <Project />,
       },
       {
         path: RouteMap.templates,
         element: <Templates />,
       },
-      { path: RouteMap.templatesCreate, element: <CreateTemplate /> },
+      {
+        element: <CreateTemplateLayout />,
+        children: [
+          { path: RouteMap.templatesCreateStepInfo, element: <InfoStep /> },
+          {
+            path: RouteMap.templatesCreateStepImage,
+            element: <DockerImageStep />,
+          },
+          {
+            path: RouteMap.templatesCreateStepSettings,
+            element: <SettingsStep />,
+          },
+          { path: RouteMap.templatesCreateStepMapper, element: <MapperStep /> },
+        ],
+      },
       {
         path: RouteMap.login,
         element: <Login />,

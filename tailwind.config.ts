@@ -45,6 +45,7 @@ export default {
       black: '#000',
       white: '#FFFFFF',
       gray: '#B6B6B6',
+      grayLighter: '#B6B6B61F',
       transparent: 'transparent',
       neutral: {
         '50': '#fafafa',

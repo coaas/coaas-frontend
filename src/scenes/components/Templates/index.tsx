@@ -126,7 +126,7 @@ export const Templates = () => {
           ),
         )}
       </div>
-      <Link className="block mt-[14px]" to={RouteMap.templatesCreate}>
+      <Link className="block mt-[14px]" to={RouteMap.templatesCreateStepInfo}>
         <Button>Create template</Button>
       </Link>
       <TemplatesList
