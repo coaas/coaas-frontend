@@ -6,11 +6,12 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const { VITE_API_HREF, VITE_API_AUTH_HREF } = loadEnv(mode, process.cwd());
 
+  console.log('mode === \'development\', VITE_API_HREF', mode === 'development', VITE_API_HREF);
   return {
     server: {
       port: 3000,
       proxy:
-        (mode === 'development' && {
+        mode === 'development' ? {
           '/api': {
             target: `${VITE_API_HREF}/api`,
             changeOrigin: true,
@@ -65,8 +66,8 @@ export default defineConfig(({ mode }) => {
               });
             },
           },
-        }) ||
-        undefined,
+        } : undefined,
+      host: "0.0.0.0"
     },
     resolve: {
       alias: {
