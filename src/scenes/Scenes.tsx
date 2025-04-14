@@ -52,8 +52,8 @@ export const routes = [
       },
       {
         path: RouteMap.register,
-        element: <RegisterForm />
-      }
+        element: <RegisterForm />,
+      },
     ],
   },
 ];
