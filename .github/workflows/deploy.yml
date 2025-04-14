@@ -23,7 +23,9 @@ jobs:
         run: |
           echo "${{ secrets.FRONTEND_PROD_ENV }}" > .env
           docker build -t ghcr.io/coaas/coaas-frontend:${{ github.sha }} .
+          docker tag ghcr.io/coaas/coaas-frontend:${{ github.sha }} ghcr.io/coaas/coaas-frontend:latest
           docker push ghcr.io/coaas/coaas-frontend:${{ github.sha }}
+          docker push ghcr.io/coaas/coaas-frontend:latest
       - name: Send webhook notification
         run: |
           curl -X POST "${{ secrets.FRONTENDDEPLOYWEBHOOK }}"
