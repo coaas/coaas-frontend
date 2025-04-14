@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { CreateProject, Namespaces } from './components';
 import { Login } from './components/Login';
+import { RegisterForm } from './components/RegisterForm';
 import { Layout } from '@components/Layout';
 import { Home } from './components/Home';
 import { Templates } from './components/Templates';
@@ -48,6 +49,10 @@ export const routes = [
       {
         path: RouteMap.login,
         element: <Login />,
+      },
+      {
+        path: RouteMap.register,
+        element: <RegisterForm />,
       },
     ],
   },

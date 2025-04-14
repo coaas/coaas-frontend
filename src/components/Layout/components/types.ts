@@ -1,6 +1,7 @@
 export const enum RouteMap {
   home = '/',
   login = '/login',
+  register = '/register',
   namespaces = '/namespaces',
   namespace = '/namespaces/:namespace_slug',
   templates = '/templates',
