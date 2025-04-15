@@ -4,9 +4,8 @@ import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const { VITE_API_HREF, VITE_API_AUTH_HREF } = loadEnv(mode, process.cwd());
+  const { VITE_API_HREF, VITE_API_AUTH_HREF, VITE_ORIGIN } = loadEnv(mode, process.cwd());
 
-  console.log('mode === \'development\', VITE_API_HREF', mode === 'development', VITE_API_HREF);
   return {
     server: {
       port: 3000,
@@ -67,7 +66,10 @@ export default defineConfig(({ mode }) => {
             },
           },
         } : undefined,
-      host: "0.0.0.0"
+      host: "0.0.0.0",
+      allowedHosts: [
+        VITE_ORIGIN
+      ]
     },
     resolve: {
       alias: {
