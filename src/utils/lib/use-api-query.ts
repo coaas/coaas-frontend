@@ -52,9 +52,9 @@ export const useInfiniteApiQuery = <
     initialPageParam: null,
     queryFn: ({ pageParam }) => {
       const requestPayload = {
-        ...payload,
         after_key: pageParam,
         limit: 20,
+        ...payload,
       };
 
       return api(endpoint, { method, json: requestPayload }).json<TData>();

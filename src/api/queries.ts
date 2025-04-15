@@ -6,13 +6,13 @@ import {
   Template,
 } from '@globalTypes/templates';
 import {
-  TemplateDockerImage,
-  TemplateInfo,
+  TemplateDockerImageDto,
+  TemplateInfoForm,
   TemplateSettings,
 } from '@globalTypes/templates.draft';
 import {
   DependencyResponse,
-  DraftTemplateResponse,
+  GetDraftTemplateResponse,
   GetDependenciesDto,
 } from '@globalTypes/templates.draft.get';
 
@@ -38,17 +38,20 @@ export const createTemplateDraft: ApiRequest<{ id: string }> = {
 };
 
 export const getTemplateDraft: ApiRequest<
-  DraftTemplateResponse,
+  GetDraftTemplateResponse,
   { id: string }
 > = {
   endpoint: 'TemplateHubService/GetTemplateDraft',
 };
 
-export const saveTemplateDraftInfo: ApiRequest<object, TemplateInfo> = {
+export const saveTemplateDraftInfo: ApiRequest<object, TemplateInfoForm> = {
   endpoint: 'TemplateHubService/UpdateInfo',
 };
 
-export const saveTemplateDraftImage: ApiRequest<object, TemplateDockerImage> = {
+export const saveTemplateDraftImage: ApiRequest<
+  object,
+  TemplateDockerImageDto
+> = {
   endpoint: 'TemplateHubService/UpdateImage',
 };
 

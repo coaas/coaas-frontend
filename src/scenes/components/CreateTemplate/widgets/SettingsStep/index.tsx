@@ -1,96 +1,25 @@
-import { Controller, useForm } from 'react-hook-form';
-import { ArrayField } from '../../components/ArrayField';
-import { Input } from '@components/Input';
-import {
-  conditionItems,
-  failureActionItems,
-  numberRule,
-  orderItems,
-  requiredRule,
-} from '../../constants';
-import { DeleteButton } from '../../components/ArrayField/delete-button';
-import { TaggedSelect } from '../../components/TaggedSelect';
-import { FormField } from '../../components/FormField';
-import { Select } from '@components/Select';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { StateType, TemplateSettingsForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
-import { useApiMutation, useApiQuery } from '@utils/lib/use-api-query';
-import {
-  getTemplateDependencies,
-  saveTemplateDraftSettings,
-} from '@api/queries';
-import { useState } from 'react';
+import { useApiMutation } from '@utils/lib/use-api-query';
+import { getTemplateDraft, saveTemplateDraftSettings } from '@api/queries';
 import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
-import { TaggedInput } from '../../components/TaggedInput';
-
-const healthCheckFields = [
-  { label: 'Test', name: 'test', asNumber: false },
-  { label: 'Interval', name: 'interval', asNumber: true },
-  { label: 'Timeout', name: 'timeout', asNumber: true },
-  { label: 'Retries', name: 'retries', asNumber: true },
-  { label: 'Start period', name: 'start_period', asNumber: true },
-] as const;
-
-const restartPolicyFields = [
-  {
-    label: 'Condition',
-    name: 'condition',
-    asNumber: true,
-    items: conditionItems,
-  },
-  { label: 'Delay', name: 'delay', asNumber: true },
-  { label: 'Max attempts', name: 'max_attempts', asNumber: true },
-  { label: 'Window', name: 'window', asNumber: true },
-] as const;
-
-const configItems = [
-  { label: 'Parallelism', name: 'parallelism', asNumber: true },
-  { label: 'Delay', name: 'delay', asNumber: true },
-  { label: 'Monitor', name: 'monitor', asNumber: true },
-  { label: 'Max failure ratio', name: 'max_failure_ratio', asNumber: true },
-  { label: 'Order', name: 'order', asNumber: true, items: orderItems },
-  {
-    label: 'Failure action',
-    name: 'failure_action',
-    asNumber: true,
-    items: failureActionItems,
-  },
-] as const;
+import { useDefaultValues } from '../../lib/use-default-values';
+import { DeploySettings, HealthCheck, SettingsVariables } from './Bloks';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const SettingsStep = () => {
-  const [dependencySearch, setDependencySearch] = useState('');
-
-  const { data: templateDependencies } = useApiQuery({
-    request: getTemplateDependencies,
-    payload: { limit: 10, name: dependencySearch },
-  });
-
   const { draftId } = useDraftIdStorage();
+  const queryClient = useQueryClient();
 
-  const dependencies =
-    templateDependencies?.templates?.map(({ id, name }) => ({
-      label: name,
-      value: id,
-    })) || [];
-
-  // const { data: draftResponse } = useApiQuery({ ждем нормальную ручку с бека)
-  //   request: getTemplateDraft,
-  //   payload: { id: storedDraftId },
-  // });
-
+  const defaultValues = useDefaultValues(draftId)?.draftSettings;
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftSettings,
   });
 
-  // const defaultValues = draftResponse?.settings;
-
-  const {
-    control,
-    formState: { errors },
-    register,
-    handleSubmit,
-  } = useForm<TemplateSettingsForm>({
-    defaultValues: {
+  const methods = useForm<TemplateSettingsForm>({
+    defaultValues: defaultValues || {
       id: draftId || '',
       state: StateType.draft,
       settings: {
@@ -134,339 +63,40 @@ export const SettingsStep = () => {
     },
   });
 
+  const { handleSubmit } = methods;
+
   const onSubmit = handleSubmit(data => {
     const { settings, ...restData } = data;
     const { ports, ...restSettings } = settings;
-    mutate({
-      ...restData,
-      settings: { ...restSettings, ports: ports.map(({ name }) => name) },
-    });
+    mutate(
+      {
+        ...restData,
+        settings: { ...restSettings, ports: ports.map(({ name }) => name) },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [getTemplateDraft] });
+        },
+      },
+    );
   });
 
   return (
-    <form onSubmit={onSubmit} className="mt-[25px]">
-      <div className="flex flex-col gap-[23px]">
-        <h4 className="text-xl font-semibold font-inter text-white">
-          Settings
-        </h4>
-        <ArrayField
-          label="Secrets"
-          control={control}
-          name="settings.secrets"
-          btnLabel="Add secret"
-          defaultValue={{ name: '' }}
-          error={errors.settings?.secrets?.root?.message}
-          renderField={(field, remove, index) => (
-            <div className="flex gap-[10px]" key={field.id}>
-              <Input
-                className="max-h-9"
-                {...register(`settings.secrets.${index}.name`, requiredRule)}
-              />
-              <DeleteButton
-                onClick={() => remove(index)}
-                disabled={index === 0}
-              />
-            </div>
-          )}
-        />
-        <ArrayField
-          label="Configs"
-          control={control}
-          name="settings.configs"
-          btnLabel="Add config"
-          defaultValue={{ path: '' }}
-          error={errors.settings?.configs?.root?.message}
-          renderField={(field, remove, index) => (
-            <div className="flex gap-[10px]" key={field.id}>
-              <Input
-                className="max-h-9"
-                {...register(`settings.configs.${index}.path`, requiredRule)}
-              />
-              <DeleteButton
-                onClick={() => remove(index)}
-                disabled={index === 0}
-              />
-            </div>
-          )}
-        />
-        <ArrayField
-          label="Env variables"
-          control={control}
-          name="settings.env_vars"
-          btnLabel="Add var"
-          defaultValue={{ key: '', value: '' }}
-          error={errors.settings?.env_vars?.root?.message}
-          renderField={(field, remove, index) => (
-            <div className="flex gap-[10px]" key={field.id}>
-              <Input
-                className="max-h-9"
-                {...register(`settings.env_vars.${index}.key`, requiredRule)}
-              />
-              <span className="self-center text-white text-sm leading-6">
-                =
-              </span>
-              <Input
-                className="max-h-9"
-                {...register(`settings.env_vars.${index}.value`, requiredRule)}
-              />
-              <DeleteButton
-                onClick={() => remove(index)}
-                disabled={index === 0}
-              />
-            </div>
-          )}
+    <FormProvider {...methods}>
+      <form onSubmit={onSubmit} className="mt-[25px]">
+        <SettingsVariables />
+        <HealthCheck />
+        <DeploySettings />
+        <FormButton
+          className="mt-5"
+          disabled={isPending}
+          type="submit"
+          isLoading={isPending}
+          loadingText="Saving..."
         >
-          <label className="cursor-pointer rounded-md w-full max-w-[157px] text-sm flex items-center justify-center bg-stroke-gray text-white font-medium py-1">
-            Import .env
-            <input type="file" className="hidden" />
-          </label>
-        </ArrayField>
-        <ArrayField
-          label="Ports"
-          control={control}
-          name="settings.ports"
-          btnLabel="Add port"
-          defaultValue={{ name: '' }}
-          error={errors.settings?.ports?.root?.message}
-          fieldsWrapperStyles="flex-row flex-wrap"
-          renderField={(field, remove, index) => (
-            <TaggedInput
-              key={field.id}
-              error={errors.settings?.ports?.[index]?.name?.message}
-              {...register(`settings.ports.${index}.name`, {
-                ...requiredRule,
-                ...numberRule,
-              })}
-              onDelete={() => remove(index)}
-            />
-          )}
-        />
-        <TaggedSelect
-          options={dependencies}
-          onSearch={setDependencySearch}
-          control={control}
-          name="dependencies"
-          fieldLabel="Dependencies"
-          selectLabel="Add dependence"
-          buttonVariant="blue"
-          rules={requiredRule}
-        />
-      </div>
-      <div className="flex flex-col gap-[23px] mt-[25px]">
-        <h4 className="text-xl font-semibold font-inter text-white">
-          Healthcheck
-        </h4>
-        {healthCheckFields.map(({ label, name, asNumber }, key) => (
-          <FormField
-            key={key}
-            clickable
-            error={errors?.settings?.health_check?.[name]?.message}
-            label={label}
-          >
-            {error => (
-              <Input
-                {...register(`settings.health_check.${name}`, {
-                  ...requiredRule,
-                  ...(asNumber ? numberRule : undefined),
-                  ...(asNumber ? { asNumber: true } : undefined),
-                })}
-                invalid={Boolean(error)}
-              />
-            )}
-          </FormField>
-        ))}
-      </div>
-      <div className="flex flex-col gap-5 mt-[25px]">
-        <h4 className="text-xl font-semibold font-inter text-white">
-          Deploy Settings
-        </h4>
-        <h3 className="text-[18] font-semibold font-inter text-white">
-          Restart Policy
-        </h3>
-        {restartPolicyFields.map((field, key) => {
-          const { label, name, asNumber } = field;
-
-          return 'items' in field ? (
-            <Controller
-              key={key}
-              control={control}
-              rules={requiredRule}
-              name={`settings.deployment.restart_policy.${name}`}
-              render={({
-                field: { onChange, value: fieldValue },
-                fieldState,
-              }) => {
-                const defaultItem = field.items.find(
-                  ({ value }) => value === fieldValue,
-                );
-
-                return (
-                  <FormField label={label} error={fieldState.error?.message}>
-                    {() => (
-                      <Select
-                        className="[&_label]:m-0"
-                        variant="formView"
-                        options={field.items}
-                        onOptionChange={({ value }) => onChange(value)}
-                        withChevron
-                        defaultValue={defaultItem ? [defaultItem.value] : []}
-                        defaultLabel={defaultItem?.label}
-                      />
-                    )}
-                  </FormField>
-                );
-              }}
-            />
-          ) : (
-            <FormField
-              key={key}
-              clickable
-              error={
-                errors?.settings?.deployment?.restart_policy?.[name]?.message
-              }
-              label={label}
-            >
-              {error => (
-                <Input
-                  {...register(`settings.deployment.restart_policy.${name}`, {
-                    ...requiredRule,
-                    ...(asNumber ? numberRule : undefined),
-                    ...(asNumber ? { asNumber: true } : undefined),
-                  })}
-                  invalid={Boolean(error)}
-                />
-              )}
-            </FormField>
-          );
-        })}
-        <h3 className="text-[18] font-semibold font-inter text-white">
-          Update config
-        </h3>
-        {configItems.map((field, key) => {
-          const { label, name, asNumber } = field;
-
-          return 'items' in field ? (
-            <Controller
-              key={key}
-              control={control}
-              rules={requiredRule}
-              name={`settings.deployment.update_config.${name}`}
-              render={({
-                field: { onChange, value: fieldValue },
-                fieldState,
-              }) => {
-                const defaultItem = field.items.find(
-                  ({ value }) => value === fieldValue,
-                );
-
-                return (
-                  <FormField label={label} error={fieldState.error?.message}>
-                    {() => (
-                      <Select
-                        className="[&_label]:m-0"
-                        variant="formView"
-                        options={field.items}
-                        onOptionChange={({ value }) => onChange(value)}
-                        withChevron
-                        defaultValue={defaultItem ? [defaultItem.value] : []}
-                        defaultLabel={defaultItem?.label}
-                      />
-                    )}
-                  </FormField>
-                );
-              }}
-            />
-          ) : (
-            <FormField
-              key={key}
-              clickable
-              error={
-                errors?.settings?.deployment?.update_config?.[name]?.message
-              }
-              label={label}
-            >
-              {error => (
-                <Input
-                  {...register(`settings.deployment.update_config.${name}`, {
-                    ...requiredRule,
-                    ...(asNumber ? numberRule : undefined),
-                    ...(asNumber ? { asNumber: true } : undefined),
-                  })}
-                  invalid={Boolean(error)}
-                />
-              )}
-            </FormField>
-          );
-        })}
-        <h3 className="text-[18] font-semibold font-inter text-white">
-          Rollback config
-        </h3>
-        {configItems.map((field, key) => {
-          const { label, name, asNumber } = field;
-
-          return 'items' in field ? (
-            <Controller
-              key={key}
-              control={control}
-              rules={requiredRule}
-              name={`settings.deployment.rollback_config.${name}`}
-              render={({
-                field: { onChange, value: fieldValue },
-                fieldState,
-              }) => {
-                const defaultItem = field.items.find(
-                  ({ value }) => value === fieldValue,
-                );
-
-                return (
-                  <FormField label={label} error={fieldState.error?.message}>
-                    {() => (
-                      <Select
-                        className="[&_label]:m-0"
-                        variant="formView"
-                        options={field.items}
-                        onOptionChange={({ value }) => onChange(value)}
-                        withChevron
-                        defaultValue={defaultItem ? [defaultItem.value] : []}
-                        defaultLabel={defaultItem?.label}
-                      />
-                    )}
-                  </FormField>
-                );
-              }}
-            />
-          ) : (
-            <FormField
-              key={key}
-              clickable
-              error={
-                errors?.settings?.deployment?.rollback_config?.[name]?.message
-              }
-              label={label}
-            >
-              {error => (
-                <Input
-                  {...register(`settings.deployment.rollback_config.${name}`, {
-                    ...requiredRule,
-                    ...(asNumber ? numberRule : undefined),
-                    ...(asNumber ? { asNumber: true } : undefined),
-                  })}
-                  invalid={Boolean(error)}
-                />
-              )}
-            </FormField>
-          );
-        })}
-      </div>
-      <FormButton
-        className="mt-5"
-        disabled={isPending}
-        type="submit"
-        isLoading={isPending}
-        loadingText="Saving..."
-      >
-        Save
-      </FormButton>
-    </form>
+          Save
+        </FormButton>
+      </form>
+    </FormProvider>
   );
 };

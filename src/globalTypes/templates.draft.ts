@@ -8,7 +8,7 @@ export enum StateType {
   edit = 1,
 }
 
-export interface TemplateInfo extends State {
+export interface TemplateInfoForm extends State {
   name: string;
   description: string;
   docs: string;
@@ -16,7 +16,7 @@ export interface TemplateInfo extends State {
   languages: string[];
 }
 
-export interface TemplateDockerImage extends State {
+export interface TemplateDockerImageDto extends State {
   type: TemplateType;
   managed?: Managed;
   custom?: Custom;

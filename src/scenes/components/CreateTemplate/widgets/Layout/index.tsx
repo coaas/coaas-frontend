@@ -10,6 +10,7 @@ export const CreateTemplateLayout = () => {
   const { isLoading: draftDataLoading } = useApiQuery({
     request: getTemplateDraft,
     payload: { id: draftId },
+    options: { retry: retryCount => retryCount < 5 },
   });
 
   return (

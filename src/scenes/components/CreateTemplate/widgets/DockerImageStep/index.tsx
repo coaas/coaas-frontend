@@ -17,15 +17,13 @@ import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
 import { ArrayField } from '../../components/ArrayField';
 import { TaggedInput } from '../../components/TaggedInput';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDefaultValues } from '../../lib/use-default-values';
 
 export const DockerImageStep = () => {
   const { draftId } = useDraftIdStorage();
   const queryClient = useQueryClient();
 
-  // const { data } = useApiQuery({
-  //   request: getTemplateDraft,
-  //   payload: { id: draftId },
-  // });
+  const defaultValues = useDefaultValues(draftId)?.dockerImage;
 
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftImage,
@@ -37,7 +35,7 @@ export const DockerImageStep = () => {
     register,
     handleSubmit,
   } = useForm<TemplateDockerImageForm>({
-    defaultValues: {
+    defaultValues: defaultValues || {
       id: draftId || '',
       state: StateType.draft,
       type: TemplateType.managed,

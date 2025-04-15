@@ -33,21 +33,3 @@ export const InfoTabsData = [
   { id: '0', label: 'Managed', value: 0 },
   { id: '1', label: 'Custom', value: 1 },
 ];
-
-export const conditionItems = [
-  { label: 'Any', value: 0 },
-  { label: 'On-failure', value: 1 },
-  { label: 'Always', value: 2 },
-  { label: 'Unless-stopped', value: 3 },
-];
-
-export const orderItems = [
-  { label: 'Stop first', value: 0 },
-  { label: 'Stop last', value: 1 },
-];
-
-export const failureActionItems = [
-  { label: 'Pause', value: 0 },
-  { label: 'Stop', value: 1 },
-  { label: 'RmRF', value: 2 },
-];
