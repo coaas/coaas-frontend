@@ -4,16 +4,17 @@ import {
   GetTemplatesDto,
   UploadArchiveDto,
   Template,
-  CheckTemplateNameDto,
 } from '@globalTypes/templates';
 import {
   TemplateDockerImage,
   TemplateInfo,
   TemplateSettings,
 } from '@globalTypes/templates.draft';
-import { DraftTemplateResponse } from '@globalTypes/templates.draft.get';
-
-export const createNamespace = 'NamespacesManager/CreateNamespace';
+import {
+  DependencyResponse,
+  DraftTemplateResponse,
+  GetDependenciesDto,
+} from '@globalTypes/templates.draft.get';
 
 export const getUserNamespacesAndProjects: ApiRequest<{
   namespaces: NamespaceWithProject;
@@ -40,7 +41,7 @@ export const getTemplateDraft: ApiRequest<
   DraftTemplateResponse,
   { id: string }
 > = {
-  endpoint: 'TemplateHubService/GetTemplate',
+  endpoint: 'TemplateHubService/GetTemplateDraft',
 };
 
 export const saveTemplateDraftInfo: ApiRequest<object, TemplateInfo> = {
@@ -64,9 +65,16 @@ export const uploadTemplatesHubArchive: ApiRequest<
   UploadArchiveDto
 > = { endpoint: 'TemplateHubService/UploadArchive' };
 
-export const checkTemplatesNameExistence: ApiRequest<
-  object,
-  CheckTemplateNameDto
+export const checkTemplateNameExistence: ApiRequest<
+  DependencyResponse,
+  GetDependenciesDto
+> = {
+  endpoint: 'TemplateHubService/SearchTemplatesByName',
+};
+
+export const getTemplateDependencies: ApiRequest<
+  DependencyResponse,
+  GetDependenciesDto
 > = {
   endpoint: 'TemplateHubService/SearchTemplatesByName',
 };

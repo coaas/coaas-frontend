@@ -11,17 +11,20 @@ import {
   saveTemplateDraftInfo,
 } from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
-import { TemplateNameField } from './template-name-field';
-import { DraftIdService } from '../../lib/draft-id-service';
+
 import { StateType, TemplateInfo } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
+import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const InfoStep = () => {
-  const storedDraftId = DraftIdService.getId();
+  const { draftId } = useDraftIdStorage();
+
+  const queryClient = useQueryClient();
 
   const { data: draftResponse } = useApiQuery({
     request: getTemplateDraft,
-    payload: { id: storedDraftId },
+    payload: { id: draftId },
   });
 
   const defaultValues = draftResponse?.info;
@@ -38,11 +41,10 @@ export const InfoStep = () => {
     formState: { errors },
     register,
     control,
-    setError,
     handleSubmit,
   } = useForm<TemplateInfo>({
     defaultValues: defaultValues || {
-      id: storedDraftId || '',
+      id: draftId || '',
       state: StateType.draft,
       name: '',
       categories: [],
@@ -52,16 +54,22 @@ export const InfoStep = () => {
 
   const onSubmit = handleSubmit(data => {
     //Захендлить все ошибки, , отобразить нотификейшены.
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [getTemplateDraft.endpoint],
+        });
+      },
+    });
   });
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <TemplateNameField
-        control={control}
-        name="name"
-        onError={message => setError('name', { message })}
-      />
+      <FormField clickable error={errors.name?.message} label="Name">
+        {error => (
+          <Input {...register('name', requiredRule)} invalid={Boolean(error)} />
+        )}
+      </FormField>
       <FormField
         clickable
         error={errors.description?.message}

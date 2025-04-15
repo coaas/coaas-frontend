@@ -1,33 +1,31 @@
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
-import { requiredRule, InfoTabsData, versions } from '../../constants';
+import { requiredRule, InfoTabsData } from '../../constants';
 import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
-
-import { TaggedSelect } from '../../components/TaggedSelect';
 import { FileInput } from '../../components/InputFile';
 import {
   StateType,
-  TemplateDockerImage,
+  TemplateDockerImageForm,
   TemplateType,
 } from '@globalTypes/templates.draft';
-import { DraftIdService } from '../../lib/draft-id-service';
+
 import { useApiMutation } from '@utils/lib/use-api-query';
-import { saveTemplateDraftImage } from '@api/queries';
+import { getTemplateDraft, saveTemplateDraftImage } from '@api/queries';
 import { FormButton } from '../../components/FormButton';
+import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
+import { ArrayField } from '../../components/ArrayField';
+import { TaggedInput } from '../../components/TaggedInput';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const DockerImageStep = () => {
-  const storedDraftId = DraftIdService.getId();
+  const { draftId } = useDraftIdStorage();
+  const queryClient = useQueryClient();
 
-  // const { data: draftResponse } = useApiQuery({
+  // const { data } = useApiQuery({
   //   request: getTemplateDraft,
-  //   payload: { id: storedDraftId },
+  //   payload: { id: draftId },
   // });
-
-  // const managedImage = draftResponse?.managed;   жду нормальной даты с бека для дефолтных значений.
-  // const customImage = draftResponse?.custom
-
-  // const defaultValues =
 
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftImage,
@@ -38,16 +36,33 @@ export const DockerImageStep = () => {
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm<TemplateDockerImage>({
+  } = useForm<TemplateDockerImageForm>({
     defaultValues: {
-      id: storedDraftId || '',
+      id: draftId || '',
       state: StateType.draft,
       type: TemplateType.managed,
-      managed: { versions: ['latest'] },
+      managed: { versions: [{ name: 'latest' }] },
     },
   });
 
-  const onSubmit = handleSubmit(dto => mutate(dto));
+  const onSubmit = handleSubmit(data => {
+    const { managed, ...restData } = data;
+
+    mutate(
+      {
+        ...restData,
+        managed: {
+          url: managed?.url || '',
+          versions: (managed?.versions || []).map(({ name }) => name),
+        },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [getTemplateDraft] });
+        },
+      },
+    );
+  });
 
   const selectedType = useWatch({ control, name: 'type' });
 
@@ -64,6 +79,7 @@ export const DockerImageStep = () => {
             currentTab={
               InfoTabsData.find(tab => tab.value === value) || InfoTabsData[0]
             }
+            disabled={tabId => tabId === InfoTabsData[1].id}
             onTabChange={({ value }) => onChange(value)}
             tabs={InfoTabsData}
           />
@@ -87,13 +103,24 @@ export const DockerImageStep = () => {
               />
             )}
           </FormField>
-          <TaggedSelect
-            options={versions}
+          <ArrayField
+            label="Versions"
             control={control}
             name="managed.versions"
-            fieldLabel="Versions"
-            selectLabel="Add version"
-            rules={requiredRule}
+            btnLabel="Add version"
+            defaultValue={{ name: '' }}
+            error={errors.managed?.root?.message}
+            fieldsWrapperStyles="flex-row flex-wrap"
+            renderField={(field, remove, index) => (
+              <TaggedInput
+                key={field.id}
+                error={errors.managed?.versions?.[index]?.name?.message}
+                {...register(`managed.versions.${index}.name`, {
+                  ...requiredRule,
+                })}
+                onDelete={() => remove(index)}
+              />
+            )}
           />
         </div>
       )}

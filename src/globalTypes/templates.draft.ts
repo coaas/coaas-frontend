@@ -22,6 +22,17 @@ export interface TemplateDockerImage extends State {
   custom?: Custom;
 }
 
+export interface TemplateDockerImageForm extends State {
+  type: TemplateType;
+  managed?: ManagedForm;
+  custom?: Custom;
+}
+
+export interface TemplateSettingsForm extends State {
+  settings: SettingsForm;
+  dependencies: string[];
+}
+
 export interface TemplateSettings extends State {
   settings: Settings;
   dependencies: string[];
@@ -30,6 +41,15 @@ export interface TemplateSettings extends State {
 export const enum TemplateType {
   managed = 0,
   custom = 1,
+}
+
+export interface ManagedForm {
+  url: string;
+  versions: Version[];
+}
+
+export interface Version {
+  name: string;
 }
 
 export interface Managed {
@@ -48,6 +68,15 @@ export interface Dockerfiles {
   production: string;
 }
 
+export interface SettingsForm {
+  secrets: Secret[];
+  configs: Config[];
+  env_vars: EnvVar[];
+  ports: Port[];
+  outputs: Outputs;
+  health_check: HealthCheck;
+  deployment: Deployment;
+}
 export interface Settings {
   secrets: Secret[];
   configs: Config[];
@@ -69,6 +98,10 @@ export interface Config {
 export interface EnvVar {
   key: string;
   value: string;
+}
+
+export interface Port {
+  name: string;
 }
 
 export interface Outputs {

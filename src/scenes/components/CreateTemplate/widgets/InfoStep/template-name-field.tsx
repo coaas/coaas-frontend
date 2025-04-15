@@ -1,4 +1,4 @@
-import { checkTemplatesNameExistence } from '@api/queries';
+import { checkTemplateNameExistence } from '@api/queries';
 import { useApiMutation } from '@utils/lib/use-api-query';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { FormField } from '../../components/FormField';
@@ -7,7 +7,9 @@ import debounce from 'debounce';
 import { ChangeEvent, useCallback } from 'react';
 import { requiredRule } from '../../constants';
 import { cn } from '@utils/styles';
-import { CheckTemplateNameDto } from '@globalTypes/templates';
+import { GetDependenciesDto } from '@globalTypes/templates.draft.get';
+
+// Компонент на будущее (если вдруг будем проверять уникальность имени шаблона)
 
 interface Props<T extends FieldValues> {
   control: Control<T>;
@@ -26,12 +28,12 @@ export const TemplateNameField = <T extends FieldValues>({
   } = useController({ control, name, rules: requiredRule });
 
   const { mutate, isPending } = useApiMutation({
-    request: checkTemplatesNameExistence,
+    request: checkTemplateNameExistence,
     options: { onError: error => onError(error.message) },
   });
 
   const debouncedMutate = useCallback(
-    (dto: CheckTemplateNameDto) => debounce(() => mutate(dto), 500),
+    (dto: GetDependenciesDto) => debounce(() => mutate(dto), 500),
     [mutate],
   );
 

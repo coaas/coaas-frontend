@@ -23,6 +23,7 @@ interface Props<T extends FieldValues> {
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >;
   buttonVariant?: ButtonVariant;
+  onSearch?: (value: string) => void;
 }
 
 export const TaggedSelect = <T extends FieldValues>({
@@ -34,6 +35,7 @@ export const TaggedSelect = <T extends FieldValues>({
   className,
   rules,
   buttonVariant,
+  onSearch,
 }: Props<T>) => {
   const {
     field: { value, onChange },
@@ -64,6 +66,7 @@ export const TaggedSelect = <T extends FieldValues>({
             defaultLabel={selectLabel}
             multiple
             withSearch
+            onSearchChange={onSearch}
             variant="formView"
           >
             {(options, setSelectItems) => (

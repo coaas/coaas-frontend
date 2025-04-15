@@ -9,6 +9,7 @@ import {
 } from 'react-hook-form';
 import { FormField } from '../FormField';
 import { ReactNode } from 'react';
+import { cn } from '@utils/styles';
 
 interface ArrayFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -23,6 +24,7 @@ interface ArrayFieldProps<T extends FieldValues> {
   ) => ReactNode;
   defaultValue: FieldArray<T, ArrayPath<T>> | FieldArray<T, ArrayPath<T>>[];
   children?: ReactNode;
+  fieldsWrapperStyles?: string;
 }
 
 export const ArrayField = <T extends FieldValues>({
@@ -34,6 +36,7 @@ export const ArrayField = <T extends FieldValues>({
   btnLabel,
   error,
   children,
+  fieldsWrapperStyles,
 }: ArrayFieldProps<T>) => {
   const { append, fields, remove } = useFieldArray({
     name: name,
@@ -47,7 +50,9 @@ export const ArrayField = <T extends FieldValues>({
     <FormField error={error} label={label}>
       {() => (
         <div className="flex flex-col gap-[10px]">
-          {fields.map((field, index) => renderField(field, remove, index))}
+          <div className={cn('flex flex-col gap-[10px]', fieldsWrapperStyles)}>
+            {fields.map((field, index) => renderField(field, remove, index))}
+          </div>
           <div className="flex gap-[10px]">
             <button
               type="button"

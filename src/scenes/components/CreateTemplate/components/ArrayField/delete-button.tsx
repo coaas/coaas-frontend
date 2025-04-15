@@ -18,7 +18,7 @@ export const DeleteButton = ({
       {...props}
     >
       {children}
-      <X className=" text-stroke-gray-dark stroke-1 w-5 h-5" />
+      <X className="text-stroke-gray-dark stroke-1 w-5 h-5" />
     </button>
   );
 };

@@ -48,8 +48,3 @@ export interface UploadArchiveDto {
   filename: string;
   chunk: string;
 }
-
-export interface CheckTemplateNameDto {
-  name: string;
-  limit: 0;
-}

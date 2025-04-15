@@ -3,22 +3,25 @@ import { ArrayField } from '../../components/ArrayField';
 import { Input } from '@components/Input';
 import {
   conditionItems,
-  dependencies,
   failureActionItems,
   numberRule,
   orderItems,
-  ports,
   requiredRule,
 } from '../../constants';
 import { DeleteButton } from '../../components/ArrayField/delete-button';
 import { TaggedSelect } from '../../components/TaggedSelect';
 import { FormField } from '../../components/FormField';
 import { Select } from '@components/Select';
-import { StateType, TemplateSettings } from '@globalTypes/templates.draft';
-import { DraftIdService } from '../../lib/draft-id-service';
+import { StateType, TemplateSettingsForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
-import { useApiMutation } from '@utils/lib/use-api-query';
-import { saveTemplateDraftSettings } from '@api/queries';
+import { useApiMutation, useApiQuery } from '@utils/lib/use-api-query';
+import {
+  getTemplateDependencies,
+  saveTemplateDraftSettings,
+} from '@api/queries';
+import { useState } from 'react';
+import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
+import { TaggedInput } from '../../components/TaggedInput';
 
 const healthCheckFields = [
   { label: 'Test', name: 'test', asNumber: false },
@@ -55,7 +58,20 @@ const configItems = [
 ] as const;
 
 export const SettingsStep = () => {
-  const storedDraftId = DraftIdService.getId();
+  const [dependencySearch, setDependencySearch] = useState('');
+
+  const { data: templateDependencies } = useApiQuery({
+    request: getTemplateDependencies,
+    payload: { limit: 10, name: dependencySearch },
+  });
+
+  const { draftId } = useDraftIdStorage();
+
+  const dependencies =
+    templateDependencies?.templates?.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    })) || [];
 
   // const { data: draftResponse } = useApiQuery({ ждем нормальную ручку с бека)
   //   request: getTemplateDraft,
@@ -73,15 +89,15 @@ export const SettingsStep = () => {
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm<TemplateSettings>({
+  } = useForm<TemplateSettingsForm>({
     defaultValues: {
-      id: storedDraftId || '',
+      id: draftId || '',
       state: StateType.draft,
       settings: {
         secrets: [{ name: 'DATABASE_URI' }],
         configs: [{ path: '/app/logging.cfg' }],
         env_vars: [{ key: 'DOCS_PATH', value: '/docs' }],
-        ports: ['8080'],
+        ports: [],
         health_check: {
           test: 'curl --fail -s http://localhost:8080/health/check',
           interval: 30,
@@ -114,16 +130,18 @@ export const SettingsStep = () => {
           },
         },
       },
-      dependencies: ['PostgreSQL'],
+      dependencies: [],
     },
   });
 
   const onSubmit = handleSubmit(data => {
-    console.log(data);
-    mutate(data);
+    const { settings, ...restData } = data;
+    const { ports, ...restSettings } = settings;
+    mutate({
+      ...restData,
+      settings: { ...restSettings, ports: ports.map(({ name }) => name) },
+    });
   });
-
-  console.log(errors);
 
   return (
     <form onSubmit={onSubmit} className="mt-[25px]">
@@ -203,16 +221,29 @@ export const SettingsStep = () => {
             <input type="file" className="hidden" />
           </label>
         </ArrayField>
-        <TaggedSelect
-          options={ports}
+        <ArrayField
+          label="Ports"
           control={control}
           name="settings.ports"
-          fieldLabel="Ports"
-          selectLabel="Add port"
-          rules={{ ...requiredRule, ...numberRule }}
+          btnLabel="Add port"
+          defaultValue={{ name: '' }}
+          error={errors.settings?.ports?.root?.message}
+          fieldsWrapperStyles="flex-row flex-wrap"
+          renderField={(field, remove, index) => (
+            <TaggedInput
+              key={field.id}
+              error={errors.settings?.ports?.[index]?.name?.message}
+              {...register(`settings.ports.${index}.name`, {
+                ...requiredRule,
+                ...numberRule,
+              })}
+              onDelete={() => remove(index)}
+            />
+          )}
         />
         <TaggedSelect
           options={dependencies}
+          onSearch={setDependencySearch}
           control={control}
           name="dependencies"
           fieldLabel="Dependencies"
