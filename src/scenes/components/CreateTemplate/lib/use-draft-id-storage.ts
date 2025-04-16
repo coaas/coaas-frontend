@@ -1,4 +1,4 @@
-import { createTemplateDraft } from '@api/queries';
+import { createTemplateDraft, getTemplateDraft } from '@api/queries';
 import { useApiQuery } from '@utils/lib/use-api-query';
 import { useEffect, useState } from 'react';
 
@@ -12,6 +12,12 @@ export const useDraftIdStorage = () => {
     options: { enabled: !draftId },
   });
 
+  const { isLoading: draftDataLoading } = useApiQuery({
+    request: getTemplateDraft,
+    payload: { id: draftId },
+    options: { retry: retryCount => retryCount < 5 },
+  });
+
   const createdId = data?.id;
 
   useEffect(() => {
@@ -23,5 +29,10 @@ export const useDraftIdStorage = () => {
 
   const deleteDraftId = () => localStorage.removeItem(DRAFT_ID_KEY);
 
-  return { draftId, setDraftId, isLoading, deleteDraftId };
+  return {
+    draftId,
+    setDraftId,
+    isLoading: isLoading || draftDataLoading,
+    deleteDraftId,
+  };
 };

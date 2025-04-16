@@ -6,6 +6,7 @@ import {
   Template,
 } from '@globalTypes/templates';
 import {
+  MapperForm,
   TemplateDockerImageDto,
   TemplateInfoForm,
   TemplateSettings,
@@ -57,6 +58,10 @@ export const saveTemplateDraftImage: ApiRequest<
 
 export const saveTemplateDraftSettings: ApiRequest<object, TemplateSettings> = {
   endpoint: 'TemplateHubService/UpdateSettings',
+};
+
+export const saveTemplateDraftMapper: ApiRequest<object, MapperForm> = {
+  endpoint: 'TemplateHubService/UpdateMapper',
 };
 
 export const getTemplateFilters: ApiRequest<GetTemplateFiltersResponse> = {

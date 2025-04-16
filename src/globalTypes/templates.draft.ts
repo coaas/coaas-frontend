@@ -4,8 +4,8 @@ export interface State {
 }
 
 export enum StateType {
-  draft = 0,
-  edit = 1,
+  DRAFT,
+  TEMPLATE,
 }
 
 export interface TemplateInfoForm extends State {
@@ -39,8 +39,14 @@ export interface TemplateSettings extends State {
 }
 
 export const enum TemplateType {
-  managed = 0,
-  custom = 1,
+  managed,
+  custom,
+}
+
+export const enum MapperType {
+  managed,
+  custom,
+  external,
 }
 
 export interface ManagedForm {
@@ -158,6 +164,10 @@ export interface RollbackConfig {
   max_failure_ratio: number;
   order: number;
   failure_action: number;
+}
+
+export interface MapperForm extends State {
+  mapper: Mapper;
 }
 
 export interface Mapper {

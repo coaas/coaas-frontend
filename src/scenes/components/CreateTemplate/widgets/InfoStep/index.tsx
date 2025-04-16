@@ -12,16 +12,14 @@ import {
 } from '@api/queries';
 import { TaggedSelect } from '../../components/TaggedSelect';
 
-import { StateType, TemplateInfoForm } from '@globalTypes/templates.draft';
+import { TemplateInfoForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
-import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDefaultValues } from '../../lib/use-default-values';
 
 export const InfoStep = () => {
   const queryClient = useQueryClient();
-  const { draftId } = useDraftIdStorage();
-  const defaultValues = useDefaultValues(draftId)?.draftInfo;
+  const defaultValues = useDefaultValues().draftInfo;
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
     request: getTemplateFilters,
   });
@@ -35,13 +33,7 @@ export const InfoStep = () => {
     control,
     handleSubmit,
   } = useForm<TemplateInfoForm>({
-    defaultValues: defaultValues || {
-      id: draftId || '',
-      state: StateType.draft,
-      name: '',
-      categories: [],
-      languages: [],
-    },
+    defaultValues,
   });
 
   const onSubmit = handleSubmit(data => {

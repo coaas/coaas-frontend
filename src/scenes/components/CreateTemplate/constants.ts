@@ -1,5 +1,6 @@
 import { IconType } from '@components/Icon';
 import { RouteMap } from '@components/Layout/components/types';
+import { MapperType, TemplateType } from '@globalTypes/templates.draft';
 
 export const navLinks = [
   {
@@ -30,6 +31,12 @@ export const numberRule = {
 };
 
 export const InfoTabsData = [
-  { id: '0', label: 'Managed', value: 0 },
-  { id: '1', label: 'Custom', value: 1 },
+  { id: '0', label: 'Managed', value: TemplateType.managed },
+  { id: '1', label: 'Custom', value: TemplateType.custom },
+];
+
+export const MapperTabsData = [
+  { id: '0', label: 'Managed', value: MapperType.managed },
+  { id: '1', label: 'Custom', value: MapperType.custom },
+  { id: '2', label: 'External', value: MapperType.custom },
 ];

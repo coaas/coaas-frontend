@@ -51,7 +51,7 @@ export const DeploySettings = () => {
                       onOptionChange={({ value }) => onChange(value)}
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
-                      defaultLabel={defaultItem?.label}
+                      defaultLabel={defaultItem?.label || 'Select'}
                     />
                   )}
                 </FormField>
@@ -110,7 +110,7 @@ export const DeploySettings = () => {
                       onOptionChange={({ value }) => onChange(value)}
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
-                      defaultLabel={defaultItem?.label}
+                      defaultLabel={defaultItem?.label || 'Select'}
                     />
                   )}
                 </FormField>
@@ -167,7 +167,7 @@ export const DeploySettings = () => {
                       onOptionChange={({ value }) => onChange(value)}
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
-                      defaultLabel={defaultItem?.label}
+                      defaultLabel={defaultItem?.label || 'Select'}
                     />
                   )}
                 </FormField>

@@ -1,17 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { Navigation } from '../Navigation';
 import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
-import { useApiQuery } from '@utils/lib/use-api-query';
-import { getTemplateDraft } from '@api/queries';
+import { StateType } from '@globalTypes/templates.draft';
 
-export const CreateTemplateLayout = () => {
+interface Props {
+  state: StateType;
+}
+
+export const CreateTemplateLayout = ({ state }: Props) => {
   const { isLoading, draftId } = useDraftIdStorage();
-
-  const { isLoading: draftDataLoading } = useApiQuery({
-    request: getTemplateDraft,
-    payload: { id: draftId },
-    options: { retry: retryCount => retryCount < 5 },
-  });
 
   return (
     <section className="p-[70px_186px_140px_125px] flex justify-between ">
@@ -20,14 +17,14 @@ export const CreateTemplateLayout = () => {
           <h2 className="text-2xl font-semibold mb-[25px]">
             Creating Template
           </h2>
-          {isLoading || draftDataLoading ? (
+          {isLoading ? (
             <div className="w-full flex justify-center items-center mt-10">
               <span className=" animate-spin size-20 border-blue border-2 border-b-transparent rounded-full" />
             </div>
           ) : (
             draftId && (
               <>
-                <Outlet />
+                <Outlet context={{ state, id: draftId }} />
               </>
             )
           )}

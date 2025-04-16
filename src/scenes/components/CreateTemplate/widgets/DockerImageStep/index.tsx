@@ -5,7 +5,6 @@ import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
 import { FileInput } from '../../components/InputFile';
 import {
-  StateType,
   TemplateDockerImageForm,
   TemplateType,
 } from '@globalTypes/templates.draft';
@@ -13,18 +12,15 @@ import {
 import { useApiMutation } from '@utils/lib/use-api-query';
 import { getTemplateDraft, saveTemplateDraftImage } from '@api/queries';
 import { FormButton } from '../../components/FormButton';
-import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
 import { ArrayField } from '../../components/ArrayField';
 import { TaggedInput } from '../../components/TaggedInput';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDefaultValues } from '../../lib/use-default-values';
 
 export const DockerImageStep = () => {
-  const { draftId } = useDraftIdStorage();
   const queryClient = useQueryClient();
 
-  const defaultValues = useDefaultValues(draftId)?.dockerImage;
-
+  const defaultValues = useDefaultValues().dockerImage;
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftImage,
   });
@@ -35,12 +31,7 @@ export const DockerImageStep = () => {
     register,
     handleSubmit,
   } = useForm<TemplateDockerImageForm>({
-    defaultValues: defaultValues || {
-      id: draftId || '',
-      state: StateType.draft,
-      type: TemplateType.managed,
-      managed: { versions: [{ name: 'latest' }] },
-    },
+    defaultValues,
   });
 
   const onSubmit = handleSubmit(data => {

@@ -6,6 +6,7 @@ import {
   offset,
   Placement,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
@@ -44,7 +45,16 @@ export const Popover = ({
   const { refs, floatingStyles, context } = useFloating({
     open,
     onOpenChange: setOpen,
-    middleware: [offset(offsetNum), flip(), shift()],
+    middleware: [
+      offset(offsetNum),
+      flip(),
+      shift(),
+      size({
+        apply: ({ elements }) => {
+          elements.floating.style.maxWidth = `${elements.reference.getBoundingClientRect().width}px`;
+        },
+      }),
+    ],
     whileElementsMounted: autoUpdate,
     strategy: 'fixed',
     placement: placement,
