@@ -64,6 +64,10 @@ export const saveTemplateDraftMapper: ApiRequest<object, MapperForm> = {
   endpoint: 'TemplateHubService/UpdateMapper',
 };
 
+export const publishTemplateDraft: ApiRequest<object, { id: string }> = {
+  endpoint: 'TemplateHubService/CommitDraft',
+};
+
 export const getTemplateFilters: ApiRequest<GetTemplateFiltersResponse> = {
   endpoint: 'TemplateHubService/GetFilters',
 };

@@ -67,7 +67,7 @@ export const useInfiniteApiQuery = <
     ...options,
   });
 
-  const entries = query.data?.pages.flatMap(page => page.items ?? []) ?? [];
+  const entries = query.data?.pages.flatMap(page => page.templates ?? []) ?? [];
 
   return {
     ...query,

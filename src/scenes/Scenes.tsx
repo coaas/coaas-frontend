@@ -19,10 +19,15 @@ import {
 } from './components/CreateTemplate';
 import { InfoStep } from './components/CreateTemplate/widgets/InfoStep';
 import { StateType } from '@globalTypes/templates.draft';
+import { NotificationProvider } from '@components/Notification';
 
 export const routes = [
   {
-    element: <Layout />,
+    element: (
+      <NotificationProvider>
+        <Layout />
+      </NotificationProvider>
+    ),
     children: [
       {
         path: RouteMap.home,

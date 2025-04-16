@@ -2,27 +2,62 @@ import { FormButton } from '../../components/FormButton';
 import { useDefaultValues } from '../../lib/use-default-values';
 
 import { useApiMutation } from '@utils/lib/use-api-query';
-import { saveTemplateDraftMapper } from '@api/queries';
+import { publishTemplateDraft, saveTemplateDraftMapper } from '@api/queries';
 import { DefaultMapper } from './Mappers';
 import { Controller, useForm } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
 import { MapperTabsData } from '../../constants';
 import { MapperForm } from '@globalTypes/templates.draft';
+import { useNotificationContext } from '@components/Notification';
+import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
+import { useNavigate } from 'react-router-dom';
+import { RouteMap } from '@components/Layout/components/types';
 
 export const MapperStep = () => {
+  const { open } = useNotificationContext();
+  const { deleteDraftId } = useDraftIdStorage();
+  const navigate = useNavigate();
   const { mapper: mapperValues } = useDefaultValues();
   const { id, state, mapper } = mapperValues;
-  const { mutate, isPending: saveProcessing } = useApiMutation({
+  const { mutate, isPending: savePending } = useApiMutation({
     request: saveTemplateDraftMapper,
   });
+  const { mutate: publishDraft, isPending: publishPending } = useApiMutation({
+    request: publishTemplateDraft,
+  });
+
   const methods = useForm<MapperForm>({
     defaultValues: { id, state, mapper },
   });
   const { control, handleSubmit } = methods;
 
   const handleSave = handleSubmit(dto => {
-    mutate(dto);
+    mutate(dto, {
+      onSuccess: () => open({ title: 'Success', description: 'Mapper Saved' }),
+      onError: error =>
+        open({ title: 'Error', description: error.message, variant: 'error' }),
+    });
   });
+
+  const handlePublish = () => {
+    publishDraft(
+      { id },
+      {
+        onSuccess: () => {
+          deleteDraftId();
+          open({ title: 'Success', description: 'Draft Published' });
+          navigate(RouteMap.templates);
+        },
+        onError: error =>
+          open({
+            title: 'Error',
+            description: error.message,
+            variant: 'error',
+          }),
+      },
+    );
+  };
+
   return (
     <section className="flex flex-col gap-[30px]">
       <h4 className="text-xl font-semibold font-inter text-white">
@@ -49,12 +84,19 @@ export const MapperStep = () => {
           <FormButton
             type="submit"
             onClick={handleSave}
-            disabled={saveProcessing}
-            isLoading={saveProcessing}
+            disabled={savePending}
+            isLoading={savePending}
           >
             Save
           </FormButton>
-          <FormButton type="button">Publish</FormButton>
+          <FormButton
+            type="button"
+            onClick={handlePublish}
+            disabled={publishPending}
+            isLoading={publishPending}
+          >
+            Publish
+          </FormButton>
           <FormButton type="button" variant="red">
             Delete
           </FormButton>
