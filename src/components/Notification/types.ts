@@ -11,6 +11,4 @@ export type NotificationState = {
 export interface NotificationContextProps {
   open: (message: NotificationState, autoCloseMs?: number) => void;
   close: () => void;
-  state: NotificationState | null;
-  animateIn: () => void;
 }

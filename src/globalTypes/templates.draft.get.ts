@@ -9,7 +9,7 @@ export interface GetDraftTemplateResponse {
 
 export interface GetDependenciesDto {
   name: string;
-  limit: 0;
+  limit: number;
 }
 
 export interface DependencyResponse {

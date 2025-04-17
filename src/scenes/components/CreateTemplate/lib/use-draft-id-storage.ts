@@ -12,10 +12,9 @@ export const useDraftIdStorage = () => {
     options: { enabled: !draftId },
   });
 
-  const { isLoading: draftDataLoading } = useApiQuery({
+  const { isLoading: draftDataLoading, data: draftData } = useApiQuery({
     request: getTemplateDraft,
     payload: { id: draftId },
-    options: { retry: retryCount => retryCount < 5 },
   });
 
   const createdId = data?.id;
@@ -34,5 +33,6 @@ export const useDraftIdStorage = () => {
     setDraftId,
     isLoading: isLoading || draftDataLoading,
     deleteDraftId,
+    draftData,
   };
 };

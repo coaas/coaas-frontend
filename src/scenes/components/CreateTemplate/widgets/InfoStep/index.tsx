@@ -16,8 +16,10 @@ import { TemplateInfoForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDefaultValues } from '../../lib/use-default-values';
+import { useNotificationContext } from '@components/Notification';
 
 export const InfoStep = () => {
+  const { open } = useNotificationContext();
   const queryClient = useQueryClient();
   const defaultValues = useDefaultValues().draftInfo;
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
@@ -37,12 +39,12 @@ export const InfoStep = () => {
   });
 
   const onSubmit = handleSubmit(data => {
-    //Захендлить все ошибки, , отобразить нотификейшены.
     mutate(data, {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [getTemplateDraft.endpoint],
         });
+        open({ title: 'Info Saved' });
       },
     });
   });
@@ -51,7 +53,11 @@ export const InfoStep = () => {
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <FormField clickable error={errors.name?.message} label="Name">
         {error => (
-          <Input {...register('name', requiredRule)} invalid={Boolean(error)} />
+          <Input
+            {...register('name', requiredRule)}
+            invalid={!!error}
+            className="w-full"
+          />
         )}
       </FormField>
       <FormField

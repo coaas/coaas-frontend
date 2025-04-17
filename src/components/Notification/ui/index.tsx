@@ -1,37 +1,55 @@
 import { forwardRef, useEffect } from 'react';
 import { useNotificationContext } from '..';
-import { Check } from 'lucide-react';
+import { Check, TriangleAlert } from 'lucide-react';
 import { cn } from '@utils/styles';
 import { NotificationVariants } from './styles';
+import { NotificationState } from '../types';
 
-export const Notification = forwardRef<HTMLDivElement>((_, ref) => {
-  const { animateIn, state, close } = useNotificationContext();
+interface Props {
+  onMount: () => void;
+  state: NotificationState;
+}
 
-  useEffect(() => {
-    animateIn();
-  }, [animateIn]);
+export const Notification = forwardRef<HTMLDivElement, Props>(
+  ({ onMount, state }, ref) => {
+    const { close } = useNotificationContext();
+    const { description, title, variant } = state;
 
-  return (
-    <div
-      className={cn(NotificationVariants({ variant: state?.variant }))}
-      ref={ref}
-      onClick={close}
-    >
-      {state && (
+    const isError = variant === 'error';
+    const isSuccess = variant === 'success';
+
+    useEffect(() => {
+      onMount();
+    }, [onMount]);
+
+    return (
+      <div
+        className={cn(NotificationVariants({ variant }))}
+        ref={ref}
+        onClick={close}
+      >
         <div>
-          {state.title && (
+          {title && (
             <h1 className="font-inter font-medium text-lg text-white">
-              {state.title}
+              {title}
             </h1>
           )}
-          {state.description && (
-            <p className="text-white text-sm">{state.description}</p>
-          )}
+          {description && <p className="text-white text-sm">{description}</p>}
         </div>
-      )}
-      <span className="rounded-full p-2 bg-stroke self-center">
-        <Check />
-      </span>
-    </div>
-  );
-});
+
+        <span
+          className={cn(
+            'rounded-full p-2 self-start flex items-center justify-center',
+            {
+              'bg-stroke': isSuccess,
+              'bg-error': isError,
+            },
+          )}
+        >
+          {isSuccess && <Check />}
+          {isError && <TriangleAlert />}
+        </span>
+      </div>
+    );
+  },
+);

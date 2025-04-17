@@ -1,5 +1,4 @@
 import { FormProvider, useForm } from 'react-hook-form';
-
 import { TemplateSettingsForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
 import { useApiMutation } from '@utils/lib/use-api-query';
@@ -7,8 +6,10 @@ import { getTemplateDraft, saveTemplateDraftSettings } from '@api/queries';
 import { useDefaultValues } from '../../lib/use-default-values';
 import { DeploySettings, HealthCheck, SettingsVariables } from './Bloks';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNotificationContext } from '@components/Notification';
 
 export const SettingsStep = () => {
+  const { open } = useNotificationContext();
   const queryClient = useQueryClient();
 
   const defaultValues = useDefaultValues().draftSettings;
@@ -32,7 +33,10 @@ export const SettingsStep = () => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [getTemplateDraft] });
+          queryClient.invalidateQueries({
+            queryKey: [getTemplateDraft.endpoint],
+          });
+          open({ title: 'Settings saved' });
         },
       },
     );

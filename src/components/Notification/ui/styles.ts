@@ -3,7 +3,7 @@ import { NotifiCationVariant } from '../types';
 
 export const NotifiCationVariantDict: Record<NotifiCationVariant, string> = {
   success: 'bg-area border border-blue',
-  error: 'bg-error border ',
+  error: 'bg-error-transparent border border-white ',
 };
 
 export const NotificationVariants = cva(

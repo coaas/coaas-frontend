@@ -16,10 +16,11 @@ import { ArrayField } from '../../components/ArrayField';
 import { TaggedInput } from '../../components/TaggedInput';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDefaultValues } from '../../lib/use-default-values';
+import { useNotificationContext } from '@components/Notification';
 
 export const DockerImageStep = () => {
   const queryClient = useQueryClient();
-
+  const { open } = useNotificationContext();
   const defaultValues = useDefaultValues().dockerImage;
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftImage,
@@ -47,7 +48,10 @@ export const DockerImageStep = () => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: [getTemplateDraft] });
+          queryClient.invalidateQueries({
+            queryKey: [getTemplateDraft.endpoint],
+          });
+          open({ title: 'Image saved' });
         },
       },
     );

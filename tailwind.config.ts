@@ -41,7 +41,7 @@ export default {
         soft: '#708DA6',
         light: '#7086A6',
       },
-      error: '#FF4F52',
+      error: { DEFAULT: '#FF4F52', transparent: '#f5656599' },
       black: '#000',
       white: '#FFFFFF',
       gray: '#B6B6B6',

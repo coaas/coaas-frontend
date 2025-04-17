@@ -1,3 +1,15 @@
+export interface ErrorResponse {
+  detail?: Detail[];
+  code?: string;
+  default?: string;
+}
+
+export interface Detail {
+  type: string;
+  loc: string[];
+  msg: string;
+  input: string;
+}
 export interface State {
   state: StateType;
   id: string;

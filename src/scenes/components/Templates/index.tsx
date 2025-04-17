@@ -136,8 +136,9 @@ export const Templates = () => {
         fetchNextPage={fetchNextPage}
         scrollThreshold={200}
       >
-        {entries.map(({ name, description }) => (
+        {entries.map(({ name, description }, key) => (
           <Card
+            key={key}
             type={CardType.simpleInfo}
             Wrapper={({ children, className }) => (
               <div className={className}>{children}</div>

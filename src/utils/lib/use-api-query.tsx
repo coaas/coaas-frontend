@@ -1,4 +1,6 @@
 import { api } from '@api/constants';
+import { useNotificationContext } from '@components/Notification';
+import { ErrorResponse } from '@globalTypes/templates.draft';
 import {
   useQuery,
   useInfiniteQuery,
@@ -9,6 +11,7 @@ import {
   UseMutationOptions,
   useMutation,
 } from '@tanstack/react-query';
+import { HTTPError } from 'ky';
 
 export const useApiQuery = <TData, TPayload = undefined>({
   request,
@@ -79,7 +82,23 @@ export const useApiMutation = <TData, TPayload = undefined>({
   request,
   options,
 }: ApiMutationParams<TData, TPayload>) => {
+  const { open } = useNotificationContext();
+
   const { endpoint, method = 'POST' } = request;
+
+  const onError = async (error: Error) => {
+    if (error instanceof HTTPError) {
+      const { response } = error;
+      const { detail, default: defaultMsg } =
+        await response.json<ErrorResponse>();
+      const message = detail?.map(({ msg }, key) => (
+        <span className="block mt-1 first:mt-0" key={key}>
+          {msg}
+        </span>
+      ));
+      open({ description: message || defaultMsg, variant: 'error' });
+    }
+  };
 
   return useMutation<TData, Error, TPayload>({
     mutationKey: [endpoint],
@@ -89,6 +108,7 @@ export const useApiMutation = <TData, TPayload = undefined>({
 
       return api(endpoint, { method, ...requestOptions }).json<TData>();
     },
+    onError,
     ...options,
   });
 };

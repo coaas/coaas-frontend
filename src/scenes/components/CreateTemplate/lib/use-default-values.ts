@@ -2,7 +2,7 @@ import { getTemplateDraft } from '@api/queries';
 import { useApiQuery } from '@utils/lib/use-api-query';
 import { useOutletContext } from 'react-router-dom';
 import { TemplateOutletContext } from '../types';
-import { TemplateType } from '@globalTypes/templates.draft';
+import { MapperType, TemplateType } from '@globalTypes/templates.draft';
 
 export const useDefaultValues = () => {
   const { id: draftId, state: templateState } =
@@ -75,14 +75,14 @@ export const useDefaultValues = () => {
     const mapper = {
       id: draftId,
       state: templateState,
-      serviceName: '',
+      serviceName: draftInfo.name,
       name: 'Untitled',
       description: '',
-      secrets: [{ name: 'DATABASE_URI' }],
-      configs: [{ path: '/app/logging.cfg' }],
-      env_vars: [{ key: 'DOCS_PATH', value: '/docs' }],
-      ports: [],
-      mapper: { type: TemplateType.managed },
+      secrets: draftSettings.settings.secrets,
+      configs: draftSettings.settings.configs,
+      env_vars: draftSettings.settings.ports,
+      ports: draftSettings.settings.ports,
+      mapper: { type: MapperType.managed },
     };
 
     return { draftInfo, dockerImage, draftSettings, mapper };

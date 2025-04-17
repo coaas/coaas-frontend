@@ -43,11 +43,15 @@ export const NotificationProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <NotificationContext.Provider value={{ animateIn, open, close, state }}>
+    <NotificationContext.Provider value={{ open, close }}>
       {children}
       {state && (
         <FloatingPortal>
-          <Notification ref={notificationRef} />
+          <Notification
+            ref={notificationRef}
+            state={state}
+            onMount={animateIn}
+          />
         </FloatingPortal>
       )}
     </NotificationContext.Provider>

@@ -45,15 +45,9 @@ export const MapperStep = () => {
       {
         onSuccess: () => {
           deleteDraftId();
-          open({ title: 'Success', description: 'Draft Published' });
+          open({ title: 'Draft Published' });
           navigate(RouteMap.templates);
         },
-        onError: error =>
-          open({
-            title: 'Error',
-            description: error.message,
-            variant: 'error',
-          }),
       },
     );
   };
