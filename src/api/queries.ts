@@ -34,6 +34,11 @@ export const getTemplates: ApiRequest<
   endpoint: 'TemplateHubService/ListTemplates',
 };
 
+export const getTemplate: ApiRequest<GetDraftTemplateResponse, { id: string }> =
+  {
+    endpoint: 'TemplateHubService/GetTemplate',
+  };
+
 export const createTemplateDraft: ApiRequest<{ id: string }> = {
   endpoint: 'TemplateHubService/CreateDraft',
 };

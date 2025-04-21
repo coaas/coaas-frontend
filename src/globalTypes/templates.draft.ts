@@ -4,6 +4,16 @@ export interface ErrorResponse {
   default?: string;
 }
 
+export interface MapperPreview {
+  serviceName: string;
+  previewName: string;
+  configs: Config[];
+  previewDescription: string;
+  env_vars: EnvVar[];
+  ports: Port[];
+  secrets: Secret[];
+}
+
 export interface Detail {
   type: string;
   loc: string[];

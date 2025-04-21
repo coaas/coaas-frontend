@@ -1,9 +1,10 @@
 import { cn } from '@utils/styles';
 import { ComponentProps } from 'react';
-import { ButtonVariant, ButtonVariants } from './styles';
+import { ButtonSize, ButtonVariant, ButtonVariants } from './styles';
 
 interface Props extends ComponentProps<'button'> {
   variant?: ButtonVariant;
+  size?: ButtonSize;
   isLoading?: boolean;
   loadingText?: string;
 }
@@ -12,6 +13,7 @@ export const FormButton = ({
   className,
   children,
   variant = 'blue',
+  size = 'lg',
   isLoading,
   loadingText,
   ...restProps
@@ -29,7 +31,7 @@ export const FormButton = ({
 
   return (
     <button
-      className={cn(ButtonVariants({ variant }), className)}
+      className={cn(ButtonVariants({ variant, size }), className)}
       {...restProps}
     >
       {contentToDisplay}

@@ -20,6 +20,7 @@ import {
 import { InfoStep } from './components/CreateTemplate/widgets/InfoStep';
 import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
+import { Template } from './components/Template';
 
 export const routes = [
   {
@@ -57,6 +58,7 @@ export const routes = [
         path: RouteMap.templates,
         element: <Templates />,
       },
+      { path: RouteMap.template, element: <Template /> },
       {
         element: <CreateTemplateLayout state={StateType.DRAFT} />,
         children: [

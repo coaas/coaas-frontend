@@ -7,6 +7,7 @@ interface Props extends ComponentPropsWithRef<'div'> {
   fetchNextPage: () => void;
   isFetchingNextPage?: boolean;
   isFetching?: boolean;
+  count?: number;
 }
 
 export const TemplatesList = ({

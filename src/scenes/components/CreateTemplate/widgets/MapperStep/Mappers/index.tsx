@@ -1,1 +1,1 @@
-export { DefaultMapper } from './default-mapper';
+export { MapperPreviewBlock as DefaultMapper } from '@scenes/components/common/MapperPreviewBlock';

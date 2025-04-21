@@ -2,7 +2,11 @@ import { FormButton } from '../../components/FormButton';
 import { useDefaultValues } from '../../lib/use-default-values';
 
 import { useApiMutation } from '@utils/lib/use-api-query';
-import { publishTemplateDraft, saveTemplateDraftMapper } from '@api/queries';
+import {
+  getTemplates,
+  publishTemplateDraft,
+  saveTemplateDraftMapper,
+} from '@api/queries';
 import { DefaultMapper } from './Mappers';
 import { Controller, useForm } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
@@ -12,11 +16,13 @@ import { useNotificationContext } from '@components/Notification';
 import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
 import { useNavigate } from 'react-router-dom';
 import { RouteMap } from '@components/Layout/components/types';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const MapperStep = () => {
   const { open } = useNotificationContext();
   const { deleteDraftId } = useDraftIdStorage();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { mapper: mapperValues } = useDefaultValues();
   const { id, state, mapper } = mapperValues;
   const { mutate, isPending: savePending } = useApiMutation({
@@ -43,8 +49,11 @@ export const MapperStep = () => {
     publishDraft(
       { id },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           deleteDraftId();
+          await queryClient.invalidateQueries({
+            queryKey: [getTemplates.endpoint],
+          });
           open({ title: 'Draft Published' });
           navigate(RouteMap.templates);
         },
@@ -73,7 +82,7 @@ export const MapperStep = () => {
             />
           )}
         />
-        <DefaultMapper />
+        <DefaultMapper mapper={mapperValues} />
         <div className="mt-5 flex flex-col gap-[10px]">
           <FormButton
             type="submit"

@@ -5,6 +5,7 @@ export const enum RouteMap {
   namespaces = '/namespaces',
   namespace = '/namespaces/:namespace_slug',
   templates = '/templates',
+  template = '/templates/:template_slug',
   templatesCreateStepInfo = '/templates/create/info',
   templatesCreateStepImage = '/templates/create/image',
   templatesCreateStepSettings = '/templates/create/settings',
