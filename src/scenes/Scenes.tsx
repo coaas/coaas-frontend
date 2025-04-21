@@ -21,6 +21,7 @@ import { InfoStep } from './components/CreateTemplate/widgets/InfoStep';
 import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
+import { Logout } from './components/Logout';
 
 export const routes = [
   {
@@ -81,6 +82,10 @@ export const routes = [
       {
         path: RouteMap.register,
         element: <RegisterForm />,
+      },
+      {
+        path: RouteMap.logout,
+        element: <Logout />,
       },
     ],
   },
