@@ -12,6 +12,7 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { RouteMap } from '@components/Layout/components/types';
 import { CreateTemplate } from './components/CreateTemplate';
+import { Logout } from './components/Logout';
 
 export const routes = [
   {
@@ -54,6 +55,10 @@ export const routes = [
         path: RouteMap.register,
         element: <RegisterForm />,
       },
+      {
+        path: RouteMap.logout,
+        element: <Logout />
+      }
     ],
   },
 ];
