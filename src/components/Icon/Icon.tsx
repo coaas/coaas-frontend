@@ -18,6 +18,8 @@ import {
   TemplateIcon,
 } from './components';
 import { ChevronDown } from './components/ChevronDown';
+import { UserIcon } from './components/UserIcon';
+import { LambdaIcon } from './components/LambdaIcon';
 
 export const Icon: FC<IconProps> = props => {
   switch (props.type) {
@@ -79,6 +81,14 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.hint: {
       return <HintIcon {...props.props} />;
+    }
+
+    case IconType.user: {
+      return <UserIcon {...props.props} />;
+    }
+
+    case IconType.lambda: {
+      return <LambdaIcon {...props.props} />;
     }
 
     default: {

@@ -16,7 +16,7 @@ interface Props<TOption>
   extends Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'children'> {
   defaultLabel?: string;
   options: Option<TOption>[];
-  onOptionChange: (option: Option<TOption>, close?: () => void) => void;
+  onOptionChange: (option: Option<TOption>, close: () => void) => void;
   defaultValue?: TOption[];
   multiple?: boolean;
   defaultOpen?: boolean;
@@ -68,7 +68,10 @@ export function Select<T extends string | number>({
       return optionSelected ? [] : [option.value];
     });
 
-    onOptionChange(option);
+    onOptionChange(option, off);
+    if (!multiple) {
+      off();
+    }
   };
 
   const handleSearch = ({
@@ -93,7 +96,7 @@ export function Select<T extends string | number>({
           <div
             className={cn(
               SelectVariants({ variant }),
-              'flex flex-col rounded-md  border max-h-[400px] overflow-auto bg-stroke-gray',
+              'flex flex-col rounded-md  border max-h-[400px] w-full overflow-auto bg-stroke-gray',
             )}
           >
             {withSearch && (
@@ -143,7 +146,7 @@ export function Select<T extends string | number>({
           )}
           type="button"
         >
-          <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer">
+          <label className="text-sm leading-6 font-inter w-fit font-normal whitespace-nowrap text-white text-ellipsis overflow-hidden cursor-pointer m-auto">
             {labelStr}
           </label>
           {withChevron && (

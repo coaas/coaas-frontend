@@ -37,12 +37,15 @@ export default {
       },
       blue: {
         DEFAULT: '#507EF5',
+        lighter: '#6daaff',
+        soft: '#708DA6',
         light: '#7086A6',
       },
-      error: '#FF4F52',
+      error: { DEFAULT: '#FF4F52', transparent: '#f5656599' },
       black: '#000',
       white: '#FFFFFF',
       gray: '#B6B6B6',
+      grayLighter: '#B6B6B61F',
       transparent: 'transparent',
       neutral: {
         '50': '#fafafa',

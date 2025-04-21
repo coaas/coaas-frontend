@@ -8,7 +8,8 @@ export const FormTabs = ({
   onTabChange,
   tabs,
   className,
-}: CommonTabsProps<Tab>) => {
+  disabled,
+}: CommonTabsProps<Tab> & { disabled?: (tabId: string) => boolean }) => {
   return (
     <div
       className={cn('flex border-stroke-gray border rounded-[6px]', className)}
@@ -20,6 +21,7 @@ export const FormTabs = ({
 
         return (
           <button
+            disabled={disabled?.(tab.id)}
             key={tab.id}
             onClick={handleClickTab}
             type="button"

@@ -1,3 +1,9 @@
+export interface GetTemplatesResponse {
+  has_more: boolean;
+  next_key: NextKey | null;
+  templates: Template[];
+}
+
 export interface GetTemplatesDto {
   query?: string;
   filters: TemplatesFiltersRequest;
@@ -40,4 +46,11 @@ export interface Template {
 export interface Author {
   id: string;
   username: string;
+}
+
+export interface UploadArchiveDto {
+  state: number;
+  id: string;
+  filename: string;
+  chunk: string;
 }

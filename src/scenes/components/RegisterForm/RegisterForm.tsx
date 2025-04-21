@@ -6,8 +6,8 @@ import { escapeRegExp } from './helpers';
 import type { SubmitFormElements } from './types';
 
 export function RegisterForm() {
-
-  const [patternForConfirmPassword, setPatternForConfirmPassword] = useState("");
+  const [patternForConfirmPassword, setPatternForConfirmPassword] =
+    useState('');
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,7 +48,9 @@ export function RegisterForm() {
           type="password"
           minLength={4}
           maxLength={16}
-          onChange={(event) => setPatternForConfirmPassword(escapeRegExp(event.target.value))}
+          onChange={event =>
+            setPatternForConfirmPassword(escapeRegExp(event.target.value))
+          }
           className="
                         px-4 py-2 border-[1.5px] border-stroke-gray-dark rounded-lg 
                         focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -62,7 +64,7 @@ export function RegisterForm() {
           placeholder="Password confirm"
           type="password"
           pattern={patternForConfirmPassword}
-          title='Passwords must match'
+          title="Passwords must match"
           className="
                         px-4 py-2 border-[1.5px] border-stroke-gray-dark rounded-lg 
                         focus:outline-none focus:ring-2 focus:ring-blue-500

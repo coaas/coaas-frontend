@@ -26,7 +26,8 @@ declare type ApiRequest<TData = unknown, TBody = unknown> = {
 /* eslint-enable */
 
 declare type PaginatedResponse<T> = {
-  items: T[];
+  // унифицировать бы запросы  с бека...
+  templates: T[];
   has_more: boolean;
   next_key: NextKey | null;
 };

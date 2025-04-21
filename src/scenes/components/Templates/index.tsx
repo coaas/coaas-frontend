@@ -1,7 +1,7 @@
 import { getTemplateFilters, getTemplates } from '@api/queries';
 import { Banner } from '@components/Banner';
 import { Select } from '@components/Select';
-import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-query';
+import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-api-query';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';
@@ -10,6 +10,7 @@ import { Button } from '@components/Button';
 import { Card, CardType } from '@components/Card';
 import { TemplatesList } from './components/TemplatesList';
 import { RouteMap } from '@components/Layout/components/types';
+import { createDynamicPath } from '@utils/lib/create-dynamic-path';
 
 export const Templates = () => {
   const search = useLocation().search;
@@ -95,7 +96,7 @@ export const Templates = () => {
         title="Template Hub"
         subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
       />
-      <div className="flex items-center gap-4 mt-5">
+      <div className="flex  gap-4 mt-5">
         <Search
           className="flex-2 max-w-[791px]"
           initValue={query}
@@ -115,7 +116,10 @@ export const Templates = () => {
               onOptionChange={option => handleFilterChange(option, filterKey)}
               defaultLabel={filterKey}
               defaultValue={JSON.parse(searchParams.get(filterKey) || '[]')}
-              options={options.map(({ key, value }) => ({ label: key, value }))}
+              options={options.map(({ key, value }) => ({
+                label: value,
+                value: key,
+              }))}
               className="flex-1 max-w-[130px]"
               multiple
               withChevron
@@ -123,29 +127,45 @@ export const Templates = () => {
           ),
         )}
       </div>
-      <Link className="block mt-[14px]" to={RouteMap.templatesCreate}>
+      <Link
+        className="block mt-[14px] max-w-fit"
+        to={RouteMap.templatesCreateStepInfo}
+      >
         <Button>Create template</Button>
       </Link>
+      {entries.length > 0 && (
+        <div className="mt-5">
+          <p className=" text-[16px] leading-[33px] text-white font-semibold">
+            {`Result${entries.length > 0 ? 's' : ''}: `}
+            <span className="text-blue">{entries.length}</span>
+          </p>
+        </div>
+      )}
       <TemplatesList
-        className="flex flex-col gap-4 mt-[25px]"
+        className="flex flex-col gap-4 mt-[10px]"
         isFetching={isFetching || templatesLoading}
         isFetchingNextPage={isFetchingNextPage}
         fetchNextPage={fetchNextPage}
         scrollThreshold={200}
       >
-        {entries.map(({ name, description }) => (
-          <Card
-            type={CardType.simpleInfo}
-            Wrapper={({ children, className }) => (
-              <div className={className}>{children}</div>
-            )}
-            props={{
-              data: {
-                title: name,
-                subtitle: description,
-              },
-            }}
-          />
+        {entries.map(({ name, description, id }, key) => (
+          <Link
+            key={key}
+            to={createDynamicPath(RouteMap.template, { template_slug: id })}
+          >
+            <Card
+              type={CardType.simpleInfo}
+              Wrapper={({ children, className }) => (
+                <div className={className}>{children}</div>
+              )}
+              props={{
+                data: {
+                  title: name,
+                  subtitle: description,
+                },
+              }}
+            />
+          </Link>
         ))}
       </TemplatesList>
     </section>

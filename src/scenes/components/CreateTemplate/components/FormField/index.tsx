@@ -1,13 +1,11 @@
-import { Icon, IconType } from '@components/Icon';
-import { Popover } from '@components/Popover';
-import { useToggle } from '@utils/lib/use-toggle';
+import { Hint } from '@components/Hint';
 import { cn } from '@utils/styles';
 import { ReactElement, ReactNode } from 'react';
 
 interface Props {
   label?: string;
   error?: string;
-  children: (error?: string) => ReactElement;
+  children: ((error?: string) => ReactElement) | ReactNode;
   className?: string;
   clickable?: boolean;
   hint?: ReactNode;
@@ -21,56 +19,36 @@ export const FormField = ({
   clickable,
   hint,
 }: Props) => {
-  const {
-    state: hintOpened,
-    setState: setHintOpen,
-    off: closeHint,
-  } = useToggle();
-
   const WrapperTag = clickable ? 'label' : 'div';
 
   return (
-    <WrapperTag className={cn('flex justify-between g-4 w-full', className)}>
+    <WrapperTag className={cn('flex justify-between gap-4 w-full', className)}>
       {label && (
         <span
           className={cn(
-            'text-sm font-medium font-inter text-white flex gap-[6px] items-center max-h-fit',
+            'text-sm font-medium font-inter text-white flex gap-[6px] items-center max-h-fit text-nowrap',
             {
               'text-error': error,
+              'cursor-pointer': clickable,
             },
           )}
         >
           {label}
-          {hint && (
-            <Popover
-              placement="right-start"
-              open={hintOpened}
-              setOpen={setHintOpen}
-              close={closeHint}
-              openOnHover
-              render={() => (
-                <div className="rounded-md p-2 border-stroke-gray border bg-area">
-                  {hint}
-                </div>
-              )}
-            >
-              <button type="button">
-                <Icon type={IconType.hint} props={{ size: 14 }} />
-              </button>
-            </Popover>
-          )}
+          {hint && <Hint hint={hint} />}
         </span>
       )}
-      <div className="w-full flex flex-col gap-1">
-        <div className={'w-full max-w-[511px] ml-auto'}>{children(error)}</div>
-        {error && (
-          <span
-            className="text-error block text-xs"
-            aria-invalid={Boolean(error)}
-          >
-            {error}
-          </span>
-        )}
+      <div className="w-full ">
+        <div className={'w-full max-w-[511px] ml-auto flex flex-col gap-2'}>
+          {children instanceof Function ? children(error) : children}
+          {error && (
+            <span
+              className="text-error block text-xs "
+              aria-invalid={Boolean(error)}
+            >
+              {error}
+            </span>
+          )}
+        </div>
       </div>
     </WrapperTag>
   );

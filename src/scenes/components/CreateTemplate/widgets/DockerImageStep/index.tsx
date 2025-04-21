@@ -1,34 +1,78 @@
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
-import { commonValidationRules, InfoTabsData, versions } from '../../constants';
+import { requiredRule, InfoTabsData } from '../../constants';
 import { FormField } from '../../components/FormField';
-import { CreateTemplateForm, TemplateType } from '../../types';
 import { Input } from '@components/Input';
+import { FileInput } from '../../components/InputFile';
+import {
+  TemplateDockerImageForm,
+  TemplateType,
+} from '@globalTypes/templates.draft';
 
-import { TaggedSelect } from '../../components/TaggedSelect';
+import { useApiMutation } from '@utils/lib/use-api-query';
+import { getTemplateDraft, saveTemplateDraftImage } from '@api/queries';
+import { FormButton } from '../../components/FormButton';
+import { ArrayField } from '../../components/ArrayField';
+import { TaggedInput } from '../../components/TaggedInput';
+import { useQueryClient } from '@tanstack/react-query';
+import { useDefaultValues } from '../../lib/use-default-values';
+import { useNotificationContext } from '@components/Notification';
 
 export const DockerImageStep = () => {
+  const queryClient = useQueryClient();
+  const { open } = useNotificationContext();
+  const defaultValues = useDefaultValues().dockerImage;
+  const { mutate, isPending } = useApiMutation({
+    request: saveTemplateDraftImage,
+  });
+
   const {
     control,
     formState: { errors },
     register,
-  } = useFormContext<CreateTemplateForm>();
+    handleSubmit,
+  } = useForm<TemplateDockerImageForm>({
+    defaultValues,
+  });
 
-  const selectedType = useWatch({ control, name: 'image.type' });
+  const onSubmit = handleSubmit(data => {
+    const { managed, ...restData } = data;
+
+    mutate(
+      {
+        ...restData,
+        managed: {
+          url: managed?.url || '',
+          versions: (managed?.versions || []).map(({ name }) => name),
+        },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [getTemplateDraft.endpoint],
+          });
+          open({ title: 'Image saved' });
+        },
+      },
+    );
+  });
+
+  const selectedType = useWatch({ control, name: 'type' });
 
   return (
-    <form className="flex flex-col gap-[15px] mt-[25px]">
+    <form onSubmit={onSubmit} className="flex flex-col gap-[15px] mt-[25px]">
       <h3 className="text-2xl font-semibold font-inter text-white">
         Template type
       </h3>
       <Controller
         control={control}
-        name="image.type"
+        name="type"
         render={({ field: { onChange, value } }) => (
           <FormTabs
             currentTab={
               InfoTabsData.find(tab => tab.value === value) || InfoTabsData[0]
             }
+            disabled={tabId => tabId === InfoTabsData[1].id}
             onTabChange={({ value }) => onChange(value)}
             tabs={InfoTabsData}
           />
@@ -41,23 +85,35 @@ export const DockerImageStep = () => {
           </h4>
           <FormField
             clickable
-            error={errors.image?.managed?.url?.message}
+            error={errors.managed?.url?.message}
             label="DockerHUB Image URL"
             className="flex-col gap-[6px] [&>div>div]:max-w-full"
           >
             {error => (
               <Input
-                {...register('image.managed.url', commonValidationRules)}
+                {...register('managed.url', requiredRule)}
                 invalid={Boolean(error)}
               />
             )}
           </FormField>
-          <TaggedSelect
-            options={versions}
+          <ArrayField
+            label="Versions"
             control={control}
-            name="image.managed.versions"
-            fieldLabel="Versions"
-            selectLabel="Add version"
+            name="managed.versions"
+            btnLabel="Add version"
+            defaultValue={{ name: '' }}
+            error={errors.managed?.root?.message}
+            fieldsWrapperStyles="flex-row flex-wrap"
+            renderField={(field, remove, index) => (
+              <TaggedInput
+                key={field.id}
+                error={errors.managed?.versions?.[index]?.name?.message}
+                {...register(`managed.versions.${index}.name`, {
+                  ...requiredRule,
+                })}
+                onDelete={() => remove(index)}
+              />
+            )}
           />
         </div>
       )}
@@ -68,7 +124,7 @@ export const DockerImageStep = () => {
           </h4>
           <FormField
             clickable
-            error={errors.image?.custom?.dockerfiles?.development?.message}
+            error={errors.custom?.dockerfiles?.development?.message}
             label="Development"
             hint={
               <p className="max-w-[300px] text-sm">
@@ -82,10 +138,7 @@ export const DockerImageStep = () => {
           >
             {error => (
               <Input
-                {...register(
-                  'image.custom.dockerfiles.development',
-                  commonValidationRules,
-                )}
+                {...register('custom.dockerfiles.development', requiredRule)}
                 placeholder="Dockerfile"
                 invalid={Boolean(error)}
               />
@@ -93,15 +146,12 @@ export const DockerImageStep = () => {
           </FormField>
           <FormField
             clickable
-            error={errors.image?.custom?.dockerfiles?.test?.message}
+            error={errors.custom?.dockerfiles?.test?.message}
             label="Test"
           >
             {error => (
               <Input
-                {...register(
-                  'image.custom.dockerfiles.test',
-                  commonValidationRules,
-                )}
+                {...register('custom.dockerfiles.test', requiredRule)}
                 placeholder="tests.Dockerfile"
                 invalid={Boolean(error)}
               />
@@ -109,22 +159,33 @@ export const DockerImageStep = () => {
           </FormField>
           <FormField
             clickable
-            error={errors.image?.custom?.dockerfiles?.production?.message}
+            error={errors.custom?.dockerfiles?.production?.message}
             label="Production"
           >
             {error => (
               <Input
-                {...register(
-                  'image.custom.dockerfiles.production',
-                  commonValidationRules,
-                )}
+                {...register('custom.dockerfiles.production', requiredRule)}
                 placeholder="prod.Dockerfile"
                 invalid={Boolean(error)}
               />
             )}
           </FormField>
+          <div className="flex flex-col gap-[15px]">
+            <h4 className="text-xl font-semibold font-inter text-white">
+              Sources
+            </h4>
+            <FileInput control={control} name="custom.sources_uri" />
+          </div>
         </div>
       )}
+      <FormButton
+        disabled={isPending}
+        type="submit"
+        isLoading={isPending}
+        loadingText="Saving..."
+      >
+        Save
+      </FormButton>
     </form>
   );
 };
