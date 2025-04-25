@@ -22,6 +22,7 @@ import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
+import { Deploy } from '@scenes/components/Deploy';
 
 export const routes = [
   {
@@ -58,6 +59,10 @@ export const routes = [
       {
         path: RouteMap.templates,
         element: <Templates />,
+      },
+      {
+        path: RouteMap.deploy,
+        element: <Deploy />,
       },
       { path: RouteMap.template, element: <Template /> },
       {

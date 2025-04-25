@@ -8,6 +8,7 @@ export default {
     backgroundImage: {
       net: "url('src/assets/images/net.svg')",
       card: 'linear-gradient(180deg, rgba(50, 53, 72, 0.7) 0%, rgba(50, 53, 72, 0.2) 75%)',
+      'bg-linear-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
     },
     boxShadow: {
       card: '0px 1px 2px 0px #0000000D',
@@ -18,6 +19,13 @@ export default {
     },
     fontFamily: {
       inter: ['Inter', ...fontFamily.sans],
+    },
+    fontSize: {
+      xxs: '.575rem',
+      xs: '.75rem',
+      sm: '.875rem',
+      xl: '1.25rem',
+      '2xl': '1.5rem',
     },
     colors: {
       background: '#2D2C33',
@@ -40,6 +48,12 @@ export default {
         lighter: '#6daaff',
         soft: '#708DA6',
         light: '#7086A6',
+      },
+      orange: {
+        DEFAULT: '#FFBB4F',
+      },
+      green: {
+        DEFAULT: '#1EA574',
       },
       error: { DEFAULT: '#FF4F52', transparent: '#f5656599' },
       black: '#000',
