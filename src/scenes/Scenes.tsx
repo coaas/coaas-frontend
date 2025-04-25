@@ -29,6 +29,7 @@ import { Template } from './components/Template';
 import { Logout } from './components/Logout';
 import { Outlet } from 'react-router';
 import { CurrentUserTemplates } from './components/CurrentUserTemplates';
+import { Deploy } from '@scenes/components/Deploy';
 
 export const routes = [
   {
@@ -87,6 +88,10 @@ export const routes = [
             element: <CurrentUserTemplates />,
           },
         ],
+      },
+      {
+        path: RouteMap.deploy,
+        element: <Deploy />,
       },
       { path: RouteMap.template, element: <Template /> },
       {
