@@ -27,7 +27,6 @@ import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
-import { Deploy } from '@scenes/components/Deploy/components/Deploy.tsx';
 import { Outlet } from 'react-router';
 import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 import { Deploy } from '@scenes/components/Deploy';
