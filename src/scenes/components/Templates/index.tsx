@@ -127,12 +127,20 @@ export const Templates = () => {
           ),
         )}
       </div>
-      <Link
-        className="block mt-[14px] max-w-fit"
-        to={RouteMap.templatesCreateStepInfo}
-      >
-        <Button>Create template</Button>
-      </Link>
+      <div className="flex row justify-between">
+        <Link
+          className="block mt-[14px] max-w-fit"
+          to={RouteMap.templatesCreateStepInfo}
+        >
+          <Button>Create template</Button>
+        </Link>
+        <Link
+          className="block mt-[14px] max-w-fit mr-5"
+          to={RouteMap.myTemplates}
+        >
+          <Button>My templates</Button>
+        </Link>
+      </div>
       {entries.length > 0 && (
         <div className="mt-5">
           <p className=" text-[16px] leading-[33px] text-white font-semibold">

@@ -27,6 +27,13 @@ export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
 };
 
+export const getMyTemplates: ApiRequest<
+  PaginatedResponse<Template>,
+  GetTemplatesDto
+> = {
+  endpoint: 'TemplateHubService/ListMyTemplates',
+};
+
 export const getTemplates: ApiRequest<
   PaginatedResponse<Template>,
   GetTemplatesDto
