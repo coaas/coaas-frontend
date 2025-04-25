@@ -1,0 +1,84 @@
+import { useApiQuery } from '@utils/lib/use-api-query';
+import { getMyTemplates } from '@api/queries';
+import { Template } from '@globalTypes/templates';
+import { IS_MOCK_ACTIVE } from '@api/constants';
+
+export const useMyTemplates = IS_MOCK_ACTIVE
+  ? () => [
+      {
+        id: '1',
+        created_at: '2023-01-01T00:00:00Z',
+        name: 'Template One',
+        description: 'Description for Template One',
+        docs: 'https://example.com/docs/template-one',
+        type: 1,
+        status: 1,
+        categories: ['Category1', 'Category2'],
+        languages: ['en', 'fr'],
+        author: { id: 'author1', username: 'Author One' },
+        downloads: 100,
+        stars: 5,
+      },
+      {
+        id: '2',
+        created_at: '2023-02-01T00:00:00Z',
+        name: 'Template Two',
+        description: 'Description for Template Two',
+        docs: 'https://example.com/docs/template-two',
+        type: 2,
+        status: 2,
+        categories: ['Category3'],
+        languages: ['en'],
+        author: { id: 'author2', username: 'Author Two' },
+        downloads: 200,
+        stars: 4,
+      },
+      {
+        id: '3',
+        created_at: '2023-03-01T00:00:00Z',
+        name: 'Template Three',
+        description: 'Description for Template Three',
+        docs: 'https://example.com/docs/template-three',
+        type: 3,
+        status: 3,
+        categories: ['Category4', 'Category5'],
+        languages: ['es'],
+        author: { id: 'author3', username: 'Author Three' },
+        downloads: 300,
+        stars: 3,
+      },
+      {
+        id: '4',
+        created_at: '2023-04-01T00:00:00Z',
+        name: 'Template Four',
+        description: 'Description for Template Four',
+        docs: 'https://example.com/docs/template-four',
+        type: 4,
+        status: 4,
+        categories: ['Category6'],
+        languages: ['de'],
+        author: { id: 'author4', username: 'Author Four' },
+        downloads: 400,
+        stars: 2,
+      },
+      {
+        id: '5',
+        created_at: '2023-05-01T00:00:00Z',
+        name: 'Template Five',
+        description: 'Description for Template Five',
+        docs: 'https://example.com/docs/template-five',
+        type: 5,
+        status: 5,
+        categories: ['Category7', 'Category8'],
+        languages: ['it'],
+        author: { id: 'author5', username: 'Author Five' },
+        downloads: 500,
+        stars: 1,
+      },
+    ]
+  : (): Template[] => {
+      const { data } = useApiQuery({
+        request: getMyTemplates,
+      });
+      return data?.templates || [];
+    };
