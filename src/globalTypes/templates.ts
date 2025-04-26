@@ -43,6 +43,21 @@ export interface Template {
   stars: number;
 }
 
+export interface Draft {
+  id: string;
+  created_at: string;
+  name: string;
+  description: string;
+  docs: string;
+  type: number;
+  status: number;
+  categories: string[];
+  languages: string[];
+  author: Author;
+  downloads: number;
+  stars: number;
+}
+
 export interface Author {
   id: string;
   username: string;
