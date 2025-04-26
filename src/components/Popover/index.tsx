@@ -30,6 +30,7 @@ interface PopoverProps {
   placement?: Placement;
   offsetNum?: number;
   openOnHover?: boolean;
+  passWidth?: boolean;
 }
 
 export const Popover = ({
@@ -41,6 +42,7 @@ export const Popover = ({
   placement = 'bottom-start',
   offsetNum = 10,
   openOnHover = false,
+  passWidth = true,
 }: PopoverProps) => {
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -51,7 +53,9 @@ export const Popover = ({
       shift(),
       size({
         apply: ({ elements }) => {
-          elements.floating.style.maxWidth = `${elements.reference.getBoundingClientRect().width}px`;
+          if (passWidth) {
+            elements.floating.style.maxWidth = `${elements.reference.getBoundingClientRect().width}px`;
+          }
         },
       }),
     ],
