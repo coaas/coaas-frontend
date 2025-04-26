@@ -1,0 +1,244 @@
+{
+    "type": 0,
+    "orchestration_engine": 0,
+    "clusters": [
+      {
+        "id": "cluster-ru-central1",
+        "name": "Russia (Moscow)",
+        "region": "ru-central1",
+        "availability_zone": "ru-central1-a",
+        "provider": "Yandex Cloud",
+        "country": "Russia",
+        "city": "Moscow",
+        "address": "Yandex DC",
+        "servers": [
+          {
+            "id": "srv-1",
+            "region": "ru-central1",
+            "availability_zone": "ru-central1-a",
+            "provider": "Yandex Cloud",
+            "type": 1,
+            "name": "backend-node-1",
+            "ip": "10.0.0.1",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 1,
+            "instances": [
+              {
+                "id": "inst-1",
+                "service": {
+                  "id": "svc-backend",
+                  "name": "Backend",
+                  "description": "Main backend service"
+                },
+                "status": 1,
+                "cpu": 1,
+                "ram": 2048,
+                "memory": 2048
+              },
+              {
+                "id": "inst-2",
+                "service": {
+                  "id": "svc-db",
+                  "name": "PostgreSQL",
+                  "description": "Relational database"
+                },
+                "status": 1,
+                "cpu": 2,
+                "ram": 4096,
+                "memory": 4096
+              }
+            ]
+          },
+          {
+            "id": "srv-2",
+            "region": "ru-central1",
+            "availability_zone": "ru-central1-a",
+            "provider": "Yandex Cloud",
+            "type": 1,
+            "name": "frontend-node-1",
+            "ip": "10.0.0.2",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 1,
+            "instances": [
+              {
+                "id": "inst-3",
+                "service": {
+                  "id": "svc-frontend",
+                  "name": "Frontend",
+                  "description": "User-facing interface"
+                },
+                "status": 1,
+                "cpu": 1,
+                "ram": 2048,
+                "memory": 2048
+              },
+              {
+                "id": "inst-4",
+                "service": {
+                  "id": "svc-kafka",
+                  "name": "Kafka",
+                  "description": "Message broker"
+                },
+                "status": 1,
+                "cpu": 2,
+                "ram": 4096,
+                "memory": 4096
+              }
+            ]
+          },
+          {
+            "id": "srv-3",
+            "region": "ru-central1",
+            "availability_zone": "ru-central1-a",
+            "provider": "Yandex Cloud",
+            "type": 1,
+            "name": "cache-node-1",
+            "ip": "10.0.0.3",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 0,
+            "instances": [
+              {
+                "id": "inst-5",
+                "service": {
+                  "id": "svc-cache",
+                  "name": "Redis",
+                  "description": "Cache layer"
+                },
+                "status": 0,
+                "cpu": 1,
+                "ram": 1024,
+                "memory": 1024
+              }
+            ]
+          },
+          {
+            "id": "srv-4",
+            "region": "ru-central21",
+            "availability_zone": "ru-central1-a",
+            "provider": "Yandex Cloud123",
+            "type": 3,
+            "name": "cache-node-1",
+            "ip": "10.0.0.3",
+            "cpu": 10,
+            "ram": 8192,
+            "disk": 10000,
+            "status": 3,
+            "instances": [
+              {
+                "id": "inst-10",
+                "service": {
+                  "id": "svc-cache",
+                  "name": "Redis123",
+                  "description": "Cache layer"
+                },
+                "status": 3,
+                "cpu": 1,
+                "ram": 1024,
+                "memory": 18
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cluster-eu-central1",
+        "name": "Europe (Frankfurt)",
+        "region": "eu-central1",
+        "availability_zone": "eu-central1-a",
+        "provider": "AWS",
+        "country": "Germany",
+        "city": "Frankfurt",
+        "address": "AWS DC",
+        "servers": [
+          {
+            "id": "srv-4",
+            "region": "eu-central1",
+            "availability_zone": "eu-central1-a",
+            "provider": "AWS",
+            "type": 1,
+            "name": "gateway-node-1",
+            "ip": "10.1.0.1",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 1,
+            "instances": [
+              {
+                "id": "inst-6",
+                "service": {
+                  "id": "svc-gateway",
+                  "name": "API Gateway",
+                  "description": "REST entrypoint"
+                },
+                "status": 1,
+                "cpu": 2,
+                "ram": 4096,
+                "memory": 4096
+              }
+            ]
+          },
+          {
+            "id": "srv-5",
+            "region": "eu-central1",
+            "availability_zone": "eu-central1-a",
+            "provider": "AWS",
+            "type": 1,
+            "name": "worker-node-1",
+            "ip": "10.1.0.2",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 0,
+            "instances": [
+              {
+                "id": "inst-7",
+                "service": {
+                  "id": "svc-worker",
+                  "name": "Task Worker",
+                  "description": "Processes background tasks"
+                },
+                "status": 0,
+                "cpu": 1,
+                "ram": 2048,
+                "memory": 2048
+              }
+            ]
+          },
+          {
+            "id": "srv-6",
+            "region": "eu-central1",
+            "availability_zone": "eu-central1-a",
+            "provider": "AWS",
+            "type": 1,
+            "name": "monitoring-node-1",
+            "ip": "10.1.0.3",
+            "cpu": 4,
+            "ram": 8192,
+            "disk": 100,
+            "status": 1,
+            "instances": [
+              {
+                "id": "inst-8",
+                "service": {
+                  "id": "svc-monitoring",
+                  "name": "Prometheus",
+                  "description": "Monitoring and alerting"
+                },
+                "status": 1,
+                "cpu": 1,
+                "ram": 2048,
+                "memory": 2048
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

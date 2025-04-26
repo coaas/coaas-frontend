@@ -1,1 +1,1 @@
-export { Deploy } from './Deploy.tsx';
+export { Deploy } from './components/Deploy.tsx';
