@@ -6,8 +6,8 @@ export enum Status {
 }
 
 export enum ClusterType {
-  REGIONS,
   SERVERS,
+  REGIONS,
 }
 
 export enum OrchEngine {
