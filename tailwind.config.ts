@@ -24,6 +24,7 @@ export default {
       xxs: '.575rem',
       xs: '.75rem',
       sm: '.875rem',
+      lg: '0.9rem',
       xl: '1.25rem',
       '2xl': '1.5rem',
     },

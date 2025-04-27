@@ -5,6 +5,16 @@ export enum Status {
   UNKNOWN,
 }
 
+export enum ClusterType {
+  REGIONS,
+  SERVERS,
+}
+
+export enum OrchEngine {
+  DOCKER,
+  KUBERNETES,
+}
+
 export type Instance = Record<'cpu' | 'ram' | 'memory', number> & {
   id: string;
   status: Status;
@@ -15,9 +25,10 @@ export type Server = Record<
   'id' | 'region' | 'availability_zone' | 'provider' | 'name' | 'ip',
   string
 > &
-  Record<'type' | 'cpu' | 'ram' | 'disk', number> & {
+  Record<'cpu' | 'ram' | 'disk', number> & {
     instances: Instance[];
     status: Status;
+    type: 1 | 0;
   };
 
 export type Cluster = Record<
