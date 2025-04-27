@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => {
               proxy.on('error', err => {
                 console.error('proxy error', err);
               });
-              proxy.on('proxyReq', (_, req, _res) => {
+              proxy.on('proxyReq', (proxyReq, req, _res) => {
+                proxyReq.setHeader('Authorization', `Bearer ${VITE_ACCESS_TOKEN}`);
                 console.log(
                   'Sending Request to the Target:',
                   req.method,

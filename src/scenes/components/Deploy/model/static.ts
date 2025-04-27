@@ -6,3 +6,10 @@ export const convertStatus = {
   [Status.DIED]: 'died',
   [Status.UNKNOWN]: 'unknown',
 };
+
+export const convertStatusRegion = {
+  [Status.ACTIVE]: 'ready',
+  [Status.LOADED]: 'loaded',
+  [Status.DIED]: 'died',
+  [Status.UNKNOWN]: 'unknown',
+};

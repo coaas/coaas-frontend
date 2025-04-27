@@ -2,7 +2,7 @@ import clusters from './mock-deploy.json';
 import { Cluster } from '@scenes/components/Deploy/model/types.ts';
 import { queryOptions } from '@tanstack/react-query';
 
-type Clusters = {
+export type Clusters = {
   type: number;
   orchestration_engine: number;
   clusters: Cluster[];
