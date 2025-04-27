@@ -22,7 +22,7 @@ import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
-import { Deploy } from '@scenes/components/Deploy';
+import { Deploy } from '@scenes/components/Deploy/components/Deploy.tsx';
 
 export const routes = [
   {
