@@ -5,7 +5,7 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const { VITE_API_HREF, VITE_API_AUTH_HREF, VITE_ORIGIN } = loadEnv(mode, process.cwd());
+  const { VITE_API_HREF, VITE_API_AUTH_HREF, VITE_ORIGIN, VITE_ACCESS_TOKEN } = loadEnv(mode, process.cwd());
 
   return {
     server: {
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
                 console.error('proxy error', err);
               });
               proxy.on('proxyReq', (proxyReq, req, _res) => {
-                proxyReq.setHeader('Authorization', `Bearer ${VITE_ACCESS_TOKEN}`);
+                VITE_ACCESS_TOKEN && proxyReq.setHeader('Authorization', `Bearer ${VITE_ACCESS_TOKEN}`);
                 console.log(
                   'Sending Request to the Target:',
                   req.method,
