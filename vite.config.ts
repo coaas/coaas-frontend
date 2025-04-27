@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       proxy:
-        (mode === 'development' && {
+        mode === 'development' ? {
           '/api': {
             target: `${VITE_API_HREF}/api`,
             changeOrigin: true,
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
                 console.error('proxy error', err);
               });
               proxy.on('proxyReq', (proxyReq, req, _res) => {
-                proxyReq.setHeader('Authorization', `Bearer ${VITE_ACCESS_TOKEN}`);
+                VITE_ACCESS_TOKEN && proxyReq.setHeader('Authorization', `Bearer ${VITE_ACCESS_TOKEN}`);
                 console.log(
                   'Sending Request to the Target:',
                   req.method,
@@ -67,8 +67,11 @@ export default defineConfig(({ mode }) => {
               });
             },
           },
-        }) ||
-        undefined,
+        } : undefined,
+      host: "0.0.0.0",
+      allowedHosts: [
+        VITE_ORIGIN
+      ]
     },
     resolve: {
       alias: {

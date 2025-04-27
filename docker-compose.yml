@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  web:
+    image: coaas-frontend:latest
+    ports:
+      - "80:3000"

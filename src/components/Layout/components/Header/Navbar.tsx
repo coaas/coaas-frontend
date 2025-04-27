@@ -42,6 +42,7 @@ export const Navbar = () => {
       close={off}
       setOpen={setState}
       offsetNum={24}
+      passWidth={false}
       render={({ close }) => (
         <div
           onClick={close}
