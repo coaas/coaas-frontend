@@ -1,9 +1,10 @@
 import { NamespaceWithProject, User } from '@globalTypes/index';
 import {
+  Draft,
   GetTemplateFiltersResponse,
   GetTemplatesDto,
-  UploadArchiveDto,
   Template,
+  UploadArchiveDto,
 } from '@globalTypes/templates';
 import {
   MapperForm,
@@ -13,8 +14,8 @@ import {
 } from '@globalTypes/templates.draft';
 import {
   DependencyResponse,
-  GetDraftTemplateResponse,
   GetDependenciesDto,
+  GetDraftTemplateResponse,
 } from '@globalTypes/templates.draft.get';
 
 export const getUserNamespacesAndProjects: ApiRequest<{
@@ -25,6 +26,13 @@ export const getUserNamespacesAndProjects: ApiRequest<{
 
 export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
+};
+
+export const getCurrentUserTemplates: ApiRequest<{
+  templates: Template[];
+  drafts: Draft[];
+}> = {
+  endpoint: 'TemplateHubService/GetUserTemplates',
 };
 
 export const getTemplates: ApiRequest<

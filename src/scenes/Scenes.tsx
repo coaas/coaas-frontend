@@ -22,6 +22,8 @@ import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
+import { Outlet } from 'react-router';
+import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 
 export const routes = [
   {
@@ -57,7 +59,21 @@ export const routes = [
       },
       {
         path: RouteMap.templates,
-        element: <Templates />,
+        element: (
+          <>
+            <Outlet />
+          </>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Templates />,
+          },
+          {
+            path: 'my',
+            element: <CurrentUserTemplates />,
+          },
+        ],
       },
       { path: RouteMap.template, element: <Template /> },
       {
