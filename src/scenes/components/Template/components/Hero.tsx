@@ -1,6 +1,7 @@
 import { Icon, IconType } from '@components/Icon';
 import { Template } from '@globalTypes/templates';
 import { FormButton } from '@scenes/components/CreateTemplate/components/FormButton';
+import { useUser } from '@utils/lib/use-user';
 
 export const Hero = ({
   name,
@@ -10,6 +11,9 @@ export const Hero = ({
   downloads,
   languages,
 }: Template) => {
+  const user = useUser();
+  //
+  const isAuthor = author.id == user?.id;
   return (
     <div className="py-[22px] px-8 rounded-xl border border-blue flex gap-[33px]">
       <span className="text-blue">
@@ -63,12 +67,20 @@ export const Hero = ({
             <FormButton size="sm" className="whitespace-nowrap">
               Use template
             </FormButton>
-            <FormButton size="sm" variant="unfilled" className="rounded-[4px]">
-              Edit
-            </FormButton>
-            <FormButton size="sm" variant="red" className="rounded-[4px]">
-              Delete
-            </FormButton>
+            {isAuthor && (
+              <>
+                <FormButton
+                  size="sm"
+                  variant="unfilled"
+                  className="rounded-[4px]"
+                >
+                  Edit
+                </FormButton>
+                <FormButton size="sm" variant="red" className="rounded-[4px]">
+                  Delete
+                </FormButton>
+              </>
+            )}
           </nav>
           <div className="flex gap-[6px]">
             {languages.map((language, key) => (
