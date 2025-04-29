@@ -23,7 +23,7 @@ import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
 import { Outlet } from 'react-router';
-import { MyTemplates } from './components/MyTemplates';
+import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 
 export const routes = [
   {
@@ -71,7 +71,7 @@ export const routes = [
           },
           {
             path: 'my',
-            element: <MyTemplates />,
+            element: <CurrentUserTemplates />,
           },
         ],
       },

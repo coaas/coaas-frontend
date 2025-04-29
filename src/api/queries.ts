@@ -28,7 +28,7 @@ export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
 };
 
-export const getMyTemplates: ApiRequest<{
+export const getCurrentUserTemplates: ApiRequest<{
   templates: Template[];
   drafts: Draft[];
 }> = {

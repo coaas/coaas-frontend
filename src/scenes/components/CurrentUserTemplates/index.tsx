@@ -3,20 +3,17 @@ import { Link } from 'react-router-dom';
 import { Card, CardType } from '@components/Card';
 import { RouteMap } from '@components/Layout/components/types';
 import { createDynamicPath } from '@utils/lib/create-dynamic-path';
-import { useMyTemplates } from '@scenes/components/MyTemplates/useMyTemplates';
+import { useCurrentUserTemplates } from '@scenes/components/CurrentUserTemplates/useCurrentUserTemplates';
 import { cn } from '@utils/styles';
+import { Draft, Template } from '@globalTypes/templates';
 
-export const MyTemplates = () => {
-  const entries = useMyTemplates();
+const Section = (props: { name: string; entries: Template[] | Draft[] }) => {
+  const { name, entries } = props;
 
   return (
-    <section className=" w-full m-auto max-w-[1268px] py-[70px]">
-      <Banner
-        title="Template Hub"
-        subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
-      />
+    <>
       <div className="mt-5">
-        <h4 className="font-semibold text-xl">Мои шаблоны</h4>
+        <h4 className="font-semibold text-xl">{name}</h4>
       </div>
       {entries.length > 0 && (
         <div className="mt-5">
@@ -27,6 +24,7 @@ export const MyTemplates = () => {
         </div>
       )}
       <div className={cn('max-h-[564px] overflow-auto mt-5')}>
+        <h5 style={{ textTransform: 'capitalize' }}>{name}</h5>
         {entries.map(({ name, description, id }, key) => (
           <Link
             key={key}
@@ -47,6 +45,21 @@ export const MyTemplates = () => {
           </Link>
         ))}
       </div>
+    </>
+  );
+};
+
+export const CurrentUserTemplates = () => {
+  const { drafts, templates } = useCurrentUserTemplates();
+
+  return (
+    <section className=" w-full m-auto max-w-[1268px] py-[70px] px-3.5">
+      <Banner
+        title="Template Hub"
+        subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
+      />
+      <Section name={'шаблоны'} entries={templates} />
+      <Section name={'черновики'} entries={drafts} />
     </section>
   );
 };

@@ -136,7 +136,7 @@ export const Templates = () => {
         </Link>
         <Link
           className="block mt-[14px] max-w-fit mr-5"
-          to={RouteMap.myTemplates}
+          to={RouteMap.currentUserTemplates}
         >
           <Button>My templates</Button>
         </Link>
