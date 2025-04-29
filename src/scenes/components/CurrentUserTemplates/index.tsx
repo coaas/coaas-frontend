@@ -13,7 +13,7 @@ const Section = (props: { name: string; entries: Template[] | Draft[] }) => {
   return (
     <>
       <div className="mt-5">
-        <h4 className="font-semibold text-xl">{name}</h4>
+        <h4 className="font-semibold text-xl capitalize">{name}</h4>
       </div>
       {entries.length > 0 && (
         <div className="mt-5">
@@ -24,7 +24,7 @@ const Section = (props: { name: string; entries: Template[] | Draft[] }) => {
         </div>
       )}
       <div className={cn('max-h-[564px] overflow-auto mt-5')}>
-        <h5 style={{ textTransform: 'capitalize' }}>{name}</h5>
+        <h5 className="capitalize">{name}</h5>
         {entries.map(({ name, description, id }, key) => (
           <Link
             key={key}

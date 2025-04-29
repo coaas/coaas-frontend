@@ -54,4 +54,7 @@ export const beforeRequest = async (request: KyRequest) => {
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
 
   request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
+  cookies.set('csrftoken', cookies.get('csrftoken') || '', {
+    domain: '127.0.0.1:3000',
+  });
 };
