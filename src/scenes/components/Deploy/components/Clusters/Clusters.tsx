@@ -16,7 +16,7 @@ export const Clusters = ({
       : clusters?.clusters[0].servers;
 
   if (isError) {
-    return <p className="text-xl">У вас ещё ничего нет</p>;
+    return <p className="text-xl">You have not deployed project yet.</p>;
   }
 
   if (isPending) {
