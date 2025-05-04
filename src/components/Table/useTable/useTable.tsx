@@ -55,7 +55,7 @@ export const useTable = <TData extends TableData>({
   );
 
   // при монтировании на всякий чекаем, нужно ли получить данные
-  useEffect(() => fetchMore(tableWrapperRef.current), [fetchMore]);
+  useEffect(() => fetchMore(tableWrapperRef.current), []);
 
   const table = useReactTable({
     data: rowsData,

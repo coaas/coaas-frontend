@@ -1,0 +1,1 @@
+export { getIsEmail } from './getIsEmail';

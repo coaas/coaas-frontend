@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { CreateProject, Namespaces } from './components';
+import { CreateProject, Namespaces, Staff } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
 import { Layout } from '@components/Layout';
@@ -46,7 +46,11 @@ export const routes = [
         element: <Namespace />,
       },
       {
-        path: RouteMap.projects,
+        path: '/namespaces/:namespace_slug/staff',
+        element: <Staff />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects',
         element: <Projects />,
       },
       {

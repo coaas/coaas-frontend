@@ -54,7 +54,8 @@ export const CellContent: FC<CellContentProps> = ({ cell }) => {
 
     case CellType.date: {
       const { date } = cell.data;
-      const title = date.toLocaleString();
+      // берем только дату, время откидываем
+      const title = date.toISOString().split('T')[0];
 
       return (
         <p title={title} className={COMMON_STYLES}>
