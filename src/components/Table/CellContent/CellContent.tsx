@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { cn } from '@utils/styles';
+import { Button } from '@components/Button';
 
 import { CellContentProps, CellType } from './types';
 
@@ -62,6 +63,10 @@ export const CellContent: FC<CellContentProps> = ({ cell }) => {
           {title}
         </p>
       );
+    }
+
+    case CellType.button: {
+      return <Button {...cell.data} />;
     }
 
     default: {
