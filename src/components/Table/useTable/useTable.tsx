@@ -55,6 +55,7 @@ export const useTable = <TData extends TableData>({
   );
 
   // при монтировании на всякий чекаем, нужно ли получить данные
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchMore(tableWrapperRef.current), []);
 
   const table = useReactTable({
