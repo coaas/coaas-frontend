@@ -40,7 +40,9 @@ export default {
           DEFAULT: '#43424A',
           dark: '#4C4958',
           light: '#4E608D33',
-          lighter: '#B6B6B640',
+          lighter: '#B6B6B640', // ?? opacity
+          lght: '#B6B6B6',
+          base: '#A9A9A9',
         },
         blue: '#507EF5',
       },
@@ -61,6 +63,7 @@ export default {
       white: '#FFFFFF',
       gray: '#B6B6B6',
       grayLighter: '#B6B6B61F',
+      violet: '#D24FD0',
       transparent: 'transparent',
       neutral: {
         '50': '#fafafa',

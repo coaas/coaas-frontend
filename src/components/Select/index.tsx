@@ -96,7 +96,7 @@ export function Select<T extends string | number>({
           <div
             className={cn(
               SelectVariants({ variant }),
-              'flex flex-col rounded-md  border max-h-[400px] w-full overflow-auto bg-stroke-gray',
+              'flex flex-col rounded-md  border max-h-[400px] w-full overflow-auto bg-stroke-gray z-[9999]',
             )}
           >
             {withSearch && (

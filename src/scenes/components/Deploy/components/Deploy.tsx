@@ -1,28 +1,17 @@
-import { Clusters } from '@scenes/components/Deploy';
 import { useMemo, useState } from 'react';
-import { Services } from '@scenes/components/Deploy/components/Services/Services.tsx';
-import { DataCenters } from '@scenes/components/Deploy/components/DataCenters/DataCenters.tsx';
-import { Achieve } from '@scenes/components/Deploy/components/Common/Achieve.tsx';
-import {
-  ClusterType,
-  OrchEngine,
-  Status,
-} from '@scenes/components/Deploy/model/types.ts';
-import { useApiQuery } from '@utils/lib/use-api-query.tsx';
-import { Clusters as ClustersType } from '@scenes/components/Deploy/api/getClusters.ts';
-import { DeployButton } from '@scenes/components/Deploy/components/Common/DeployButton.tsx';
 
-const ENDPOINT = 'DeployService/GetProjectDeploy';
+import { useQuery } from '@tanstack/react-query';
+
+import { Clusters } from './Clusters/Clusters';
+import { Services } from './Services/Services.tsx';
+import { Achieve } from './Common/Achieve.tsx';
+import { ClusterType, OrchEngine, Status } from '../model/cluster.types.ts';
+import { clusterOptions } from '../api/getDeploy.ts';
+import { DeployButton } from './Common/DeployButton.tsx';
 
 const deployTypes = ['Clusters', 'Services', 'Data Centers'] as const;
 export const Deploy = () => {
-  // const clusterApi = useQuery(clusterOptions);
-  const clusterApi = useApiQuery<ClustersType>({
-    request: {
-      endpoint: ENDPOINT,
-    },
-  });
-
+  const clusterApi = useQuery(clusterOptions);
   const [selectedDeploy, setSelectedDeploy] = useState<
     (typeof deployTypes)[number]
   >(deployTypes[0]);
@@ -42,10 +31,20 @@ export const Deploy = () => {
     [clusterApi],
   );
 
+  if (clusterApi.isError) {
+    return (
+      <p className="text-xl text-center">You have not deployed project yet.</p>
+    );
+  }
+
+  if (clusterApi.isPending) {
+    return null;
+  }
+
   const SelectedDeployComponent = {
-    Clusters: <Clusters clusterApi={clusterApi} />,
+    Clusters: <Clusters clusters={clusterApi.data} />,
     Services: <Services />,
-    'Data Centers': <DataCenters />,
+    'Data Centers': <Clusters clusters={clusterApi.data} view={'dataCenter'} />,
   }[selectedDeploy];
 
   return (

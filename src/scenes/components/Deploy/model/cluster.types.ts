@@ -1,3 +1,5 @@
+import { ServerType } from '@scenes/components/Deploy/model/dataCenter.types.ts';
+
 export enum Status {
   ACTIVE,
   LOADED,
@@ -28,7 +30,7 @@ export type Server = Record<
   Record<'cpu' | 'ram' | 'disk', number> & {
     instances: Instance[];
     status: Status;
-    type: 1 | 0;
+    type: ServerType;
   };
 
 export type Cluster = Record<

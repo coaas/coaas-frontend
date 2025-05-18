@@ -1,36 +1,40 @@
-import { Clusters as ClustersType } from '@scenes/components/Deploy/api/getClusters.ts';
+import { useState } from 'react';
+
+import { ClustersResponse } from '../../api/getDeploy.ts';
 import { Server } from './Server.tsx';
 import { Instance } from './Instance.tsx';
 import { Cluster } from './Cluster.tsx';
-import { ClusterType } from '@scenes/components/Deploy/model/types.ts';
-import { UseQueryResult } from '@tanstack/react-query';
+import { ClusterType } from '../../model/cluster.types.ts';
+import { Wrapper } from '../Common/Wrapper.tsx';
+import { DataCenter } from '../DataCenters/DataCenters.tsx';
+import { DcButton } from '../Common/DCButton.tsx';
+import { DcModal } from '../DataCenters/DcModal.tsx';
 
 export const Clusters = ({
-  clusterApi: { data: clusters, isPending, isError },
+  clusters,
+  view = 'deploy',
 }: {
-  clusterApi: UseQueryResult<ClustersType, Error>;
+  clusters: ClustersResponse;
+  view?: 'deploy' | 'dataCenter';
 }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const transferClusters =
-    clusters?.type === ClusterType.SERVERS
-      ? clusters?.clusters
-      : clusters?.clusters[0].servers;
-
-  if (isError) {
-    return <p className="text-xl">You have not deployed project yet.</p>;
-  }
-
-  if (isPending) {
-    return null;
-  }
+    clusters.type === ClusterType.SERVERS || view === 'dataCenter'
+      ? clusters.clusters
+      : clusters.clusters[0].servers;
 
   return (
-    <div className="flex flex-col w-full gap-10">
+    <Wrapper>
+      {view === 'dataCenter' && clusters.type === ClusterType.SERVERS && (
+        <DcButton onClick={() => setIsOpenModal(true)}>Add cluster</DcButton>
+      )}
       {transferClusters?.map(cluster => (
         <Cluster
           key={cluster.id}
           servers={'servers' in cluster ? cluster.servers : cluster.instances}
           name={
-            clusters?.type === ClusterType.SERVERS
+            clusters.type === ClusterType.SERVERS
               ? [cluster.name, cluster.region, cluster.provider].join(', ')
               : [
                   cluster.name,
@@ -41,25 +45,42 @@ export const Clusters = ({
                   `${'disk' in cluster ? cluster.disk : ''} DISK`,
                 ].join(' ')
           }
-          clusterType={clusters?.type}
-          renderServer={server => (
-            <Server
-              key={server.id}
-              name={'name' in server ? server.name : server.service.name}
-              id={server.id}
-              status={server.status}
-              instances={'instances' in server ? server.instances : []}
-              cpu={server.cpu}
-              ram={server.ram}
-              disk={'disk' in server ? server.disk : server.memory}
-              clusterType={clusters?.type}
-              renderInstance={instance => (
-                <Instance key={instance.id} {...instance} />
-              )}
-            />
-          )}
+          clusterType={clusters.type}
+          view={view}
+          renderServer={server =>
+            view === 'deploy' ? (
+              <Server
+                key={server.id}
+                name={'name' in server ? server.name : server.service.name}
+                id={server.id}
+                status={server.status}
+                instances={'instances' in server ? server.instances : []}
+                cpu={server.cpu}
+                ram={server.ram}
+                disk={'disk' in server ? server.disk : server.memory}
+                clusterType={clusters?.type}
+                renderInstance={instance => (
+                  <Instance key={instance.id} {...instance} />
+                )}
+              />
+            ) : (
+              <DataCenter
+                serverType={'type' in server ? server.type : 0}
+                name={
+                  'region' in server
+                    ? [
+                        server.region,
+                        `${server.cpu} CPU`,
+                        `${server.ram} RAM`,
+                      ].join(' ')
+                    : ''
+                }
+              />
+            )
+          }
         />
       ))}
-    </div>
+      <DcModal isOpen={isOpenModal} onOpenChange={setIsOpenModal} />
+    </Wrapper>
   );
 };

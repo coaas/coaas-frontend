@@ -1,6 +1,6 @@
-import { Status } from '@scenes/components/Deploy/model/types.ts';
+import { Status } from '@scenes/components/Deploy/model/cluster.types.ts';
 import { clsx } from 'clsx';
-import type { Instance as InstanceType } from '../../model/types.ts';
+import type { Instance as InstanceType } from '../../model/cluster.types.ts';
 
 export const Instance = ({
   status,

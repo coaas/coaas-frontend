@@ -1,16 +1,11 @@
-import {
-  ClusterType,
-  Instance,
-  Status,
-} from '@scenes/components/Deploy/model/types.ts';
 import { useMemo } from 'react';
-import {
-  convertStatus,
-  convertStatusRegion,
-} from '@scenes/components/Deploy/model/static.ts';
-import { Dollar } from '@scenes/components/Deploy/components/icons';
-import type { Server as ServerType } from '../../model/types.ts';
-import { Achieve } from '@scenes/components/Deploy/components/Common/Achieve.tsx';
+
+import type { Server as ServerType } from '../../model/cluster.types.ts';
+
+import { ClusterType, Instance, Status } from '../../model/cluster.types.ts';
+import { convertStatus, convertStatusRegion } from '../../model/static.ts';
+import { Dollar } from '../../components/icons';
+import { Achieve } from '../../components/Common/Achieve.tsx';
 
 export const Server = ({
   status,

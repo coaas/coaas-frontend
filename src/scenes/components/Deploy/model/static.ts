@@ -1,4 +1,5 @@
-import { Status } from '@scenes/components/Deploy/model/types.ts';
+import { Status } from '../model/cluster.types.ts';
+import { ServerType } from '../model/dataCenter.types.ts';
 
 export const convertStatus = {
   [Status.ACTIVE]: 'active',
@@ -12,4 +13,10 @@ export const convertStatusRegion = {
   [Status.LOADED]: 'loaded',
   [Status.DIED]: 'died',
   [Status.UNKNOWN]: 'unknown',
+};
+
+export const convertServerType = {
+  [ServerType.PURCHASED]: 'purchased',
+  [ServerType.PERSONAL]: 'personal',
+  [ServerType.SHARED]: 'shared',
 };
