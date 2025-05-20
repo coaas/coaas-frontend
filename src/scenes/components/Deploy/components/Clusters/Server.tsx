@@ -32,8 +32,8 @@ export const Server = ({
       [Status.UNKNOWN]: 'text-gray bg-gray/20 border-gray',
     },
     cluster: {
-      [ClusterType.SERVERS]: 'flex gap-2 text-blue-light text-xs',
-      [ClusterType.REGIONS]: 'flex flex-col text-blue-light text-lg',
+      [ClusterType.REGIONS]: 'flex gap-2 text-blue-light text-xs',
+      [ClusterType.SERVERS]: 'flex flex-col text-blue-light text-lg',
     },
   };
 
@@ -60,22 +60,22 @@ export const Server = ({
       }}
     >
       <div className="flex justify-between">
-        {ClusterType.SERVERS === clusterType ? (
+        {ClusterType.REGIONS === clusterType ? (
           <p>{id}</p>
         ) : (
           <p className="text-blue text-xl font-bold">{name}</p>
         )}
         <div className="flex gap-1 items-center">
           <Achieve status={status} size={'xxs'}>
-            {ClusterType.REGIONS === clusterType
+            {ClusterType.SERVERS === clusterType
               ? convertStatusRegion[status]
               : convertStatus[status]}
           </Achieve>
-          {ClusterType.SERVERS === clusterType && <Dollar />}
+          {ClusterType.REGIONS === clusterType && <Dollar />}
         </div>
       </div>
       <div className="flex flex-col">
-        {ClusterType.SERVERS === clusterType && (
+        {ClusterType.REGIONS === clusterType && (
           <p className="text-blue text-xl font-bold">{name}</p>
         )}
         <div className={variants.cluster[clusterType]}>
@@ -90,7 +90,7 @@ export const Server = ({
           </p>
         </div>
       </div>
-      {clusterType === ClusterType.SERVERS && (
+      {clusterType === ClusterType.REGIONS && (
         <div className="flex flex-col gap-4">
           {instances.map(renderInstance)}
         </div>

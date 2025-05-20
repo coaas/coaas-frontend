@@ -9,8 +9,8 @@ export const Dotted = ({
 }) => {
   const variants = {
     strokeType: {
-      [ClusterType.SERVERS]: 'white',
-      [ClusterType.REGIONS]: '#507EF5',
+      [ClusterType.REGIONS]: 'white',
+      [ClusterType.SERVERS]: '#507EF5',
     },
   };
 

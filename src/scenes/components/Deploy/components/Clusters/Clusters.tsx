@@ -20,7 +20,7 @@ export const Clusters = ({
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const transferClusters =
-    clusters.type === ClusterType.SERVERS || view === 'dataCenter'
+    clusters.type === ClusterType.REGIONS || view === 'dataCenter'
       ? clusters.clusters
       : clusters.clusters[0].servers;
 
@@ -34,7 +34,7 @@ export const Clusters = ({
           key={cluster.id}
           servers={'servers' in cluster ? cluster.servers : cluster.instances}
           name={
-            clusters.type === ClusterType.SERVERS
+            clusters.type === ClusterType.REGIONS
               ? [cluster.name, cluster.region, cluster.provider].join(', ')
               : [
                   cluster.name,

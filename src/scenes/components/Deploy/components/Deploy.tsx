@@ -9,11 +9,23 @@ import { ClusterType, OrchEngine, Status } from '../model/cluster.types.ts';
 import { clusterOptions } from '../api/getDeploy.ts';
 import { DeployButton } from './Common/DeployButton.tsx';
 
-const deployTypes = ['Clusters', 'Services', 'Data Centers'] as const;
+const getDeployTypes = (type: ClusterType) =>
+  [
+    `Cluster${type === ClusterType.REGIONS ? 's' : ''}`,
+    'Services',
+    type === ClusterType.REGIONS ? 'Data Centers' : 'Servers',
+  ] as const;
+
 export const Deploy = () => {
   const clusterApi = useQuery(clusterOptions);
+
+  const deployTypes = useMemo(
+    () => getDeployTypes(clusterApi.data?.type ?? ClusterType.REGIONS),
+    [clusterApi],
+  );
+
   const [selectedDeploy, setSelectedDeploy] = useState<
-    (typeof deployTypes)[number]
+    ReturnType<typeof getDeployTypes>[number]
   >(deployTypes[0]);
 
   const deployTags = useMemo(
@@ -43,8 +55,10 @@ export const Deploy = () => {
 
   const SelectedDeployComponent = {
     Clusters: <Clusters clusters={clusterApi.data} />,
+    Cluster: <Clusters clusters={clusterApi.data} />,
     Services: <Services />,
     'Data Centers': <Clusters clusters={clusterApi.data} view={'dataCenter'} />,
+    Servers: <Clusters clusters={clusterApi.data} view={'dataCenter'} />,
   }[selectedDeploy];
 
   return (
