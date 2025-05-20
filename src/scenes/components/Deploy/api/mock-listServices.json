@@ -1,0 +1,62 @@
+{
+  "services": [
+    {
+      "id": "1",
+      "name": "Service 1",
+      "description": "Description for Service 1",
+      "type": 1,
+      "created_at": "2023-10-01T12:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Service 2",
+      "description": "Description for Service 2",
+      "type": 0,
+      "created_at": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Service 3",
+      "description": "Description for Service 3",
+      "type": 1,
+      "created_at": "2023-10-03T12:00:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Service 4",
+      "description": "Description for Service 4",
+      "type": 1,
+      "created_at": "2023-10-04T12:00:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Service 5",
+      "description": "Description for Service 5",
+      "type": 1,
+      "created_at": "2023-10-05T12:00:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Service 6",
+      "description": "Description for Service 6",
+      "type": 0,
+      "created_at": "2023-10-06T12:00:00Z"
+    },
+    {
+      "id": "7",
+      "name": "Service 7",
+      "description": "Description for Service 7",
+      "type": 1,
+      "created_at": "2023-10-07T12:00:00Z"
+    },
+    {
+      "id": "8",
+      "name": "Service 8",
+      "description": "Description for Service 8",
+      "type": 0,
+      "created_at": "2023-10-08T12:00:00Z"
+    }
+  ],
+  "has_more": false,
+  "next_key": null
+}

@@ -1,0 +1,74 @@
+{
+  "services": [
+    {
+      "id": "1",
+      "name": "Website Hosting",
+      "description": "Reliable web hosting with 99.9% uptime.",
+      "type": 1,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "2",
+      "name": "Cloud Storage",
+      "description": "Secure cloud storage solution for your files.",
+      "type": 2,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "3",
+      "name": "Email Marketing",
+      "description": "Engage customers with automated email campaigns.",
+      "type": 3,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "4",
+      "name": "SEO Optimization",
+      "description": "Improve your website’s search engine ranking.",
+      "type": 1,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "5",
+      "name": "Graphic Design",
+      "description": "Custom design services for logos and branding.",
+      "type": 4,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "6",
+      "name": "IT Consulting",
+      "description": "Professional advice on IT strategies and systems.",
+      "type": 5,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "7",
+      "name": "Mobile App Development",
+      "description": "Custom mobile app development for iOS and Android.",
+      "type": 1,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "8",
+      "name": "Cybersecurity Audit",
+      "description": "Comprehensive audit to identify security risks.",
+      "type": 6,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "9",
+      "name": "Video Production",
+      "description": "Create promotional and corporate videos.",
+      "type": 4,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    },
+    {
+      "id": "10",
+      "name": "Data Analysis",
+      "description": "Advanced analytics to help make data-driven decisions.",
+      "type": 5,
+      "created_at": "2025-04-29T12:22:05.877Z"
+    }
+  ]
+}

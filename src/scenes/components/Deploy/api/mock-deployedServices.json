@@ -1,0 +1,34 @@
+{
+  "services": [
+    {
+      "id": "1",
+      "name": "Service 1",
+      "description": "Description for Service 1",
+      "type": 0,
+      "created_at": "2023-10-10T12:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Service 2",
+      "description": "Description for Service 2",
+      "type": 1,
+      "created_at": "2023-10-10T12:05:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Service 3",
+      "description": "Description for Service 3",
+      "type": 0,
+      "created_at": "2023-10-10T12:10:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Service 4",
+      "description": "Description for Service 4",
+      "type": 1,
+      "created_at": "2023-10-10T12:15:00Z"
+    }
+  ],
+  "has_more": false,
+  "next_key": null
+}
