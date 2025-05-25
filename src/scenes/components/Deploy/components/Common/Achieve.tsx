@@ -6,11 +6,17 @@ import { ServerType } from '../../model/dataCenter.types.ts';
 type AchieveProps = {
   size: 'xxs' | 'lg';
   children: React.ReactNode;
-} & ({ status: Status } | { serverType: ServerType });
+  rounded?: 'sm' | 'md';
+} & (
+  | { status: Status }
+  | { serverType: ServerType }
+  | { color: 'blue' | 'gray' | 'red' }
+);
 
 export const Achieve = ({
   children,
   size,
+  rounded = 'sm',
   ...props
 }: Readonly<AchieveProps>) => {
   const variants = {
@@ -26,20 +32,32 @@ export const Achieve = ({
       [ServerType.SHARED]:
         'text-stroke-gray-base bg-stroke-gray-base/20 border-stroke-gray-base',
     },
+    color: {
+      blue: 'text-blue bg-blue/20 border-blue',
+      gray: 'text-stroke-gray-darker bg-stroke-gray-darker/20 border-stroke-gray-darker',
+      red: 'text-error bg-error/20 border-error',
+    },
     size: {
       xxs: 'text-xxs',
       lg: 'text-xs',
+    },
+    rounded: {
+      sm: 'rounded-sm border-2 font-bold',
+      md: 'rounded-md border-[1px] font-medium',
     },
   };
 
   return (
     <p
       className={clsx(
-        'px-2 py-0.5 border-solid border-2 rounded-sm font-bold uppercase',
+        'px-2 py-0.5 border-solid uppercase',
         'status' in props
           ? variants.status[props.status]
-          : variants.serverType[props.serverType],
+          : 'serverType' in props
+            ? variants.serverType[props.serverType]
+            : variants.color[props.color],
         variants.size[size],
+        variants.rounded[rounded],
       )}
     >
       {children}

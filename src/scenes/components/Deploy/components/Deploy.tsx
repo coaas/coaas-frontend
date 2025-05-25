@@ -8,6 +8,8 @@ import { Achieve } from './Common/Achieve.tsx';
 import { ClusterType, OrchEngine, Status } from '../model/cluster.types.ts';
 import { clusterOptions } from '../api/getDeploy.ts';
 import { DeployButton } from './Common/DeployButton.tsx';
+import { Deployed } from './Deployed/Deployed.tsx';
+import { DeployRules } from './Deployed/DeployRules.tsx';
 
 const getDeployTypes = (type: ClusterType) =>
   [
@@ -16,7 +18,11 @@ const getDeployTypes = (type: ClusterType) =>
     type === ClusterType.REGIONS ? 'Data Centers' : 'Servers',
   ] as const;
 
-export const Deploy = () => {
+export const Deploy = ({
+  type = 'deploy',
+}: {
+  type?: 'deploy' | 'deployed';
+}) => {
   const clusterApi = useQuery(clusterOptions);
 
   const deployTypes = useMemo(
@@ -62,31 +68,45 @@ export const Deploy = () => {
   }[selectedDeploy];
 
   return (
-    <div className="flex flex-col mt-8 px-20 items-center">
+    <div className="flex flex-col mt-8 px-20 items-center pb-16">
       <div className="self-start flex justify-between items-center w-full">
-        <h1 className="text-2xl font-bold">Deploy</h1>
-        <div className="flex gap-2">
-          {deployTags.map(tag => (
-            <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
-              {tag}
-            </Achieve>
-          ))}
-        </div>
+        <h1 className="text-2xl font-bold">
+          {type === 'deploy' ? 'Deploy' : 'Instances'}
+        </h1>
+        {type === 'deploy' && (
+          <div className="flex gap-2">
+            {deployTags.map(tag => (
+              <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
+                {tag}
+              </Achieve>
+            ))}
+          </div>
+        )}
       </div>
-      <div className="w-full mt-4 mb-8 border-2 border-stroke-blue p-1 rounded-sm">
-        <div className="flex">
-          {deployTypes.map(name => (
-            <DeployButton
-              key={name}
-              color={selectedDeploy === name ? 'blue' : 'transparent'}
-              onClick={() => setSelectedDeploy(name)}
-            >
-              {name}
-            </DeployButton>
-          ))}
+      {type === 'deploy' && (
+        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm">
+          <div className="flex">
+            {deployTypes.map(name => (
+              <DeployButton
+                key={name}
+                color={selectedDeploy === name ? 'blue' : 'transparent'}
+                onClick={() => setSelectedDeploy(name)}
+              >
+                {name}
+              </DeployButton>
+            ))}
+          </div>
         </div>
-      </div>
-      {SelectedDeployComponent}
+      )}
+      <div className="mt-8" />
+      {type === 'deploy' ? (
+        SelectedDeployComponent
+      ) : (
+        <>
+          <Deployed clusters={clusterApi.data} />
+          <DeployRules clusters={clusterApi.data} />
+        </>
+      )}
     </div>
   );
 };

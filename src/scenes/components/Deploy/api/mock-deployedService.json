@@ -1,0 +1,89 @@
+{
+  "info": {
+    "id": "service-123",
+    "name": "Example Service",
+    "description": "A mock deployed service",
+    "created_at": "2024-06-01T10:00:00Z",
+    "type": 0
+  },
+  "clusters": [
+    {
+      "info": {
+        "id": "cluster-eu-central1",
+        "name": "Cluster One",
+        "region": "eu-west",
+        "availability_zone": "zone-a",
+        "provider": "AWS",
+        "country": "Germany",
+        "city": "Frankfurt",
+        "address": "Cloud St. 1"
+      },
+      "mode": 0,
+      "instances": [
+        { "id": "inst-1", "cpu": 2, "ram": 4, "disk": 50, "status": 0 },
+        { "id": "inst-2", "cpu": 2, "ram": 4, "disk": 50, "status": 1 },
+        { "id": "inst-3", "cpu": 4, "ram": 8, "disk": 100, "status": 0 },
+        { "id": "inst-4", "cpu": 1, "ram": 2, "disk": 25, "status": 2 },
+        { "id": "inst-5", "cpu": 2, "ram": 4, "disk": 50, "status": 0 }
+      ],
+      "fixed_rules": {
+        "rules": [
+          {
+            "id": "rule-1",
+            "node": { "id": "node-1", "name": "Node 1", "region": "eu-west" },
+            "replicas": 2,
+            "cpu": 2,
+            "ram": 4,
+            "disk": 50
+          },
+          {
+            "id": "rule-2",
+            "node": { "id": "node-2", "name": "Node 2", "region": "eu-west" },
+            "replicas": 1,
+            "cpu": 4,
+            "ram": 8,
+            "disk": 100
+          },
+          {
+            "id": "rule-3",
+            "node": { "id": "node-3", "name": "Node 3", "region": "eu-west" },
+            "replicas": 3,
+            "cpu": 1,
+            "ram": 2,
+            "disk": 25
+          },
+          {
+            "id": "rule-4",
+            "node": { "id": "node-4", "name": "Node 4", "region": "eu-west" },
+            "replicas": 2,
+            "cpu": 2,
+            "ram": 4,
+            "disk": 50
+          },
+          {
+            "id": "rule-5",
+            "node": { "id": "node-5", "name": "Node 5", "region": "eu-west" },
+            "replicas": 1,
+            "cpu": 2,
+            "ram": 4,
+            "disk": 50
+          }
+        ]
+      },
+      "selection_deploy_rule": {
+        "id": "sel-rule-1",
+        "replicas": 3,
+        "cpu": 2,
+        "ram": 4,
+        "disk": 50
+      },
+      "auto_scale_rule": {
+        "id": "auto-1",
+        "vertical_scaling": true,
+        "horizontal_scaling": false,
+        "minimum_replicas": 1,
+        "maximum_replicas": 10
+      }
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import { ServiceType } from '../model/service.types.ts';
 import listServices from './mock-listServices.json';
 import deployedServices from './mock-deployedServices.json';
 import { executePages } from '../utils/pagination.ts';
+import { Success, successMock } from '@scenes/components/Deploy/api/common.ts';
 
 type Service = {
   id: string;
@@ -71,13 +72,11 @@ export const deployedServicesOptions = queryOptions({
 });
 
 const DEPLOY_SERVICE_ENDPOINT = 'DeployService/DeployService';
-type DeployServiceResponse = { success: boolean };
-export const deployService = (service_id: string) =>
+export const deployService = (service_id: string): Promise<Success> =>
   IS_MOCK_ACTIVE
-    ? new Promise<DeployServiceResponse>(r => {
-        console.log('deploy service', service_id);
-        r({ success: true });
-      })
+    ? successMock(`deploy service ${service_id}`)
     : api
-        .post(DEPLOY_SERVICE_ENDPOINT, { body: JSON.stringify({ service_id }) })
-        .json<DeployServiceResponse>();
+        .post<Success>(DEPLOY_SERVICE_ENDPOINT, {
+          body: JSON.stringify({ service_id }),
+        })
+        .json();

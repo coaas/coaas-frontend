@@ -4,11 +4,15 @@ import { ClustersResponse } from '../../api/getDeploy.ts';
 import { Server } from './Server.tsx';
 import { Instance } from './Instance.tsx';
 import { Cluster } from './Cluster.tsx';
-import { ClusterType } from '../../model/cluster.types.ts';
+import { ClusterType, Status } from '../../model/cluster.types.ts';
 import { Wrapper } from '../Common/Wrapper.tsx';
 import { DataCenter } from '../DataCenters/DataCenters.tsx';
 import { DcButton } from '../Common/DCButton.tsx';
 import { DcModal } from '../DataCenters/DcModal.tsx';
+import {
+  isInstance,
+  isServer,
+} from '@scenes/components/Deploy/utils/checkers.ts';
 
 export const Clusters = ({
   clusters,
@@ -46,14 +50,28 @@ export const Clusters = ({
                 ].join(' ')
           }
           clusterType={clusters.type}
-          view={view}
+          AddView={
+            view === 'dataCenter' && (
+              <DataCenter type={'add'} onAdd={() => {}} />
+            )
+          }
           renderServer={server =>
             view === 'deploy' ? (
               <Server
                 key={server.id}
-                name={'name' in server ? server.name : server.service.name}
-                id={server.id}
-                status={server.status}
+                name={
+                  isServer(server)
+                    ? server.name
+                    : isInstance(server)
+                      ? server.service.name
+                      : ''
+                }
+                id={server.id ?? ''}
+                status={
+                  isServer(server) || isInstance(server)
+                    ? server.status
+                    : Status.UNKNOWN
+                }
                 instances={'instances' in server ? server.instances : []}
                 cpu={server.cpu}
                 ram={server.ram}

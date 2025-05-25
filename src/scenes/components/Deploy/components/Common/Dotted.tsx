@@ -2,10 +2,12 @@ import { ClusterType } from '../../model/cluster.types.ts';
 
 export const Dotted = ({
   children,
+  isHidden,
   type = ClusterType.SERVERS,
 }: {
   children: React.ReactNode;
   type?: ClusterType;
+  isHidden?: boolean;
 }) => {
   const variants = {
     strokeType: {
@@ -13,6 +15,12 @@ export const Dotted = ({
       [ClusterType.SERVERS]: '#507EF5',
     },
   };
+
+  if (isHidden) {
+    return (
+      <div className="w-full flex flex-col items-start gap-4">{children}</div>
+    );
+  }
 
   return (
     <div

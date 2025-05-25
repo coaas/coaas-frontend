@@ -6,7 +6,7 @@ export const DeployButton = ({
   onClick,
   isBorder,
 }: {
-  color: 'blue' | 'transparent';
+  color: 'blue' | 'transparent' | 'area';
   children: React.ReactNode;
   onClick: () => void;
   isBorder?: boolean;
@@ -15,6 +15,7 @@ export const DeployButton = ({
     base: 'rounded-lg w-full font-medium py-1',
     color: {
       blue: 'bg-stroke-blue',
+      area: 'bg-area',
       transparent: '',
     },
     border: 'border-4 border-area-dark',

@@ -22,7 +22,7 @@ import {
   MapperStep,
   SettingsStep,
 } from './components/CreateTemplate';
-import { InfoStep } from './components/CreateTemplate/widgets/InfoStep';
+import { InfoStep } from '@scenes/components/CreateTemplate';
 import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
@@ -92,6 +92,10 @@ export const routes = [
       {
         path: RouteMap.deploy,
         element: <Deploy />,
+      },
+      {
+        path: RouteMap.deployedService,
+        element: <Deploy type={'deployed'} />,
       },
       { path: RouteMap.template, element: <Template /> },
       {
