@@ -69,8 +69,8 @@ export const beforeRequest = async (request: KyRequest) => {
   request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
 
   regExSlugs.some(r => {
-    if (!r.regEx.test(request.url)) return false;
-    const match = request.url.match(r.regEx);
+    if (!r.regEx.test(window.location.pathname)) return false;
+    const match = window.location.pathname.match(r.regEx);
     if (!match) return false;
     request.headers.set(r.header, match[1]);
     return true;
