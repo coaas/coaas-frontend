@@ -3,3 +3,8 @@ export enum ServerType {
   PERSONAL,
   SHARED,
 }
+
+export enum ServerRole {
+  MANAGER,
+  WORKER,
+}

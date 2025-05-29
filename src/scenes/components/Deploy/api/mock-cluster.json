@@ -238,6 +238,18 @@
           ]
         }
       ]
+    },
+    {
+      "id": "cluster-as-central1",
+      "name": "Asia (Changsha)",
+      "region": "as-central1",
+      "availability_zone": "as-central1-a",
+      "provider": "AWS",
+      "country": "Changsha",
+      "city": "Changsha",
+      "address": "AWS DC",
+      "servers": [
+      ]
     }
   ]
 }

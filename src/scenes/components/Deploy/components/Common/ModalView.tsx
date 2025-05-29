@@ -20,31 +20,41 @@ type Optional<T extends object> = {
   [K in keyof T]?: T[K];
 };
 
-export type Option<T extends string = string> = {
-  id: T;
-  value: string;
-  disabled?: boolean;
+export type ModalOption<T extends string = string> = {
+  readonly id: T;
+  readonly value: string;
+  readonly disabled?: boolean;
 };
 
 export type Content = {
-  label: {
-    id: string;
-    label: string;
+  readonly label: {
+    readonly id: string;
+    readonly label: string;
   };
-} & (Select | Input);
+} & (Select | Input | ButtonInput);
 
 type Input = {
-  type: 'input';
-  isNumber?: boolean;
-  defaultValue?: string;
-  placeholder?: string;
+  readonly type: 'input';
+  readonly isNumber?: boolean;
+  readonly defaultValue?: string;
+  readonly placeholder?: string;
+  readonly disabled?: boolean;
+};
+
+type ButtonInput = {
+  readonly type: 'inputButton';
+  readonly getValue: () => string;
+  readonly defaultValue: string;
+  readonly placeholder?: string;
+  readonly disabled?: boolean;
+  readonly buttonText: string;
 };
 
 type Select = {
-  type: 'select';
-  placeholder?: string;
-  defaultValue?: string;
-  options: Option[];
+  readonly type: 'select';
+  readonly placeholder?: string;
+  readonly defaultValue?: string;
+  readonly options: readonly ModalOption[];
 };
 
 const isType = <T extends Content['type']>(
@@ -66,7 +76,7 @@ type SelectIdsBy<
   ? U
   : never;
 
-export const ModalView = <T extends Content[]>({
+export const ModalView = <T extends readonly Content[]>({
   onChange,
   title,
   content,
@@ -81,11 +91,16 @@ export const ModalView = <T extends Content[]>({
   renderActions: (
     inputModal: Record<ContentIds<T[number]>, string>,
   ) => React.ReactNode;
-  invalidFields?: ContentIds<T[number]>[];
+  invalidFields?: ContentIds<T[number]>[] | null;
   inputs?: Optional<Record<SelectIdsBy<'input', T[number]>, string>>;
-  onSelect?: (key: SelectIdsBy<'select', T[number]>, value: string) => void;
+  onSelect?: (
+    key: SelectIdsBy<'select', T[number]>,
+    value: string,
+    inputModal: Record<ContentIds<T[number]>, string>,
+  ) => void;
 }) => {
   type Keys = ContentIds<T[number]>;
+  invalidFields ??= [];
 
   const [input, setInput] = useState(
     content.reduce(
@@ -109,8 +124,12 @@ export const ModalView = <T extends Content[]>({
                 : input[content.label.id as Keys]
             }
             placeholder={content.placeholder}
-            disabled={inputs && content.label.id in inputs}
-            invalid={invalidFields.includes(content.label.id as Keys)}
+            disabled={
+              (inputs && content.label.id in inputs) || content.disabled
+            }
+            invalid={
+              invalidFields && invalidFields.includes(content.label.id as Keys)
+            }
             type={content.isNumber ? 'number' : undefined}
             onChange={({ target: { value } }) =>
               setInput(prevState => ({
@@ -134,6 +153,7 @@ export const ModalView = <T extends Content[]>({
                     T[number]
                   >,
                   value,
+                  input,
                 );
               setInput(prevState => ({
                 ...prevState,
@@ -141,6 +161,7 @@ export const ModalView = <T extends Content[]>({
               }));
             }}
             defaultValue={content.defaultValue}
+            required={true}
           >
             <SelectTrigger>
               <SelectValue placeholder={content.placeholder} />
@@ -153,6 +174,37 @@ export const ModalView = <T extends Content[]>({
               ))}
             </SelectContent>
           </SelectComp>
+        </>
+      ),
+      inputButton: isType('inputButton', content) && (
+        <>
+          <Label id={content.label.id} label={content.label.label} />
+          <div className="flex gap-2">
+            <InputComp
+              value={
+                inputs && content.label.id in inputs
+                  ? inputs[content.label.id as keyof typeof inputs]
+                  : input[content.label.id as Keys]
+              }
+              placeholder={content.placeholder}
+              disabled={
+                (inputs && content.label.id in inputs) || content.disabled
+              }
+              invalid={
+                invalidFields &&
+                invalidFields.includes(content.label.id as Keys)
+              }
+              onChange={({ target: { value } }) =>
+                setInput(prevState => ({
+                  ...prevState,
+                  [content.label.id as Keys]: value,
+                }))
+              }
+            />
+            {/*<DeployButton color={'area'} onClick={() => {}}>*/}
+            {/*  {content.buttonText}*/}
+            {/*</DeployButton>*/}
+          </div>
         </>
       ),
     })[content.type];

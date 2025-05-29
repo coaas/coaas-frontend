@@ -23,7 +23,8 @@ export const DataCenter = ({
   w = '72',
   ...props
 }: Readonly<CardProps>) => {
-  const base = `flex border border-stroke-gray-dark bg-area-dark/70 w-${w} rounded-lg py-5 px-6 pb-6`;
+  const width = w === '72' ? 'w-72' : 'w-[385px]';
+  const base = `flex border border-stroke-gray-dark bg-area-dark/70 ${width} rounded-lg py-5 px-6 pb-6 h-36`;
 
   if (type === 'add') {
     const { onAdd } = props as Add;

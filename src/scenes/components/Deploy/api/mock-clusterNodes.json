@@ -1,0 +1,39 @@
+{
+  "new_nodes": [
+    {
+      "node_id": "node_123456",
+      "hostname": "docker-node-1",
+      "status": "ready",
+      "availability": "active",
+      "role": "manager"
+    },
+    {
+      "node_id": "node_789012",
+      "hostname": "docker-node-2",
+      "status": "ready",
+      "availability": "active",
+      "role": "worker"
+    },
+    {
+      "node_id": "node_345678",
+      "hostname": "docker-node-3",
+      "status": "disconnected",
+      "availability": "drain",
+      "role": "worker"
+    },
+    {
+      "node_id": "node_901234",
+      "hostname": "docker-node-4",
+      "status": "ready",
+      "availability": "active",
+      "role": "worker"
+    },
+    {
+      "node_id": "node_567890",
+      "hostname": "docker-node-5",
+      "status": "down",
+      "availability": "pause",
+      "role": "worker"
+    }
+  ]
+}

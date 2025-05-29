@@ -20,10 +20,8 @@ import { addProjectDeployCluster } from '../../api/getDataCenter.ts';
 import { clusterOptions } from '../../api/getDeploy.ts';
 
 export const DcModal = ({
-  isOpen,
   onOpenChange,
 }: {
-  isOpen?: boolean;
   onOpenChange: (o: boolean) => void;
 }) => {
   const [options, setOptions] = useState(cloneDeep(clusterFields));
@@ -61,7 +59,7 @@ export const DcModal = ({
   });
 
   return (
-    <Modal open={isOpen} onOpenChange={onOpenChange}>
+    <Modal open onOpenChange={onOpenChange}>
       <ModalContent>
         <ModalHeader>
           <ModalTitle>Create a new cluster</ModalTitle>
