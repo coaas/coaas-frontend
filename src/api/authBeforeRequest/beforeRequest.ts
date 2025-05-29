@@ -1,4 +1,4 @@
-import { KyRequest } from 'ky';
+import { HTTPError, KyRequest } from 'ky';
 import * as jose from 'jose';
 import { Mutex } from 'async-mutex';
 
@@ -20,7 +20,7 @@ const isAccessExpired = () => {
   return data.exp === undefined || data.exp < Date.now() / 1000;
 };
 
-const obtainAccess = async () => {
+export const obtainAccess = async () => {
   if (mutex.isLocked()) {
     await mutex.waitForUnlock();
     return;
@@ -41,6 +41,13 @@ const obtainAccess = async () => {
       return data.access_token;
     }
   } catch (error) {
+    if (
+      error instanceof HTTPError &&
+      [404, 401].includes(error.response.status) &&
+      window.location.pathname !== '/login'
+    ) {
+      window.location.href = '/login';
+    }
     console.error(error);
   } finally {
     release();

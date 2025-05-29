@@ -1,6 +1,7 @@
 import ky from 'ky';
 import { QueryClient } from '@tanstack/react-query';
 import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
+import { afterResponse } from '@api/authBeforeRequest/afterResponse.ts';
 
 export const authApi = ky.create({
   prefixUrl: import.meta.env.VITE_API_AUTH_PREFIX,
@@ -12,6 +13,7 @@ export const api = ky.create({
   credentials: 'include',
   hooks: {
     beforeRequest: [beforeRequest],
+    afterResponse: [afterResponse],
   },
   headers: {
     'Content-Type': 'application/json',
