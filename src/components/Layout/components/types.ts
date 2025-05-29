@@ -23,6 +23,7 @@ export const enum RouteMap {
   configs = '/namespaces/:namespace_slug/projects/:project_slug/configs',
   secrets = '/namespaces/:namespace_slug/projects/:project_slug/secrets',
   deploy = '/namespaces/:namespace_slug/projects/:project_slug/deploy',
+  deployedService = '/namespaces/:namespace_slug/projects/:project_slug/deploy/:service_id',
   git = '/namespaces/:namespace_slug/projects/:project_slug/git',
   registries = '/namespaces/:namespace_slug/projects/:project_slug/registries',
   team = '/namespaces/:namespace_slug/projects/:project_slug/team',

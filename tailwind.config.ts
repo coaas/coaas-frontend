@@ -39,6 +39,7 @@ export default {
         gray: {
           DEFAULT: '#43424A',
           dark: '#4C4958',
+          darker: '#707070',
           light: '#4E608D33',
           lighter: '#B6B6B640', // ?? opacity
           lght: '#B6B6B6',
