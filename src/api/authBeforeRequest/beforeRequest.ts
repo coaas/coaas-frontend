@@ -1,4 +1,4 @@
-import { KyRequest } from 'ky';
+import { HTTPError, KyRequest } from 'ky';
 import * as jose from 'jose';
 import { Mutex } from 'async-mutex';
 
@@ -20,7 +20,7 @@ const isAccessExpired = () => {
   return data.exp === undefined || data.exp < Date.now() / 1000;
 };
 
-const obtainAccess = async () => {
+export const obtainAccess = async () => {
   if (mutex.isLocked()) {
     await mutex.waitForUnlock();
     return;
@@ -41,17 +41,38 @@ const obtainAccess = async () => {
       return data.access_token;
     }
   } catch (error) {
+    if (
+      error instanceof HTTPError &&
+      [404, 401].includes(error.response.status) &&
+      window.location.pathname !== '/login'
+    ) {
+      window.location.href = '/login';
+    }
     console.error(error);
   } finally {
     release();
   }
 };
 
+const regExNamespaceSlug = /\/namespaces\/([^/]+)/;
+const regExProjectSlug = /\/namespaces\/[^/]+\/projects\/([^/]+)/;
+const regExSlugs = [
+  { header: 'x-namespace-slug', regEx: regExNamespaceSlug },
+  { header: 'x-project-slug', regEx: regExProjectSlug },
+];
+
 export const beforeRequest = async (request: KyRequest) => {
   if (!checkAccess() || isAccessExpired()) {
     await obtainAccess();
   }
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
-
   request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
+
+  regExSlugs.some(r => {
+    if (!r.regEx.test(request.url)) return false;
+    const match = request.url.match(r.regEx);
+    if (!match) return false;
+    request.headers.set(r.header, match[1]);
+    return true;
+  });
 };
