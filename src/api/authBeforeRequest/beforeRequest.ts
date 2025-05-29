@@ -54,11 +54,25 @@ export const obtainAccess = async () => {
   }
 };
 
+const regExNamespaceSlug = /\/namespaces\/([^/]+)/;
+const regExProjectSlug = /\/namespaces\/[^/]+\/projects\/([^/]+)/;
+const regExSlugs = [
+  { header: 'x-namespace-slug', regEx: regExNamespaceSlug },
+  { header: 'x-project-slug', regEx: regExProjectSlug },
+];
+
 export const beforeRequest = async (request: KyRequest) => {
   if (!checkAccess() || isAccessExpired()) {
     await obtainAccess();
   }
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
-
   request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
+
+  regExSlugs.some(r => {
+    if (!r.regEx.test(request.url)) return false;
+    const match = request.url.match(r.regEx);
+    if (!match) return false;
+    request.headers.set(r.header, match[1]);
+    return true;
+  });
 };

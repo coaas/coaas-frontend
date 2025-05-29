@@ -1,5 +1,6 @@
 import { api, authApi } from '@api/constants.ts';
 import { setAccess } from '@api/setAccess/setAccess';
+import { useNavigate } from 'react-router-dom';
 
 const submit = async (data: FormData) => {
   const login_path = 'auth/login';
@@ -18,6 +19,7 @@ const submit = async (data: FormData) => {
         access_token: string;
       }>();
       setAccess(data.access_token);
+      return true;
     }
   } catch (error) {
     console.error(error);
@@ -38,12 +40,17 @@ export const Login = () => {
     console.log('Current user:', await resp.json());
   };
 
+  const navigator = useNavigate();
+
   return (
     <div className="flex flex-col justify-center dark:bg-background mt-20">
       <form
         onSubmit={e => {
           e.preventDefault();
-          submit(new FormData(e.target as HTMLFormElement));
+          submit(new FormData(e.target as HTMLFormElement)).then(res => {
+            if (!res) return;
+            navigator('/namespaces');
+          });
         }}
         className="flex flex-col space-y-4 p-8 bg-area-dark rounded-lg shadow-card w-80 mx-auto border-[1.5px] border-stroke-gray-dark"
       >
