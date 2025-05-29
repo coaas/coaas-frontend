@@ -70,7 +70,7 @@ export const beforeRequest = async (request: KyRequest) => {
 
   regExSlugs.some(r => {
     if (!r.regEx.test(window.location.pathname)) return false;
-    const match = request.url.match(r.regEx);
+    const match = window.location.pathname.match(r.regEx);
     if (!match) return false;
     request.headers.set(r.header, match[1]);
     return true;
