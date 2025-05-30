@@ -1,4 +1,4 @@
-import { api, authApi } from '@api/constants.ts';
+import { authApi } from '@api/constants.ts';
 import { setAccess } from '@api/setAccess/setAccess';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,19 +27,6 @@ const submit = async (data: FormData) => {
 };
 
 export const Login = () => {
-  const checkLogin = async () => {
-    const path = 'UserService/GetCurrentUserData';
-    const resp = await api.post(path, {
-      credentials: 'include',
-      json: {},
-    });
-    if (!resp.ok) {
-      alert('Login first');
-      return;
-    }
-    console.log('Current user:', await resp.json());
-  };
-
   const navigator = useNavigate();
 
   return (
@@ -87,19 +74,6 @@ export const Login = () => {
           Login
         </button>
       </form>
-      <div className="mt-4 text-center">
-        <button
-          onClick={event => {
-            event.preventDefault();
-            checkLogin();
-          }}
-          className="px-4 py-2 border-2 border-blue text-blue hover:bg-stroke-blue/20
-                rounded-lg transition-colors duration-200 font-inter
-                focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Check login
-        </button>
-      </div>
     </div>
   );
 };
