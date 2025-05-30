@@ -12,10 +12,7 @@ export const afterResponse: AfterResponseHook = async (
   response,
 ) => {
   if (
-    ([401, 404].includes(response.status) &&
-      ['Session not found', 'Token expired'].includes(
-        (await response.json<Record<string, string>>()).value,
-      )) ||
+    response.status === 401 ||
     ENDPOINTS_TO_REFRESH.some(e => response.url.includes(e))
   ) {
     await obtainAccess();
