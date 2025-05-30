@@ -31,7 +31,7 @@ export const useData = () => {
   const [isFiredChecked, setIsFiredChecked] = useState(true);
   const [searchValue, setSearchValue] = useState('');
 
-  const queryKey = [namespace_slug, 'staff', searchValue];
+  const queryKey = [namespace_slug, 'staff', searchValue, isFiredChecked];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
