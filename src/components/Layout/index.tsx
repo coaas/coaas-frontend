@@ -1,13 +1,21 @@
-import { Outlet } from 'react-router-dom'; // ?? react-router
+import { Outlet, useLocation } from 'react-router-dom'; // ?? react-router
 import { Header, Sidebar } from './components';
+import { useMemo } from 'react';
 
 export const Layout = () => {
+  const location = useLocation();
+
+  const isLogin = useMemo(
+    () => location.pathname === '/login',
+    [location.pathname],
+  );
+
   return (
     <div className="flex h-screen">
-      <Sidebar />
-      <div className=" w-full max-w-[1560px] flex flex-col">
-        <Header />
-        <div className="max-h-full overflow-auto">
+      {!isLogin && <Sidebar />}
+      <div className="w-full max-w-[1560px] flex flex-col justify-start">
+        {!isLogin && <Header />}
+        <div className="h-full overflow-auto">
           <Outlet />
         </div>
       </div>

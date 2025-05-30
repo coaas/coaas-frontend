@@ -30,7 +30,7 @@ export const Login = () => {
   const navigator = useNavigate();
 
   return (
-    <div className="flex flex-col justify-center dark:bg-background mt-20">
+    <div className="flex flex-col justify-center items-center dark:bg-background h-full">
       <form
         onSubmit={e => {
           e.preventDefault();
