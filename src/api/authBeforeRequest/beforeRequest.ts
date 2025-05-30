@@ -43,7 +43,7 @@ export const obtainAccess = async () => {
   } catch (error) {
     if (
       error instanceof HTTPError &&
-      [404, 401].includes(error.response.status) &&
+      !error.response.ok &&
       window.location.pathname !== '/login'
     ) {
       window.location.href = '/login';
