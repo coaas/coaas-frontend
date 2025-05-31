@@ -13,7 +13,11 @@ export const afterResponse: AfterResponseHook = async (
 ) => {
   if (
     response.status === 401 ||
-    ENDPOINTS_TO_REFRESH.some(e => response.url.includes(e))
+    ENDPOINTS_TO_REFRESH.some(e => response.url.includes(e)) ||
+    (response.status === 403 &&
+      (await response
+        .text()
+        .then(text => text.includes('CSRF token verification failed'))))
   ) {
     await obtainAccess();
   }
