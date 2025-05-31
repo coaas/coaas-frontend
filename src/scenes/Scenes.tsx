@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
   CreateProject,
   Namespaces,
+  Services,
   Staff,
   StaffInvitations,
 } from './components';
@@ -62,6 +63,10 @@ export const routes = [
       {
         path: '/namespaces/:namespace_slug/projects',
         element: <Projects />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services',
+        element: <Services />,
       },
       {
         path: RouteMap.createProject,
