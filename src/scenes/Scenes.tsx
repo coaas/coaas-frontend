@@ -78,21 +78,11 @@ export const routes = [
       },
       {
         path: RouteMap.templates,
-        element: (
-          <>
-            <Outlet />
-          </>
-        ),
-        children: [
-          {
-            index: true,
-            element: <Templates />,
-          },
-          {
-            path: 'my',
-            element: <CurrentUserTemplates />,
-          },
-        ],
+        element: <Templates />,
+      },
+      {
+        path: '/templates/my',
+        element: <CurrentUserTemplates />,
       },
       {
         path: RouteMap.deploy,
