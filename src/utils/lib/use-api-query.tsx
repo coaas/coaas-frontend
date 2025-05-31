@@ -11,12 +11,13 @@ import {
   UseMutationOptions,
   useMutation,
 } from '@tanstack/react-query';
-import { HTTPError } from 'ky';
+import { HTTPError, Options } from 'ky';
 
 export const useApiQuery = <TData, TPayload = undefined>({
   request,
   payload,
   options,
+  requestOptions,
 }: ApiQueryParams<TData, TPayload>) => {
   const { endpoint, method = 'POST' } = request;
 
@@ -27,7 +28,12 @@ export const useApiQuery = <TData, TPayload = undefined>({
 
   return useQuery({
     queryKey,
-    queryFn: () => api(endpoint, { method, json: payload || {} }).json<TData>(),
+    queryFn: () =>
+      api(endpoint, {
+        method,
+        json: payload || {},
+        ...requestOptions,
+      }).json<TData>(),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: Infinity,
@@ -127,6 +133,7 @@ type ApiQueryParams<TData, TPayload> = {
   request: ApiRequest<TData, TPayload>;
   payload?: TPayload;
   options?: Omit<UseQueryOptions<TData>, 'queryKey' | 'queryFn'>;
+  requestOptions?: Options;
 };
 
 type InfiniteApiQueryParams<

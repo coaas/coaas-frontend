@@ -43,7 +43,7 @@ export const useModal = ({ onIsOpenChange, refetch }: UseModalParams) => {
                   title: query,
                   type: InviteItemType.mail,
                   data: {
-                    mail: query,
+                    email: query,
                   },
                 },
               ]

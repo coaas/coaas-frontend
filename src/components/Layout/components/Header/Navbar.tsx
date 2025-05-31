@@ -20,6 +20,9 @@ export const Navbar = () => {
 
   const { data } = useApiQuery({
     request: getUserNamespacesAndProjects,
+    requestOptions: {
+      prefixUrl: '/api',
+    },
   });
 
   const user = useUser();
@@ -46,7 +49,7 @@ export const Navbar = () => {
       render={({ close }) => (
         <div
           onClick={close}
-          className="py-[14px] px-[22px] border-stroke-gray-dark border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background max-h-[400px] overflow-auto"
+          className="py-[14px] z-10 px-[22px] border-stroke-gray-dark border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background max-h-[400px] overflow-auto"
         >
           {namespacesSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
