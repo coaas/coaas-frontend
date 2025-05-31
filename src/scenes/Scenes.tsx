@@ -81,7 +81,7 @@ export const routes = [
         element: <Templates />,
       },
       {
-        path: '/templates/my',
+        path: RouteMap.currentUserTemplates,
         element: <CurrentUserTemplates />,
       },
       {
