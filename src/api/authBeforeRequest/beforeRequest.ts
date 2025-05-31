@@ -15,6 +15,16 @@ const getAccess = () => {
   return localStorage.getItem(ACCESS_TOKEN_KEY) as string;
 };
 
+const checkCsrfToken = (request: KyRequest) => {
+  const csrfToken = cookies.get('csrftoken');
+  const isAuthRequest = request.url.includes('/api/auth');
+
+  if (!isAuthRequest && !csrfToken) {
+    return false;
+  }
+  return true;
+};
+
 const isAccessExpired = () => {
   const data = jose.decodeJwt(getAccess());
   return data.exp === undefined || data.exp < Date.now() / 1000;
@@ -62,7 +72,7 @@ const regExSlugs = [
 ];
 
 export const beforeRequest = async (request: KyRequest) => {
-  if (!checkAccess() || isAccessExpired()) {
+  if (!checkAccess() || isAccessExpired() || !checkCsrfToken(request)) {
     await obtainAccess();
   }
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
