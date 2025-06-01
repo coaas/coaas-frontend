@@ -10,6 +10,9 @@ export const Template = () => {
   const { data: templateResponse, isLoading } = useApiQuery({
     request: getTemplate,
     payload: { id: template_slug },
+    requestOptions: {
+      prefixUrl: '/api',
+    },
   });
 
   return (

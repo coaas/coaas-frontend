@@ -156,6 +156,9 @@ export const useCurrentUserTemplates: () => {
   : () => {
       const { data } = useApiQuery({
         request: getCurrentUserTemplates,
+        requestOptions: {
+          prefixUrl: '/api',
+        },
       });
       return {
         templates: data?.templates || [],
