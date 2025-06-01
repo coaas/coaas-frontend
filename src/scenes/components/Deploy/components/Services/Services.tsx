@@ -1,4 +1,4 @@
-import { useMemo, useReducer, useState } from 'react';
+import { useMemo, useReducer, useState, useEffect } from 'react';
 
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { xorBy } from 'lodash';
@@ -62,26 +62,16 @@ const Service = ({
 export const Services = () => {
   const [isDeployModal, toggleIsDeployModal] = useReducer(d => !d, false);
   const [deployValue, setDeployValue] = useState('');
-  const { deployedServices, listServices, isPending, isError, isSuccess } =
-    useQueries<
-      [typeof deployedServicesOptions, typeof listServicesOptions],
-      {
-        deployedServices: DeployedServicesResponse;
-        listServices: ListServicesResponse;
-        isError: boolean;
-        isPending: boolean;
-        isSuccess: boolean;
-      }
-    >({
-      queries: [deployedServicesOptions, listServicesOptions],
-      combine: result => ({
-        deployedServices: result[0].data as DeployedServicesResponse,
-        listServices: result[1].data as ListServicesResponse,
-        isError: result[0].isError || result[1].isError,
-        isPending: result[0].isPending || result[1].isPending,
-        isSuccess: result[0].isSuccess && result[1].isSuccess,
-      }),
-    });
+  const [showNotDeployed, setShowNotDeployed] = useState(false);
+  const [deployResult, listResult] = useQueries({
+    queries: [deployedServicesOptions, listServicesOptions],
+  });
+
+  const deployedServices = deployResult.data as DeployedServicesResponse;
+  const listServices = listResult.data as ListServicesResponse;
+  const isPending = deployResult.isPending || listResult.isPending;
+  const isError = deployResult.isError || listResult.isError;
+  const isSuccess = deployResult.isSuccess && listResult.isSuccess;
 
   const { mutate: mutateDeployService } = useMutation({
     mutationFn: deployService,
@@ -112,16 +102,34 @@ export const Services = () => {
     toggleIsDeployModal();
   };
 
-  if (isPending) {
-    return null;
-  }
+  useEffect(() => {
+    const checkError = async (error: Error & { response?: Response }) => {
+      if (error.response?.status === 404) {
+        const data = await error.response.json();
+        if (data.code === 'PROJECT_DEPLOY_NOT_FOUND') {
+          setShowNotDeployed(true);
+        }
+      }
+    };
 
-  if (isError) {
+    if (deployResult.error) {
+      checkError(deployResult.error as Error & { response?: Response });
+    }
+    if (listResult.error) {
+      checkError(listResult.error as Error & { response?: Response });
+    }
+  }, [deployResult.error, listResult.error]);
+
+  if (showNotDeployed) {
     return (
       <p className="text-xl w-full text-center">
         You have not deployed project yet.
       </p>
     );
+  }
+
+  if (isError) {
+    return null;
   }
 
   return (
