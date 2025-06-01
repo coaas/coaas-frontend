@@ -3,6 +3,7 @@ export const enum RouteMap {
   login = '/login',
   logout = '/logout',
   register = '/register',
+  profile = '/profile',
   namespaces = '/namespaces',
   namespace = '/namespaces/:namespace_slug',
   templates = '/templates',

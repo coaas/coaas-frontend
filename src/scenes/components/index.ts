@@ -8,3 +8,4 @@ export * from './CreateService';
 export * from './CreateServiceCategory';
 export * from './CreateServiceForm';
 export * from './NotFound';
+export * from './Profile';

@@ -11,6 +11,7 @@ import {
   Staff,
   StaffInvitations,
   NotFound,
+  Profile,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -138,6 +139,10 @@ export const routes = [
           },
           { path: RouteMap.templatesCreateStepMapper, element: <MapperStep /> },
         ],
+      },
+      {
+        path: RouteMap.profile,
+        element: <Profile />,
       },
     ],
   },
