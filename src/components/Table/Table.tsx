@@ -3,13 +3,13 @@ import { flexRender } from '@tanstack/react-table';
 import { cn } from '@utils/styles';
 
 import { TableProps } from './types';
-import { TableData, useTable } from './useTable';
+import { RowData, TableData, useTable } from './useTable';
 
-export const Table = <TData extends TableData>({
+export const Table = <TOnClickData, TData extends TableData<TOnClickData>>({
   className,
   onRowClick,
   ...props
-}: TableProps<TData>) => {
+}: TableProps<TOnClickData, TData>) => {
   const {
     isLoadingFullTable,
     isLoadingNextPage,
@@ -64,9 +64,10 @@ export const Table = <TData extends TableData>({
           >
             {rowVirtualizer.getVirtualItems().map(virtualRow => {
               const row = rows[virtualRow.index];
-              const { isMarked } = row.original;
+              const originalRow = row.original as RowData<TOnClickData>;
+              const { isMarked } = originalRow;
 
-              const onClick = () => onRowClick?.(row.original);
+              const onClick = () => onRowClick?.(originalRow);
 
               return (
                 <tr

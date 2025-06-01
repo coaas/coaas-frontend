@@ -6,7 +6,10 @@ import type { ResponseLogoutUser } from './types';
 export async function LogoutUser(): Promise<ResponseLogoutUser> {
   try {
     const response = await authApi.delete('auth/logout');
-    if (response.ok) deleteAccess();
+    if (response.ok) {
+      deleteAccess();
+      window.location.href = '/login';
+    }
 
     return {
       success: response.ok,

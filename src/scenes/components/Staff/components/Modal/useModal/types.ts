@@ -20,7 +20,7 @@ type GenericInviteItem<T, D> = GenericData<T, D> & {
 
 export type InviteItem =
   | GenericInviteItem<InviteItemType.user, { username: string }>
-  | GenericInviteItem<InviteItemType.mail, { mail: string }>;
+  | GenericInviteItem<InviteItemType.mail, { email: string }>;
 
 export type UseModalParams = {
   onIsOpenChange: (isOpen: boolean) => void;

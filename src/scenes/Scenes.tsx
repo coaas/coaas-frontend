@@ -3,7 +3,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
   CreateProject,
+  CreateService,
+  CreateServiceCategory,
+  CreateServiceForm,
   Namespaces,
+  Services,
   Staff,
   StaffInvitations,
 } from './components';
@@ -27,7 +31,6 @@ import { StateType } from '@globalTypes/templates.draft';
 import { NotificationProvider } from '@components/Notification';
 import { Template } from './components/Template';
 import { Logout } from './components/Logout';
-import { Outlet } from 'react-router';
 import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 import { Deploy } from '@scenes/components/Deploy';
 
@@ -64,6 +67,22 @@ export const routes = [
         element: <Projects />,
       },
       {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services',
+        element: <Services />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new',
+        element: <CreateService />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug',
+        element: <CreateServiceCategory />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug/:template_id',
+        element: <CreateServiceForm />,
+      },
+      {
         path: RouteMap.createProject,
         element: <CreateProject />,
       },
@@ -73,21 +92,11 @@ export const routes = [
       },
       {
         path: RouteMap.templates,
-        element: (
-          <>
-            <Outlet />
-          </>
-        ),
-        children: [
-          {
-            index: true,
-            element: <Templates />,
-          },
-          {
-            path: 'my',
-            element: <CurrentUserTemplates />,
-          },
-        ],
+        element: <Templates />,
+      },
+      {
+        path: RouteMap.currentUserTemplates,
+        element: <CurrentUserTemplates />,
       },
       {
         path: RouteMap.deploy,

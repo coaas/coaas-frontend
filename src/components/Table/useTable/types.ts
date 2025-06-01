@@ -1,8 +1,9 @@
 import { CellData } from '../CellContent';
 
-export type RowData = {
+export type RowData<TOnClickData> = {
   cells: CellData[];
   isMarked?: boolean;
+  onClickInfo?: TOnClickData;
 };
 
 export type ColumnData = WithId & {
@@ -10,11 +11,14 @@ export type ColumnData = WithId & {
   size?: number;
 };
 
-export type TableData = {
-  rows: RowData[];
+export type TableData<TOnClickData> = {
+  rows: RowData<TOnClickData>[];
 };
 
-export type UseTableParams<TData extends TableData> = {
+export type UseTableParams<
+  TOnClickData,
+  TData extends TableData<TOnClickData>,
+> = {
   /**
    * стабильный массив столбцов
    */
