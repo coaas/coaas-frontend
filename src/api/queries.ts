@@ -32,7 +32,7 @@ export const getCurrentUserTemplates: ApiRequest<{
   templates: Template[];
   drafts: Draft[];
 }> = {
-  endpoint: 'TemplateHubService/GetUserTemplates',
+  endpoint: '/TemplateHubService/GetUserTemplates',
 };
 
 export const getTemplates: ApiRequest<
@@ -44,7 +44,7 @@ export const getTemplates: ApiRequest<
 
 export const getTemplate: ApiRequest<GetDraftTemplateResponse, { id: string }> =
   {
-    endpoint: 'TemplateHubService/GetTemplate',
+    endpoint: '/TemplateHubService/GetTemplate',
   };
 
 export const createTemplateDraft: ApiRequest<{ id: string }> = {
