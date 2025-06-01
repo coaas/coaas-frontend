@@ -3,9 +3,8 @@ import { queryOptions } from '@tanstack/react-query';
 import { api, IS_MOCK_ACTIVE } from '@api/constants.ts';
 
 import clusters from './mock-cluster.json';
-import { Cluster, OrchEngine } from '../model/cluster.types.ts';
+import { Cluster, ClusterType, OrchEngine } from '../model/cluster.types.ts';
 import { Success, successMock } from '@scenes/components/Deploy/api/common.ts';
-import { ServerType } from '@scenes/components/Deploy/model/dataCenter.types.ts';
 
 const DEPLOY_ENDPOINT = 'DeployService/GetProjectDeploy';
 export type ClustersResponse = {
@@ -27,7 +26,7 @@ export const clusterOptions = queryOptions({
 
 const DEPLOY_ENDPOINT_ADD = 'DeployService/AddProjectDeploy';
 export type AddProjectDeployRequest = {
-  type: ServerType;
+  type: ClusterType;
   orchestration_engine: OrchEngine;
 };
 export const addProjectDeploy = (body: AddProjectDeployRequest) =>

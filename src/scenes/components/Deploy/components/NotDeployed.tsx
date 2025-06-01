@@ -1,4 +1,3 @@
-import { ServerType } from '@scenes/components/Deploy/model/dataCenter.types.ts';
 import { OrchEngine } from '@scenes/components/Deploy/model/cluster.types.ts';
 import {
   Select,
@@ -16,6 +15,7 @@ import {
 } from '@scenes/components/Deploy/api/getDeploy.ts';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@api/constants.ts';
+import { ClusterType } from '@scenes/components/Deploy/model/types.ts';
 
 export const NotDeployed = () => {
   const [addDeployInput, setAddDeployInput] =
@@ -45,9 +45,8 @@ export const NotDeployed = () => {
               id: 'type',
               placeholder: 'Select type of the deploy...',
               options: [
-                { value: ServerType.SHARED, label: 'Shared' },
-                { value: ServerType.PERSONAL, label: 'Personal' },
-                { value: ServerType.PURCHASED, label: 'Purchased' },
+                { value: ClusterType.REGIONS, label: 'Regions' },
+                { value: ClusterType.SERVERS, label: 'Servers' },
               ],
             },
             {
