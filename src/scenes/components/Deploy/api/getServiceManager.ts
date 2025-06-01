@@ -32,26 +32,30 @@ export const getListServices = (
     ? new Promise(r => {
         r(listServices as ListServicesResponse);
       })
-    : api(LIST_SERVICES_ENDPOINT, {
-        body: JSON.stringify({
-          query: '',
-          filters: {
-            types: [0, 1],
-          },
-          limit: 100,
-          after_key,
-        }),
-      }).json<ListServicesResponse>();
+    : api
+        .post(LIST_SERVICES_ENDPOINT, {
+          body: JSON.stringify({
+            query: '',
+            filters: {
+              types: [],
+            },
+            limit: 100,
+            // after_key,
+          }),
+        })
+        .json<ListServicesResponse>();
 };
 export const listServicesOptions = queryOptions({
   queryFn: () =>
-    executePages<ListServicesResponse, typeof getListServices>(
-      getListServices,
-    ).then(res => {
-      return {
-        services: res.flatMap(s => s.services),
-      };
-    }),
+    executePages<ListServicesResponse, typeof getListServices>(getListServices)
+      .then(res => {
+        return {
+          services: res.flatMap(s => s.services),
+        };
+      })
+      .catch(err => {
+        console.log('sv err', err);
+      }),
   queryKey: ['listServices'],
 });
 

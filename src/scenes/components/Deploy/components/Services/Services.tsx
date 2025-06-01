@@ -69,8 +69,6 @@ export const Services = () => {
 
   const deployedServices = deployResult.data as DeployedServicesResponse;
   const listServices = listResult.data as ListServicesResponse;
-  const isPending = deployResult.isPending || listResult.isPending;
-  const isError = deployResult.isError || listResult.isError;
   const isSuccess = deployResult.isSuccess && listResult.isSuccess;
 
   const { mutate: mutateDeployService } = useMutation({
@@ -87,6 +85,7 @@ export const Services = () => {
 
   const deployableServices = useMemo(() => {
     if (!isSuccess) return [];
+    if (listServices.services.length === 0) return deployedServices?.services;
     const services = xorBy(
       deployedServices?.services,
       listServices?.services,
@@ -126,10 +125,6 @@ export const Services = () => {
         You have not deployed project yet.
       </p>
     );
-  }
-
-  if (isError) {
-    return null;
   }
 
   return (
