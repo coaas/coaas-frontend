@@ -17,7 +17,9 @@ const getDeploy = () => {
     ? new Promise<ClustersResponse>(r => {
         r(clusters as unknown as ClustersResponse);
       })
-    : api.post(DEPLOY_ENDPOINT).json<ClustersResponse>();
+    : api
+        .post(DEPLOY_ENDPOINT, { body: JSON.stringify({}) })
+        .json<ClustersResponse>();
 };
 export const clusterOptions = queryOptions({
   queryFn: getDeploy,
