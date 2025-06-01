@@ -8,8 +8,11 @@ export const authApi = ky.create({
   credentials: 'include',
 });
 
+export const IS_PREFIX = import.meta.env.VITE_PROXY_BACK === 'True';
 export const api = ky.create({
-  prefixUrl: import.meta.env.VITE_API_PREFIX,
+  prefixUrl: IS_PREFIX
+    ? '/api/' + String(import.meta.env.VITE_API_PREFIX)
+    : '/api',
   credentials: 'include',
   hooks: {
     beforeRequest: [beforeRequest],

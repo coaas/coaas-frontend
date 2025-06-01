@@ -13,7 +13,6 @@ const resendInvitation = (
 ) =>
   api
     .post(ENDPOINT, {
-      prefixUrl: '/api',
       body: JSON.stringify(params),
       headers: {
         'x-namespace-slug': namespaceSlug,

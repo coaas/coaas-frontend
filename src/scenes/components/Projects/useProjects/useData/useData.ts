@@ -16,7 +16,6 @@ const getProjects = (params: RequestParams, namespaceSlug?: string) =>
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
-          prefixUrl: '/api',
           body: JSON.stringify(params),
           headers: {
             'x-namespace-slug': namespaceSlug,

@@ -13,7 +13,6 @@ const mutationFn = (params: CreateProjectParams, namespaceSlug?: string) =>
     ? mockCreateProject()
     : api
         .post(ENDPOINT, {
-          prefixUrl: '/api',
           body: JSON.stringify(params),
           headers: {
             'x-namespace-slug': namespaceSlug,
