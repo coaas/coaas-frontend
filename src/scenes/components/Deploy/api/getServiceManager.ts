@@ -64,7 +64,7 @@ export const getDeployedServices = (): Promise<DeployedServicesResponse> => {
     ? new Promise(r => {
         r(deployedServices as DeployedServicesResponse);
       })
-    : api.post(DEPLOYED_SERVICES_ENDPOINT).json<DeployedServicesResponse>();
+    : api.post(DEPLOYED_SERVICES_ENDPOINT, { body: JSON.stringify({}) }).json<DeployedServicesResponse>();
 };
 export const deployedServicesOptions = queryOptions({
   queryFn: getDeployedServices,

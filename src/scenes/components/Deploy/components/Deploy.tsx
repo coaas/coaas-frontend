@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,6 +25,20 @@ export const Deploy = ({
   type?: 'deploy' | 'deployed';
 }) => {
   const clusterApi = useQuery(clusterOptions);
+  const [showNotDeployed, setShowNotDeployed] = useState(false);
+
+  useEffect(() => {
+    if (clusterApi.isError) {
+      const error = clusterApi.error as Error & { response?: Response };
+      if (error.response?.status === 404) {
+        error.response.json().then((data: { code?: string }) => {
+          if (data.code === 'PROJECT_DEPLOY_NOT_FOUND') {
+            setShowNotDeployed(true);
+          }
+        });
+      }
+    }
+  }, [clusterApi.isError, clusterApi.error]);
 
   const deployTypes = useMemo(
     () => getDeployTypes(clusterApi.data?.type ?? ClusterType.REGIONS),
@@ -50,8 +64,12 @@ export const Deploy = ({
     [clusterApi],
   );
 
-  if (clusterApi.isError) {
+  if (showNotDeployed) {
     return <NotDeployed />;
+  }
+
+  if (clusterApi.isError) {
+    return null;
   }
 
   if (clusterApi.isPending) {
