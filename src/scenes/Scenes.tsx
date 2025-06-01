@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
   CreateProject,
+  CreateService,
+  CreateServiceCategory,
+  CreateServiceForm,
   Namespaces,
   Services,
   Staff,
@@ -67,6 +70,18 @@ export const routes = [
       {
         path: '/namespaces/:namespace_slug/projects/:project_slug/services',
         element: <Services />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new',
+        element: <CreateService />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug',
+        element: <CreateServiceCategory />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug/:template_id',
+        element: <CreateServiceForm />,
       },
       {
         path: RouteMap.createProject,
