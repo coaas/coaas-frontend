@@ -1,6 +1,5 @@
 import { getTemplateFilters, getTemplates } from '@api/queries';
 import { Banner } from '@components/Banner';
-import { Select } from '@components/Select';
 import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-api-query';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
@@ -11,6 +10,8 @@ import { Card, CardType } from '@components/Card';
 import { TemplatesList } from './components/TemplatesList';
 import { RouteMap } from '@components/Layout/components/types';
 import { createDynamicPath } from '@utils/lib/create-dynamic-path';
+
+import { Select } from './components/Select';
 
 export const Templates = () => {
   const search = useLocation().search;
@@ -31,6 +32,8 @@ export const Templates = () => {
     types: templateTypes,
     status: templateStatus,
   };
+
+  console.log('templateFilters', templateFilters);
 
   const {
     entries,
