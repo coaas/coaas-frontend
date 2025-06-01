@@ -27,7 +27,7 @@ const getProjects = (params: RequestParams, namespaceSlug?: string) =>
 export const useData = () => {
   const { namespace_slug } = useParams();
 
-  const [isFiredChecked, setIsFiredChecked] = useState(true);
+  const [isFiredChecked, setIsFiredChecked] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
   const queryKey = [namespace_slug, 'staff', searchValue, isFiredChecked];
