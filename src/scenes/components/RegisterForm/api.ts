@@ -1,5 +1,6 @@
 import { authApi } from '@api/constants';
 import { setAccess } from '@api/index';
+import { RouteMap } from '@components/Layout/components/types';
 
 import type { ResponseAuthRegisterJson } from './types';
 
@@ -20,6 +21,7 @@ export default async function registerUser(
     if (response.ok) {
       const data = await response.json<ResponseAuthRegisterJson>();
       setAccess(data.access_token);
+      window.location.href = RouteMap.home;
     } else {
       throw new Error(
         'Failed to obtain access token' +
