@@ -1,3 +1,52 @@
+# COAAS (CloudOps as a Service)
+
+[COAAS](https://coaas.ru) - облачная платформа, предоставляющая набор микросервисов для управления облачной инфраструктурой, развертываниями и операциями.
+
+# Структура проекта
+
+```
+src/
+├── api/                    # API интеграции и запросы
+│   ├── authBeforeRequest/  # Middleware для авторизации
+│   ├── deleteAccess/       # API для удаления доступа
+│   ├── setAccess/         # API для установки доступа
+│   ├── constants.ts       # API константы
+│   ├── queries.ts         # API запросы
+│   └── index.ts           # Экспорты API
+├── assets/                # Статические ресурсы
+├── components/            # Переиспользуемые компоненты
+│   ├── Avatar/           # Компонент аватара
+│   ├── Banner/           # Компонент баннера
+│   ├── Button/           # Кнопки
+│   ├── Card/             # Карточки
+│   ├── Checkbox/         # Чекбоксы
+│   ├── Hint/             # Подсказки
+│   ├── Icon/             # Иконки
+│   ├── Input/            # Поля ввода
+│   ├── Layout/           # Компоненты разметки
+│   ├── LazyGrid/         # Ленивая сетка
+│   ├── Modal/            # Модальные окна
+│   ├── Notification/     # Уведомления
+│   ├── Popover/          # Всплывающие подсказки
+│   ├── PopoverRadix/     # Всплывающие подсказки на Radix
+│   ├── Search/           # Поиск
+│   ├── Select/           # Выпадающие списки
+│   ├── Table/            # Таблицы
+│   ├── Tabs/             # Вкладки
+│   └── TextArea/         # Текстовые области
+├── global/               # Глобальные настройки и конфигурации
+├── globalTypes/          # Глобальные типы TypeScript
+├── scenes/               # Страницы приложения
+│   ├── components/       # Компоненты страниц
+│   ├── Scenes.tsx       # Основной компонент сцен
+│   └── index.ts         # Экспорты сцен
+├── utils/               # Утилиты и хелперы
+├── App.tsx              # Корневой компонент приложения
+├── globals.css          # Глобальные стили
+├── main.tsx            # Точка входа приложения
+└── vite-env.d.ts       # Типы для Vite
+```
+
 ## Кодстайл
 
 - Импорты/экспорты:
@@ -46,7 +95,7 @@
     }
     ```
 
-## Gitflow ([TBD](https://habr.com/ru/companies/avito/articles/680522/))
+## [TBD](https://habr.com/ru/companies/avito/articles/680522/)
 
 - Общий порядок работы:
   1) Подтягиваем актуальный `master` и создаем от него ветку согласно [конвенциям](https://medium.com/@abhay.pixolo/naming-conventions-for-git-branches-a-cheatsheet-8549feca2534)
