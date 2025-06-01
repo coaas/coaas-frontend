@@ -12,6 +12,7 @@ import {
   StaffInvitations,
   NotFound,
   Profile,
+  PublicProfile,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -89,15 +90,15 @@ export const routes = [
         element: <Services />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new',
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/categories',
         element: <CreateService />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug',
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/categories/:category_slug',
         element: <CreateServiceCategory />,
       },
       {
-        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:category_slug/:template_id',
+        path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/:template_id',
         element: <CreateServiceForm />,
       },
       {
@@ -143,6 +144,10 @@ export const routes = [
       {
         path: RouteMap.profile,
         element: <Profile />,
+      },
+      {
+        path: '/profile/:username',
+        element: <PublicProfile />,
       },
     ],
   },

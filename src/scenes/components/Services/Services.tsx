@@ -21,7 +21,7 @@ export const Services: FC = () => {
 
   const navigate = useNavigate();
 
-  const onCreateServiceBtnClick = () => navigate('new');
+  const onCreateServiceBtnClick = () => navigate('new/categories');
 
   return (
     <SceneWithTabs
