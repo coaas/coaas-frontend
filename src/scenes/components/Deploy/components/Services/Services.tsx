@@ -50,11 +50,13 @@ const Service = ({
   const { namespace_slug, project_slug } = useParams();
 
   const handleClick = () => {
-    navigate(`/namespaces/${namespace_slug}/projects/${project_slug}/deploy/${id}`);
+    navigate(
+      `/namespaces/${namespace_slug}/projects/${project_slug}/deploy/${id}`,
+    );
   };
 
   return (
-    <div 
+    <div
       className="bg-area-dark/70 border border-stroke-gray-dark px-8 py-6 flex gap-8 w-full rounded-lg items-center cursor-pointer hover:bg-area-dark/90 transition-colors"
       onClick={handleClick}
     >

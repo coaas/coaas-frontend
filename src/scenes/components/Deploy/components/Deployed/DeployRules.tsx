@@ -207,14 +207,17 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
               {
                 type: 'input',
                 label: { id: 'cpu', label: 'CPU' },
+                defaultValue: serverInfo.cpu,
               },
               {
                 type: 'input',
                 label: { id: 'ram', label: 'RAM' },
+                defaultValue: serverInfo.ram,
               },
               {
                 type: 'input',
                 label: { id: 'disk', label: 'DISK' },
+                defaultValue: serverInfo.disk,
               },
               {
                 type: 'input',
@@ -224,7 +227,6 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
               },
             ] as const
           }
-          inputs={serverInfo}
           onSelect={(_key, value) => {
             const cluster = clusters.clusters.find(
               c => c.id === selectClusterId,
@@ -243,7 +245,7 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
               color={'area'}
               onClick={() => {
                 const obj = convertTypes(
-                  { ...inputModal, ...serverInfo },
+                  inputModal,
                   ['cpu', 'ram', 'disk', 'replicas'],
                   Number,
                 );
