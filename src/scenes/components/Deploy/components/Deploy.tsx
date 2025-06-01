@@ -10,6 +10,7 @@ import { clusterOptions } from '../api/getDeploy.ts';
 import { DeployButton } from './Common/DeployButton.tsx';
 import { Deployed } from './Deployed/Deployed.tsx';
 import { DeployRules } from './Deployed/DeployRules.tsx';
+import { NotDeployed } from '@scenes/components/Deploy/components/NotDeployed.tsx';
 
 const getDeployTypes = (type: ClusterType) =>
   [
@@ -50,9 +51,7 @@ export const Deploy = ({
   );
 
   if (clusterApi.isError) {
-    return (
-      <p className="text-xl text-center">You have not deployed project yet.</p>
-    );
+    return <NotDeployed />;
   }
 
   if (clusterApi.isPending) {
