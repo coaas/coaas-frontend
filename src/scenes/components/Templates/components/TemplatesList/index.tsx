@@ -35,7 +35,7 @@ export const TemplatesList = ({
   return (
     <div
       ref={elementRef}
-      className={cn('max-h-[564px] overflow-auto mt-5', className)}
+      className={cn('mt-5', className)}
       {...restProps}
     >
       {children}
