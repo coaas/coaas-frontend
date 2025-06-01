@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import {
   Card,
@@ -16,6 +17,7 @@ export const CardGridItem: FC<CardGridItemProps> = ({
   idx,
   templates,
 }) => {
+  const { namespace_slug, project_slug } = useParams();
   const { name, description, id } = templates[idx];
 
   const cardPropsData: SimpleInfoCardProps = {
@@ -30,7 +32,7 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     children,
   }) => (
     <div className={cn(className, innerClassName)}>
-      <NavLink to={id}>{children}</NavLink>
+      <NavLink to={`/namespaces/${namespace_slug}/projects/${project_slug}/services/new/${id}`}>{children}</NavLink>
     </div>
   );
 

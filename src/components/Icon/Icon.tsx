@@ -16,6 +16,7 @@ import {
   SettingsIcon,
   SupportIcon,
   TemplateIcon,
+  StarIcon,
 } from './components';
 import { ChevronDown } from './components/ChevronDown';
 import { UserIcon } from './components/UserIcon';
@@ -89,6 +90,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.lambda: {
       return <LambdaIcon {...props.props} />;
+    }
+
+    case IconType.star: {
+      return <StarIcon {...props.props} />;
     }
 
     default: {
