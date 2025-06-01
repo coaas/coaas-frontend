@@ -16,6 +16,7 @@ export enum IconType {
   hint = 'hint',
   user = 'user',
   lambda = 'lambda',
+  star = 'star',
 }
 
 export type IconProps = GenericProps<IconType, SquareIconProps>;
