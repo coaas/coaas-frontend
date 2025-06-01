@@ -69,7 +69,7 @@ export const Clusters = ({
   return (
     <Wrapper>
       {view === 'dataCenter' && clusters.type === ClusterType.REGIONS && (
-        <DcButton onClick={() => setModalType(false)}>Add cluster</DcButton>
+        <DcButton onClick={() => setModalType('cluster')}>Add cluster</DcButton>
       )}
       {transferClusters?.map(cluster => (
         <ClusterComp

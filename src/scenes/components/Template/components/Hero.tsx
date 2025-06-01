@@ -44,7 +44,10 @@ export const Hero = ({
             </p>
           </div>
           <div className="flex gap-[15px] self-start">
-            <Link to={`/profile/${author.username}`} className="hover:opacity-80 transition-opacity">
+            <Link
+              to={`/profile/${author.username}`}
+              className="hover:opacity-80 transition-opacity"
+            >
               <span className="text-blue text-[16px] leading-none flex gap-[5px] items-center">
                 <Icon
                   type={IconType.user}
@@ -71,7 +74,11 @@ export const Hero = ({
         </div>
         <div className="flex justify-between mt-auto">
           <nav className="flex gap-[6px]">
-            <FormButton size="sm" className="whitespace-nowrap" onClick={() => setIsModalOpen(true)}>
+            <FormButton
+              size="sm"
+              className="whitespace-nowrap"
+              onClick={() => setIsModalOpen(true)}
+            >
               Use template
             </FormButton>
             {isAuthor && (
@@ -101,7 +108,11 @@ export const Hero = ({
           </div>
         </div>
       </div>
-      <CreateServiceModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} templateId={id} />
+      <CreateServiceModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        templateId={id}
+      />
     </div>
   );
 };

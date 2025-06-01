@@ -14,21 +14,25 @@ interface ErrorResponse {
 export const PublicProfile: FC = () => {
   const { username } = useParams<{ username: string }>();
 
-  const { data: userData, isLoading, error } = useQuery({
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['publicUserData', username],
     queryFn: async () => {
       const response = await api.post(getPublicUserData.endpoint, {
         json: { username },
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json() as ErrorResponse;
+        const errorData = (await response.json()) as ErrorResponse;
         if (errorData.code === 'USER_NOT_FOUND') {
           throw new Error('USER_NOT_FOUND');
         }
         throw new Error(errorData.default || 'Failed to fetch user data');
       }
-      
+
       return response.json<{ username: string }>();
     },
     enabled: !!username,
@@ -57,10 +61,17 @@ export const PublicProfile: FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="bg-area-dark rounded-lg shadow-card p-6 border-[1.5px] border-stroke-gray-dark">
             <div className="flex items-center gap-4">
-              <Icon type={IconType.user} props={{ size: 24, color: '#507EF5' }} />
-              <h2 className="text-xl font-semibold text-white">User not found</h2>
+              <Icon
+                type={IconType.user}
+                props={{ size: 24, color: '#507EF5' }}
+              />
+              <h2 className="text-xl font-semibold text-white">
+                User not found
+              </h2>
             </div>
-            <p className="mt-4 text-gray-400">The user @{username} does not exist or has been removed.</p>
+            <p className="mt-4 text-gray-400">
+              The user @{username} does not exist or has been removed.
+            </p>
           </div>
         </div>
       </div>
@@ -79,7 +90,9 @@ export const PublicProfile: FC = () => {
             <Icon type={IconType.user} props={{ size: 40, color: '#507EF5' }} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">@{userData.username}</h1>
+            <h1 className="text-3xl font-bold text-white">
+              @{userData.username}
+            </h1>
             <p className="text-gray-400">Public Profile</p>
           </div>
         </div>
@@ -91,16 +104,23 @@ export const PublicProfile: FC = () => {
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Username</label>
-              <div className="text-white bg-area p-2 rounded-md">{userData.username}</div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Username
+              </label>
+              <div className="text-white bg-area p-2 rounded-md">
+                {userData.username}
+              </div>
             </div>
-            
+
             <div className="text-gray-400">
-              <p>First name, last name, and email are confidential information and are not publicly available.</p>
+              <p>
+                First name, last name, and email are confidential information
+                and are not publicly available.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}; 
+};

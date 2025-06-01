@@ -32,7 +32,11 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     children,
   }) => (
     <div className={cn(className, innerClassName)}>
-      <NavLink to={`/namespaces/${namespace_slug}/projects/${project_slug}/services/new/${id}`}>{children}</NavLink>
+      <NavLink
+        to={`/namespaces/${namespace_slug}/projects/${project_slug}/services/new/${id}`}
+      >
+        {children}
+      </NavLink>
     </div>
   );
 
