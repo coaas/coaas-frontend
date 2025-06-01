@@ -1,4 +1,5 @@
 import { useMemo, useReducer, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { xorBy } from 'lodash';
@@ -38,13 +39,25 @@ const Service = ({
   description,
   name,
   type,
+  id,
 }: {
   description: string;
   name: string;
   type: ServiceType;
+  id: string;
 }) => {
+  const navigate = useNavigate();
+  const { namespace_slug, project_slug } = useParams();
+
+  const handleClick = () => {
+    navigate(`/namespaces/${namespace_slug}/projects/${project_slug}/deploy/${id}`);
+  };
+
   return (
-    <div className="bg-area-dark/70 border border-stroke-gray-dark px-8 py-6 flex gap-8 w-full rounded-lg items-center">
+    <div 
+      className="bg-area-dark/70 border border-stroke-gray-dark px-8 py-6 flex gap-8 w-full rounded-lg items-center cursor-pointer hover:bg-area-dark/90 transition-colors"
+      onClick={handleClick}
+    >
       <Deploy />
       <div className="flex flex-col">
         <div className="flex gap-2 items-center mb-1">

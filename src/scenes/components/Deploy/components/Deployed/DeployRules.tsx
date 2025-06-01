@@ -104,7 +104,7 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
               cluster.info.name,
             ].join(', ')}
             clusterType={clusters.type}
-            servers={cluster.fixed_rules.rules}
+            servers={cluster.fixed_rules?.rules ?? []}
             AddView={
               <DataCenter
                 type={'add'}
