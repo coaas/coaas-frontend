@@ -33,11 +33,7 @@ export const TemplatesList = ({
   ));
 
   return (
-    <div
-      ref={elementRef}
-      className={cn('mt-5', className)}
-      {...restProps}
-    >
+    <div ref={elementRef} className={cn('mt-5', className)} {...restProps}>
       {children}
       {isFetching && Skeleton}
     </div>

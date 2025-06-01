@@ -78,11 +78,11 @@ export const beforeRequest = async (request: KyRequest) => {
   request.headers.set('Authorization', `Bearer ${getAccess()}`);
   request.headers.set('x-csrftoken', cookies.get('csrftoken') || '');
 
-  regExSlugs.some(r => {
-    if (!r.regEx.test(window.location.pathname)) return false;
+  regExSlugs.forEach(r => {
+    if (!r.regEx.test(window.location.pathname)) return;
     const match = window.location.pathname.match(r.regEx);
-    if (!match) return false;
+    if (!match) return;
     request.headers.set(r.header, match[1]);
-    return true;
+    return;
   });
 };

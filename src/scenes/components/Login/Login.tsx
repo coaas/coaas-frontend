@@ -78,7 +78,10 @@ export const Login = () => {
         </form>
         <p className="mt-4 text-gray-400">
           Don't have an account?{' '}
-          <Link to={RouteMap.register} className="text-blue hover:text-blue-400 transition-colors">
+          <Link
+            to={RouteMap.register}
+            className="text-blue hover:text-blue-400 transition-colors"
+          >
             Register
           </Link>
         </p>

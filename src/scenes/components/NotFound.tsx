@@ -10,7 +10,9 @@ export const NotFound: FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center px-4">
         <h1 className="text-9xl font-bold text-blue-600">404</h1>
-        <h2 className="text-3xl font-semibold text-gray-800 mt-4">Page not found</h2>
+        <h2 className="text-3xl font-semibold text-gray-800 mt-4">
+          Page not found
+        </h2>
         <p className="text-gray-600 mt-2 mb-8">
           Sorry, the page you are looking for does not exist or has been moved.
         </p>
@@ -22,14 +24,11 @@ export const NotFound: FC = () => {
           >
             Back
           </Button>
-          <Button
-            onClick={() => navigate(RouteMap.home)}
-            className="px-6 py-2"
-          >
+          <Button onClick={() => navigate(RouteMap.home)} className="px-6 py-2">
             Home
           </Button>
         </div>
       </div>
     </div>
   );
-}; 
+};

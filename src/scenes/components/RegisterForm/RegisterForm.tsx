@@ -85,7 +85,10 @@ export function RegisterForm() {
         </form>
         <p className="mt-4 text-gray-400">
           Already have an account?{' '}
-          <Link to={RouteMap.login} className="text-blue hover:text-blue-400 transition-colors">
+          <Link
+            to={RouteMap.login}
+            className="text-blue hover:text-blue-400 transition-colors"
+          >
             Login
           </Link>
         </p>

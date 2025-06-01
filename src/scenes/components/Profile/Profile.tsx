@@ -17,7 +17,9 @@ export const Profile: FC = () => {
             <Icon type={IconType.user} props={{ size: 40, color: '#507EF5' }} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">{userData.first_name} {userData.last_name}</h1>
+            <h1 className="text-3xl font-bold text-white">
+              {userData.first_name} {userData.last_name}
+            </h1>
             <p className="text-gray-400">@{userData.username}</p>
           </div>
         </div>
@@ -25,35 +27,55 @@ export const Profile: FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-area-dark rounded-lg shadow-card p-6 border-[1.5px] border-stroke-gray-dark">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <Icon type={IconType.user} props={{ size: 20, color: '#507EF5' }} />
+              <Icon
+                type={IconType.user}
+                props={{ size: 20, color: '#507EF5' }}
+              />
               Personal Information
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Username</label>
-                <div className="text-white bg-area p-2 rounded-md">{userData.username}</div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Username
+                </label>
+                <div className="text-white bg-area p-2 rounded-md">
+                  {userData.username}
+                </div>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">First Name</label>
-                <div className="text-white bg-area p-2 rounded-md">{userData.first_name}</div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  First Name
+                </label>
+                <div className="text-white bg-area p-2 rounded-md">
+                  {userData.first_name}
+                </div>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Last Name</label>
-                <div className="text-white bg-area p-2 rounded-md">{userData.last_name}</div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Last Name
+                </label>
+                <div className="text-white bg-area p-2 rounded-md">
+                  {userData.last_name}
+                </div>
               </div>
             </div>
           </div>
 
           <div className="bg-area-dark rounded-lg shadow-card p-6 border-[1.5px] border-stroke-gray-dark">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <Icon type={IconType.support} props={{ size: 20, color: '#507EF5' }} />
+              <Icon
+                type={IconType.support}
+                props={{ size: 20, color: '#507EF5' }}
+              />
               Contact Information
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Email
+                </label>
                 <div className="text-white bg-area p-2 rounded-md">
                   {userData.email || 'Not provided'}
                 </div>
@@ -64,4 +86,4 @@ export const Profile: FC = () => {
       </div>
     </div>
   );
-}; 
+};
