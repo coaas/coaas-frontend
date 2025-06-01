@@ -3,6 +3,8 @@ import { Template } from '@globalTypes/templates';
 import { FormButton } from '@scenes/components/CreateTemplate/components/FormButton';
 import { useUser } from '@utils/lib/use-user';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { CreateServiceModal } from './CreateServiceModal';
 
 export const Hero = ({
   name,
@@ -11,8 +13,10 @@ export const Hero = ({
   stars,
   downloads,
   languages,
+  id,
 }: Template) => {
   const user = useUser();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //
   const isAuthor = author.id == user?.id;
   return (
@@ -67,7 +71,7 @@ export const Hero = ({
         </div>
         <div className="flex justify-between mt-auto">
           <nav className="flex gap-[6px]">
-            <FormButton size="sm" className="whitespace-nowrap">
+            <FormButton size="sm" className="whitespace-nowrap" onClick={() => setIsModalOpen(true)}>
               Use template
             </FormButton>
             {isAuthor && (
@@ -97,6 +101,7 @@ export const Hero = ({
           </div>
         </div>
       </div>
+      <CreateServiceModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} templateId={id} />
     </div>
   );
 };
