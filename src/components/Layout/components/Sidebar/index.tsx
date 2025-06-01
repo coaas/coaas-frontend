@@ -17,13 +17,13 @@ export const Sidebar = () => {
       )}
     >
       <div className="flex gap-[10px] items-center p-[6px]">
-        <span className="bg-stroke-gray size-8 rounded-[7px] shrink-0" />
+        <Icon type={IconType.cube} props={{ size: 32, color: '#507EF5' }} />
         <h1
           className={cn('text-[25px] text-white transition-all', {
             'translate-x-[150%] opacity-0': !state,
           })}
         >
-          Cloud Ops
+          CloudOps
         </h1>
       </div>
       <NavLinks sidebarOpened={state} />
