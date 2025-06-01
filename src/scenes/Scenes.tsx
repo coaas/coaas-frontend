@@ -10,6 +10,8 @@ import {
   Services,
   Staff,
   StaffInvitations,
+  NotFound,
+  Profile,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -35,6 +37,22 @@ import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 import { Deploy } from '@scenes/components/Deploy';
 
 export const routes = [
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+  {
+    path: RouteMap.login,
+    element: <Login />,
+  },
+  {
+    path: RouteMap.register,
+    element: <RegisterForm />,
+  },
+  {
+    path: RouteMap.logout,
+    element: <Logout />,
+  },
   {
     element: (
       <NotificationProvider>
@@ -123,16 +141,8 @@ export const routes = [
         ],
       },
       {
-        path: RouteMap.login,
-        element: <Login />,
-      },
-      {
-        path: RouteMap.register,
-        element: <RegisterForm />,
-      },
-      {
-        path: RouteMap.logout,
-        element: <Logout />,
+        path: RouteMap.profile,
+        element: <Profile />,
       },
     ],
   },

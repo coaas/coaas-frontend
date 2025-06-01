@@ -21,8 +21,6 @@ export const navLinksNameSpace = [
 export const navLinksProject = [
   { title: 'Home', href: RouteMap.home, iconType: IconType.cube },
   { title: 'Services', href: RouteMap.services, iconType: IconType.cube },
-  { title: 'Networks', href: RouteMap.networks, iconType: IconType.graph },
-  { title: 'Volumes', href: RouteMap.volumes, iconType: IconType.template },
   { title: 'Configs', href: RouteMap.configs, iconType: IconType.config },
   { title: 'Secrets', href: RouteMap.secrets, iconType: IconType.secret },
   { title: 'Deploy', href: RouteMap.deploy, iconType: IconType.deploy },
