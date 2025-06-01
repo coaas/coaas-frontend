@@ -28,7 +28,6 @@ export const Modal: FC<ModalProps> = ({ isOpen, onIsOpenChange }) => {
     api
       .post(ENDPOINT, {
         body: JSON.stringify({ slug }),
-        prefixUrl: '/api',
         headers: {
           'x-namespace-slug': namespaceSlug,
         },

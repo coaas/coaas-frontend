@@ -25,7 +25,6 @@ const fetchUsers = (params: FetchUsersRequestParams) =>
     ? mockFetchUsers()
     : api
         .post(ENDPOINT, {
-          prefixUrl: '/api',
           body: JSON.stringify(params),
         })
         .json<FetchUsersResponse>();

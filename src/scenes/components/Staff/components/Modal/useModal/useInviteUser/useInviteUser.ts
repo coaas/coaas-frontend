@@ -10,7 +10,6 @@ const ENDPOINT = 'NamespaceInvitationsManager/InviteMember';
 const inviteUser = (params: InviteFormSubmit, namespaceSlug?: string) =>
   api
     .post(ENDPOINT, {
-      prefixUrl: '/api',
       body: JSON.stringify(params),
       headers: {
         'x-namespace-slug': namespaceSlug,
