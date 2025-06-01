@@ -73,8 +73,8 @@ export const Services = () => {
 
   const { mutate: mutateDeployService } = useMutation({
     mutationFn: deployService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: [
           deployedServicesOptions.queryKey,
           listServicesOptions.queryKey,
@@ -85,12 +85,16 @@ export const Services = () => {
 
   const deployableServices = useMemo(() => {
     if (!isSuccess) return [];
-    if (listServices.services.length === 0) return deployedServices?.services;
+    if (deployedServices?.services.length === 0) {
+      setDeployValue(listServices.services[0].id);
+      return listServices?.services;
+    }
     const services = xorBy(
       deployedServices?.services,
       listServices?.services,
       'id',
     );
+    if (services.length === 0) return [];
     setDeployValue(services[0].id);
     return services;
   }, [deployedServices?.services, listServices?.services, isSuccess]);
