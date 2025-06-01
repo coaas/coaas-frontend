@@ -22,10 +22,10 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="flex flex-col justify-center dark:bg-background mt-20">
+    <div className="min-h-screen flex items-center justify-center dark:bg-background">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col space-y-4 p-8 bg-area-dark rounded-lg shadow-card w-80 mx-auto border-[1.5px] border-stroke-gray-dark"
+        className="flex flex-col space-y-4 p-8 bg-area-dark rounded-lg shadow-card w-80 border-[1.5px] border-stroke-gray-dark"
       >
         <h1 className="text-2xl font-bold text-center mb-4 text-white font-inter">
           Register

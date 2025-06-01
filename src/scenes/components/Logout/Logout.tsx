@@ -14,7 +14,7 @@ export const Logout = () => {
   }
 
   return (
-    <div className="mt-4 text-center">
+    <div className="min-h-screen flex items-center justify-center dark:bg-background">
       <Button onClick={handleClick}>
         {isLoading ? 'Logging out...' : 'Log out'}
       </Button>
