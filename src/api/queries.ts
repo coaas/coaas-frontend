@@ -28,6 +28,10 @@ export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
 };
 
+export const getPublicUserData: ApiRequest<{ username: string }, { username: string }> = {
+  endpoint: 'UserService/GetPublicUserData',
+};
+
 export const getCurrentUserTemplates: ApiRequest<{
   templates: Template[];
   drafts: Draft[];

@@ -12,6 +12,7 @@ import {
   StaffInvitations,
   NotFound,
   Profile,
+  PublicProfile,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -143,6 +144,10 @@ export const routes = [
       {
         path: RouteMap.profile,
         element: <Profile />,
+      },
+      {
+        path: '/profile/:username',
+        element: <PublicProfile />,
       },
     ],
   },
