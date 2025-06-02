@@ -9,7 +9,7 @@ import { getParsedData, useCreateNamespace } from './utils';
 
 export const useNamespaces = () => {
   const { isActive: isTourMode, mockData } = useTourMode();
-  
+
   const {
     data,
     isFetching,
@@ -20,7 +20,7 @@ export const useNamespaces = () => {
   } = useData();
 
   // Use mock data in tour mode, otherwise use real data
-  const { namespaces } = isTourMode 
+  const { namespaces } = isTourMode
     ? { namespaces: mockData.namespaces }
     : getParsedData(data);
 
@@ -33,7 +33,7 @@ export const useNamespaces = () => {
   const { onFormSubmit } = useCreateNamespace({ refetch });
 
   // Mock form submit in tour mode
-  const handleFormSubmit = isTourMode 
+  const handleFormSubmit = isTourMode
     ? async (formData: any) => {
         // Simulate form submission in tour mode
         await mockData.createNamespace(formData.name, formData.description);

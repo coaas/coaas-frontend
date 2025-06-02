@@ -8,7 +8,8 @@ const databaseTemplates: Info[] = [
   {
     id: 'postgresql-template',
     name: 'PostgreSQL',
-    description: 'PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development.',
+    description:
+      'PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development.',
     created_at: new Date().toISOString(),
     type: 1, // service type
     status: 1, // published status
@@ -25,7 +26,8 @@ const databaseTemplates: Info[] = [
   {
     id: 'mysql-template',
     name: 'MySQL',
-    description: 'MySQL is an open-source relational database management system. Fast, reliable, and easy to use.',
+    description:
+      'MySQL is an open-source relational database management system. Fast, reliable, and easy to use.',
     created_at: new Date().toISOString(),
     type: 1,
     status: 1,
@@ -42,7 +44,8 @@ const databaseTemplates: Info[] = [
   {
     id: 'mongodb-template',
     name: 'MongoDB',
-    description: 'MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database.',
+    description:
+      'MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database.',
     created_at: new Date().toISOString(),
     type: 1,
     status: 1,
@@ -59,7 +62,8 @@ const databaseTemplates: Info[] = [
   {
     id: 'redis-template',
     name: 'Redis',
-    description: 'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
+    description:
+      'Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.',
     created_at: new Date().toISOString(),
     type: 1,
     status: 1,
@@ -98,7 +102,8 @@ export const getMockData = async ({
   category,
 }: RequestParams): Promise<ResponseData> => {
   // Check if we're in the databases category
-  const isDatabaseCategory = category === 'databases' || window.location.pathname.includes('/databases');
+  const isDatabaseCategory =
+    category === 'databases' || window.location.pathname.includes('/databases');
   const templates = isDatabaseCategory ? databaseTemplates : defaultTemplates;
 
   // Shorter delay in tour mode for better UX

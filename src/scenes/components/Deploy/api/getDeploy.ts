@@ -40,10 +40,11 @@ export const clusterOptions = queryOptions({
 });
 
 // Function to create cluster options with tour mode support
-export const createClusterOptions = (isTourMode: boolean) => queryOptions({
-  queryFn: getDeploy,
-  queryKey: ['clusters', isTourMode],
-});
+export const createClusterOptions = (isTourMode: boolean) =>
+  queryOptions({
+    queryFn: getDeploy,
+    queryKey: ['clusters', isTourMode],
+  });
 
 const DEPLOY_ENDPOINT_ADD = 'DeployService/AddProjectDeploy';
 export type AddProjectDeployRequest = {

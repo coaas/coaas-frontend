@@ -18,7 +18,7 @@ export const apiErrorHandler: AfterResponseHook = async (
   if (response.status >= 400 && globalErrorHandler) {
     try {
       const errorData = await response.clone().json();
-      
+
       // Check that the error is in the expected format
       if (isApiError(errorData)) {
         globalErrorHandler(errorData);
@@ -44,4 +44,4 @@ function isApiError(error: unknown): error is ApiError {
     typeof (error as any).code === 'string' &&
     typeof (error as any).default === 'string'
   );
-} 
+}

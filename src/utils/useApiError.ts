@@ -37,4 +37,4 @@ function isApiError(error: unknown): error is ApiError {
     typeof (error as any).code === 'string' &&
     typeof (error as any).default === 'string'
   );
-} 
+}

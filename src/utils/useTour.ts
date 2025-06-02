@@ -23,9 +23,9 @@ export interface TourState {
 }
 
 const SPEED_DURATIONS = {
-  slow: 6000,    // 6 seconds
-  normal: 4000,  // 4 seconds
-  fast: 2000,    // 2 seconds
+  slow: 6000, // 6 seconds
+  normal: 4000, // 4 seconds
+  fast: 2000, // 2 seconds
 };
 
 export const useTour = (steps: TourStep[]) => {
@@ -66,7 +66,7 @@ export const useTour = (steps: TourStep[]) => {
   const startTour = useCallback((autoMode = false) => {
     // Enable tour mode when starting tour
     tourMode.enable();
-    
+
     setTourState(prev => ({
       ...prev,
       isActive: true,
@@ -79,13 +79,13 @@ export const useTour = (steps: TourStep[]) => {
   const stopTour = useCallback(() => {
     // Disable tour mode when stopping tour
     tourMode.disable();
-    
+
     // Clear auto timer
     if (autoTimerRef.current) {
       clearTimeout(autoTimerRef.current);
       autoTimerRef.current = null;
     }
-    
+
     setTourState(prev => ({
       ...prev,
       isActive: false,
@@ -131,11 +131,11 @@ export const useTour = (steps: TourStep[]) => {
       if (prev.currentStep < prev.steps.length - 1) {
         const nextStepIndex = prev.currentStep + 1;
         const nextStepData = prev.steps[nextStepIndex];
-        
+
         // Handle navigation if needed
         if (nextStepData?.navigateTo) {
           navigate(nextStepData.navigateTo);
-          
+
           // If waitForNavigation is true, delay showing the step
           if (nextStepData.waitForNavigation) {
             setTimeout(() => {
@@ -147,7 +147,7 @@ export const useTour = (steps: TourStep[]) => {
             return prev; // Don't update step yet
           }
         }
-        
+
         return {
           ...prev,
           currentStep: nextStepIndex,
@@ -155,7 +155,7 @@ export const useTour = (steps: TourStep[]) => {
       } else {
         // Tour finished - disable tour mode
         tourMode.disable();
-        
+
         // Clear auto timer
         if (autoTimerRef.current) {
           clearTimeout(autoTimerRef.current);
@@ -187,11 +187,11 @@ export const useTour = (steps: TourStep[]) => {
       if (prev.currentStep > 0) {
         const prevStepIndex = prev.currentStep - 1;
         const prevStepData = prev.steps[prevStepIndex];
-        
+
         // Handle navigation if needed
         if (prevStepData?.navigateTo) {
           navigate(prevStepData.navigateTo);
-          
+
           if (prevStepData.waitForNavigation) {
             setTimeout(() => {
               setTourState(current => ({
@@ -202,7 +202,7 @@ export const useTour = (steps: TourStep[]) => {
             return prev; // Don't update step yet
           }
         }
-        
+
         return {
           ...prev,
           currentStep: prevStepIndex,
@@ -212,36 +212,42 @@ export const useTour = (steps: TourStep[]) => {
     });
   }, [navigate]);
 
-  const goToStep = useCallback((stepIndex: number) => {
-    // Clear auto timer when jumping to step
-    if (autoTimerRef.current) {
-      clearTimeout(autoTimerRef.current);
-      autoTimerRef.current = null;
-    }
-    
-    const targetStep = steps[stepIndex];
-    const normalizedStepIndex = Math.max(0, Math.min(stepIndex, steps.length - 1));
-    
-    if (targetStep?.navigateTo) {
-      navigate(targetStep.navigateTo);
-      
-      // If waitForNavigation is true, delay showing the step
-      if (targetStep.waitForNavigation) {
-        setTimeout(() => {
-          setTourState(prev => ({
-            ...prev,
-            currentStep: normalizedStepIndex,
-          }));
-        }, 300); // Small delay for navigation to complete
-        return;
+  const goToStep = useCallback(
+    (stepIndex: number) => {
+      // Clear auto timer when jumping to step
+      if (autoTimerRef.current) {
+        clearTimeout(autoTimerRef.current);
+        autoTimerRef.current = null;
       }
-    }
-    
-    setTourState(prev => ({
-      ...prev,
-      currentStep: normalizedStepIndex,
-    }));
-  }, [steps, navigate]);
+
+      const targetStep = steps[stepIndex];
+      const normalizedStepIndex = Math.max(
+        0,
+        Math.min(stepIndex, steps.length - 1),
+      );
+
+      if (targetStep?.navigateTo) {
+        navigate(targetStep.navigateTo);
+
+        // If waitForNavigation is true, delay showing the step
+        if (targetStep.waitForNavigation) {
+          setTimeout(() => {
+            setTourState(prev => ({
+              ...prev,
+              currentStep: normalizedStepIndex,
+            }));
+          }, 300); // Small delay for navigation to complete
+          return;
+        }
+      }
+
+      setTourState(prev => ({
+        ...prev,
+        currentStep: normalizedStepIndex,
+      }));
+    },
+    [steps, navigate],
+  );
 
   // Auto-advance timer
   useEffect(() => {
@@ -257,7 +263,14 @@ export const useTour = (steps: TourStep[]) => {
         autoTimerRef.current = null;
       }
     };
-  }, [tourState.isActive, tourState.isAutoMode, tourState.isPaused, tourState.currentStep, nextStep, tourState.speed]);
+  }, [
+    tourState.isActive,
+    tourState.isAutoMode,
+    tourState.isPaused,
+    tourState.currentStep,
+    nextStep,
+    tourState.speed,
+  ]);
 
   return {
     ...tourState,
@@ -273,4 +286,4 @@ export const useTour = (steps: TourStep[]) => {
     isLastStep: tourState.currentStep === tourState.steps.length - 1,
     isFirstStep: tourState.currentStep === 0,
   };
-}; 
+};

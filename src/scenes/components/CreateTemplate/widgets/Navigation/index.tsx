@@ -33,7 +33,7 @@ const draftNavLinks = [
 
 export const Navigation = () => {
   const { draft_id } = useParams<{ draft_id: string }>();
-  
+
   // Получаем данные черновика из URL
   const { data: draftData } = useApiQuery({
     request: getTemplateDraft,
@@ -60,9 +60,13 @@ export const Navigation = () => {
   const isMapperStepDisabled = isSettingsStepDisabled;
 
   const checkIsStepDisabled = (href: RouteMap) => {
-    return (href === RouteMap.templatesDraftCreateStepImage && isImageStepDisabled) ||
-           (href === RouteMap.templatesDraftCreateStepSettings && isSettingsStepDisabled) ||
-           (href === RouteMap.templatesDraftCreateStepMapper && isMapperStepDisabled);
+    return (
+      (href === RouteMap.templatesDraftCreateStepImage &&
+        isImageStepDisabled) ||
+      (href === RouteMap.templatesDraftCreateStepSettings &&
+        isSettingsStepDisabled) ||
+      (href === RouteMap.templatesDraftCreateStepMapper && isMapperStepDisabled)
+    );
   };
 
   const handleLinkClick = (e: MouseEvent, disabled: boolean) => {
@@ -76,8 +80,8 @@ export const Navigation = () => {
       <ul className="flex flex-col gap-[11px]">
         {draftNavLinks.map(({ href, iconType, label }, key) => {
           const disabled = checkIsStepDisabled(href);
-          const linkTo = draft_id 
-            ? createDynamicPath(href, { draft_id }) 
+          const linkTo = draft_id
+            ? createDynamicPath(href, { draft_id })
             : href;
 
           return (

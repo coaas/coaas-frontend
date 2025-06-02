@@ -17,7 +17,11 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@api/constants.ts';
 import { ClusterType } from '@scenes/components/Deploy/model/types.ts';
 
-export const NotDeployed = ({ resetDeployState }: { resetDeployState?: () => void }) => {
+export const NotDeployed = ({
+  resetDeployState,
+}: {
+  resetDeployState?: () => void;
+}) => {
   const [addDeployInput, setAddDeployInput] =
     useState<Partial<AddProjectDeployRequest> | null>(null);
 

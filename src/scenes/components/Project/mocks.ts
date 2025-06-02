@@ -21,4 +21,4 @@ export const getProjectMockData = async (): Promise<{
     members_count: 5,
     created_at: new Date('2024-01-15').toISOString(),
   };
-}; 
+};

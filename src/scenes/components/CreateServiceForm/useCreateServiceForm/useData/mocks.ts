@@ -8,7 +8,8 @@ const postgresqlTemplateData: GetDraftTemplateResponse = {
   info: {
     id: 'postgresql-template',
     name: 'PostgreSQL',
-    description: 'PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development.',
+    description:
+      'PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development.',
     created_at: new Date().toISOString(),
     type: 1,
     status: 1,
@@ -110,7 +111,9 @@ const postgresqlTemplateData: GetDraftTemplateResponse = {
   },
 };
 
-export const getMockData = async ({ id }: RequestParams): Promise<GetDraftTemplateResponse> => {
+export const getMockData = async ({
+  id,
+}: RequestParams): Promise<GetDraftTemplateResponse> => {
   // Shorter delay in tour mode for better UX
   const delay = tourMode.isActive() ? 100 : 300;
   await new Promise(resolve => setTimeout(resolve, delay));

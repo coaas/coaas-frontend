@@ -54,9 +54,7 @@ export const SettingsVariables = () => {
                 {...register(`settings.secrets.${index}.name`, requiredRule)}
                 invalid={!!error}
               />
-              <DeleteButton
-                onClick={() => remove(index)}
-              />
+              <DeleteButton onClick={() => remove(index)} />
               {error && <span className="text-xs text-error">{error}</span>}
             </div>
           );
@@ -82,9 +80,7 @@ export const SettingsVariables = () => {
                 {...register(`settings.configs.${index}.path`, requiredRule)}
                 invalid={!!error}
               />
-              <DeleteButton
-                onClick={() => remove(index)}
-              />
+              <DeleteButton onClick={() => remove(index)} />
               {error && <span className="text-xs text-error">{error}</span>}
             </div>
           );
@@ -120,9 +116,7 @@ export const SettingsVariables = () => {
                 {...register(`settings.env_vars.${index}.value`, requiredRule)}
                 invalid={!!valueError}
               />
-              <DeleteButton
-                onClick={() => remove(index)}
-              />
+              <DeleteButton onClick={() => remove(index)} />
               {keyError && (
                 <span className="text-xs text-error">{keyError}</span>
               )}

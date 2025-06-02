@@ -7,9 +7,9 @@ import { useCurrentUserTemplates } from '@scenes/components/CurrentUserTemplates
 import { cn } from '@utils/styles';
 import { Draft, Template } from '@globalTypes/templates';
 
-const Section = (props: { 
-  name: string; 
-  entries: Template[] | Draft[]; 
+const Section = (props: {
+  name: string;
+  entries: Template[] | Draft[];
   isDraft?: boolean;
 }) => {
   const { name, entries, isDraft } = props;
@@ -33,8 +33,8 @@ const Section = (props: {
           <Link
             key={key}
             to={createDynamicPath(
-              isDraft ? RouteMap.templateDraft : RouteMap.template, 
-              { template_slug: id }
+              isDraft ? RouteMap.templateDraft : RouteMap.template,
+              { template_slug: id },
             )}
           >
             <Card

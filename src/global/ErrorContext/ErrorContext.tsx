@@ -1,4 +1,11 @@
-import { createContext, useContext, ReactNode, FC, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  FC,
+  useState,
+  useCallback,
+} from 'react';
 import { ApiError } from '@components/ErrorToast';
 
 interface ErrorToastItem extends ApiError {
@@ -26,7 +33,7 @@ export const ErrorProvider: FC<ErrorProviderProps> = ({ children }) => {
       ...error,
       id: crypto.randomUUID(),
     };
-    
+
     setErrors(prev => [...prev, errorWithId]);
   }, []);
 
@@ -46,9 +53,7 @@ export const ErrorProvider: FC<ErrorProviderProps> = ({ children }) => {
   };
 
   return (
-    <ErrorContext.Provider value={value}>
-      {children}
-    </ErrorContext.Provider>
+    <ErrorContext.Provider value={value}>{children}</ErrorContext.Provider>
   );
 };
 
@@ -58,4 +63,4 @@ export const useErrorContext = (): ErrorContextValue => {
     throw new Error('useErrorContext must be used within an ErrorProvider');
   }
   return context;
-}; 
+};

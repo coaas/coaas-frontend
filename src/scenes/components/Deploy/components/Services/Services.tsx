@@ -1,5 +1,5 @@
 import { useMemo, useReducer, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useMutation, useQueries } from '@tanstack/react-query';
 import { xorBy } from 'lodash';
@@ -85,10 +85,15 @@ export const Services = () => {
 
   const [deployResult, listResult] = useQueries({
     queries: [
-      isTourMode ? createDeployedServicesOptions(isTourMode) : deployedServicesOptions,
+      isTourMode
+        ? createDeployedServicesOptions(isTourMode)
+        : deployedServicesOptions,
       isTourMode ? createListServicesOptions(isTourMode) : listServicesOptions,
     ],
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const deployedServices = deployResult.data as DeployedServicesResponse;
   const listServices = listResult.data as ListServicesResponse;
@@ -125,6 +130,7 @@ export const Services = () => {
   const handleDeploy = () => {
     if (!deployValue) return;
     mutateDeployService(deployValue);
+    navigate(`${location.pathname}/${deployValue}`, { relative: 'route' });
     toggleIsDeployModal();
   };
 

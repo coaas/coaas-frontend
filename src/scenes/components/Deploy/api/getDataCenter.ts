@@ -37,7 +37,7 @@ type AddServerToClusterRequest = {
   disk: number;
   docker_engine: {
     is_manager: boolean;
-    docker_api: Optional<{
+    docker_api?: Optional<{
       url: string;
       token: string;
     }>;

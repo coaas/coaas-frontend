@@ -18,4 +18,4 @@ export const MenuIcon: FC<SquareIconProps> = ({
     <circle cx="12" cy="12" r="2" fill={color} />
     <circle cx="12" cy="18" r="2" fill={color} />
   </svg>
-); 
+);

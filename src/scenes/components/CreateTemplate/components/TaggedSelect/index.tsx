@@ -51,9 +51,11 @@ export const TaggedSelect = <T extends FieldValues>({
   const handleOptionChange = (option: Option<string | number>) => {
     const optionValue = option.value;
     const isSelected = selectedValues.includes(optionValue);
-    
+
     if (isSelected) {
-      const newValues = selectedValues.filter((item: string | number) => item !== optionValue);
+      const newValues = selectedValues.filter(
+        (item: string | number) => item !== optionValue,
+      );
       onChange(newValues);
     } else {
       const newValues = [...selectedValues, optionValue];
@@ -62,7 +64,9 @@ export const TaggedSelect = <T extends FieldValues>({
   };
 
   const handleTagRemove = (optionValue: string | number) => {
-    const newValues = selectedValues.filter((item: string | number) => item !== optionValue);
+    const newValues = selectedValues.filter(
+      (item: string | number) => item !== optionValue,
+    );
     onChange(newValues);
   };
 

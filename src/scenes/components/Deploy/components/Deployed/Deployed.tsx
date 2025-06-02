@@ -10,6 +10,7 @@ export const Deployed = ({ clusters }: { clusters: ClustersResponse }) => {
       ? clusters.clusters
       : [
           {
+            id: 'instances',
             instances: clusters.clusters[0].servers.flatMap(server => [
               ...server.instances,
             ]),
@@ -20,6 +21,7 @@ export const Deployed = ({ clusters }: { clusters: ClustersResponse }) => {
     <div className="flex flex-col gap-6 self-start w-full">
       {transferClusters.map(cluster => (
         <ClusterComp
+          key={cluster.id}
           clusterType={clusters.type}
           name={
             'provider' in cluster

@@ -12,7 +12,7 @@ export const SceneWithTabs: FC<SceneWithTabsProps> = ({
   CardsView,
   onChangeSearch,
   searchPlaceholder,
-  tourGridId = "namespace-grid",
+  tourGridId = 'namespace-grid',
 }) => {
   const { tabsProps, containerRef, currentTab } = useSceneWithTabs();
 
@@ -30,9 +30,7 @@ export const SceneWithTabs: FC<SceneWithTabsProps> = ({
       </div>
       <div className="w-full">
         <div className="flex justify-between items-center">
-          <div data-tour="create-namespace-btn">
-            {Button}
-          </div>
+          <div data-tour="create-namespace-btn">{Button}</div>
           <Tabs {...tabsProps} type={TabsType.icon} />
         </div>
         <div className="mt-6" ref={containerRef} data-tour={tourGridId}>

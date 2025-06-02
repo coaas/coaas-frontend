@@ -19,24 +19,26 @@ export const CreateProject: FC = () => {
     open({
       title: 'Feature not available',
       description: 'Import from Git functionality is not implemented yet',
-      variant: 'error'
+      variant: 'error',
     });
   }, [open]);
 
   const onDockerComposeImportClick = useCallback(() => {
     open({
       title: 'Feature not available',
-      description: 'Import from Docker Compose functionality is not implemented yet',
-      variant: 'error'
+      description:
+        'Import from Docker Compose functionality is not implemented yet',
+      variant: 'error',
     });
   }, [open]);
 
   const cardsData = useMemo(
-    () => getCardsData({ 
-      onBlankClick, 
-      onGitImportClick, 
-      onDockerComposeImportClick 
-    }),
+    () =>
+      getCardsData({
+        onBlankClick,
+        onGitImportClick,
+        onDockerComposeImportClick,
+      }),
     [onBlankClick, onGitImportClick, onDockerComposeImportClick],
   );
 
@@ -57,12 +59,12 @@ export const CreateProject: FC = () => {
                 settings: { shape: 'rect' },
               }}
               Wrapper={({ children, className }) => (
-                <div 
-                  onClick={onClick} 
+                <div
+                  onClick={onClick}
                   className={`${className} text-left cursor-pointer`}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       onClick();
                     }

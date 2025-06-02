@@ -71,4 +71,4 @@ export const getProjectTeamMockData = async (): Promise<{
       },
     ],
   };
-}; 
+};

@@ -19,9 +19,12 @@ export const Sidebar = () => {
       <div className="flex gap-[10px] items-center p-[6px]">
         <Icon type={IconType.cube} props={{ size: 32, color: '#507EF5' }} />
         <h1
-          className={cn('text-[25px] text-white dark:text-white text-gray-900 transition-all', {
-            'translate-x-[150%] opacity-0': !state,
-          })}
+          className={cn(
+            'text-[25px] text-white dark:text-white text-gray-900 transition-all',
+            {
+              'translate-x-[150%] opacity-0': !state,
+            },
+          )}
         >
           CloudOps
         </h1>
@@ -50,7 +53,10 @@ export const Sidebar = () => {
           </div>
         </div>
         <div className="border-t-[1.5px] border-stroke-gray dark:border-stroke-gray border-gray-200 flex items-center justify-center p-2">
-          <button className="text-blue-light dark:text-blue-light text-blue" onClick={toggle}>
+          <button
+            className="text-blue-light dark:text-blue-light text-blue"
+            onClick={toggle}
+          >
             <Icon
               props={{
                 size: 20,

@@ -16,11 +16,14 @@ interface TeamMemberCardProps {
   className?: string;
 }
 
-export const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, className }) => {
+export const TeamMemberCard: FC<TeamMemberCardProps> = ({
+  member,
+  className,
+}) => {
   const { user } = member;
   const fullName = `${user.first_name} ${user.last_name}`.trim();
   const displayName = fullName || user.username;
-  
+
   // Генерируем аватар из первых букв имени
   const getInitials = () => {
     if (user.first_name && user.last_name) {
@@ -33,30 +36,30 @@ export const TeamMemberCard: FC<TeamMemberCardProps> = ({ member, className }) =
   };
 
   return (
-    <div className={cn(
-      'rounded-xl border border-stroke-gray-dark bg-area-dark p-6 hover:shadow-card hover:border-stroke-blue transition-all duration-200 cursor-pointer h-48 flex flex-col items-center justify-center text-center',
-      className
-    )}>
+    <div
+      className={cn(
+        'rounded-xl border border-stroke-gray-dark bg-area-dark p-6 hover:shadow-card hover:border-stroke-blue transition-all duration-200 cursor-pointer h-48 flex flex-col items-center justify-center text-center',
+        className,
+      )}
+    >
       {/* Аватар */}
       <div className="size-16 rounded-full bg-blue flex items-center justify-center text-white font-medium text-lg mb-4">
         {getInitials()}
       </div>
-      
+
       {/* Информация о пользователе */}
       <div className="w-full">
         <div className="text-base font-semibold text-white truncate mb-1">
           {displayName}
         </div>
-        <Link 
+        <Link
           to={`/profile/${user.username}`}
           className="text-sm text-gray hover:text-blue transition-colors duration-200 truncate mb-1 block"
         >
           @{user.username}
         </Link>
-        <div className="text-xs text-gray truncate">
-          {user.email}
-        </div>
+        <div className="text-xs text-gray truncate">{user.email}</div>
       </div>
     </div>
   );
-}; 
+};

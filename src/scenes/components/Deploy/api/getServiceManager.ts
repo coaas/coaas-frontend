@@ -31,43 +31,43 @@ export type ListServicesResponse = {
 const tourMockListServices = {
   services: [
     {
-      id: "svc-frontend",
-      name: "Frontend App", 
-      description: "React frontend application",
+      id: 'svc-frontend',
+      name: 'Frontend App',
+      description: 'React frontend application',
       type: 1, // ServiceType.CUSTOM
-      created_at: "2024-01-22T10:30:00Z"
+      created_at: '2024-01-22T10:30:00Z',
     },
     {
-      id: "svc-backend",
-      name: "Backend API",
-      description: "Node.js REST API server", 
+      id: 'svc-backend',
+      name: 'Backend API',
+      description: 'Node.js REST API server',
       type: 1, // ServiceType.CUSTOM
-      created_at: "2024-01-22T11:00:00Z"
+      created_at: '2024-01-22T11:00:00Z',
     },
     {
-      id: "svc-database",
-      name: "PostgreSQL",
-      description: "PostgreSQL database",
+      id: 'svc-database',
+      name: 'PostgreSQL',
+      description: 'PostgreSQL database',
       type: 0, // ServiceType.MANAGED
-      created_at: "2024-01-22T11:30:00Z"
+      created_at: '2024-01-22T11:30:00Z',
     },
     {
-      id: "svc-cache",
-      name: "Redis Cache",
-      description: "Redis cache service",
-      type: 0, // ServiceType.MANAGED  
-      created_at: "2024-01-22T12:00:00Z"
+      id: 'svc-cache',
+      name: 'Redis Cache',
+      description: 'Redis cache service',
+      type: 0, // ServiceType.MANAGED
+      created_at: '2024-01-22T12:00:00Z',
     },
     {
-      id: "svc-monitoring",
-      name: "Monitoring Service",
-      description: "Application monitoring and alerting",
+      id: 'svc-monitoring',
+      name: 'Monitoring Service',
+      description: 'Application monitoring and alerting',
       type: 1, // ServiceType.CUSTOM
-      created_at: "2024-01-22T12:30:00Z"
-    }
+      created_at: '2024-01-22T12:30:00Z',
+    },
   ],
   has_more: false,
-  next_key: null
+  next_key: null,
 };
 
 export const getListServices = (
@@ -114,19 +114,22 @@ export const listServicesOptions = queryOptions({
   queryKey: ['listServices'],
 });
 
-export const createListServicesOptions = (isTourMode: boolean) => queryOptions({
-  queryFn: () =>
-    executePages<ListServicesResponse, typeof getListServices>(getListServices)
-      .then(res => {
-        return {
-          services: res.flatMap(s => s.services),
-        };
-      })
-      .catch(err => {
-        console.log('sv err', err);
-      }),
-  queryKey: ['listServices', isTourMode],
-});
+export const createListServicesOptions = (isTourMode: boolean) =>
+  queryOptions({
+    queryFn: () =>
+      executePages<ListServicesResponse, typeof getListServices>(
+        getListServices,
+      )
+        .then(res => {
+          return {
+            services: res.flatMap(s => s.services),
+          };
+        })
+        .catch(err => {
+          console.log('sv err', err);
+        }),
+    queryKey: ['listServices', isTourMode],
+  });
 
 const DEPLOYED_SERVICES_ENDPOINT = 'DeployService/GetDeployedServices';
 export type DeployedServicesResponse = {
@@ -137,27 +140,27 @@ export type DeployedServicesResponse = {
 const tourMockDeployedServices = {
   services: [
     {
-      id: "svc-frontend",
-      name: "Frontend App",
-      description: "React frontend application",
+      id: 'svc-frontend',
+      name: 'Frontend App',
+      description: 'React frontend application',
       type: 1, // ServiceType.CUSTOM
-      created_at: "2024-01-22T10:30:00Z"
+      created_at: '2024-01-22T10:30:00Z',
     },
     {
-      id: "svc-backend", 
-      name: "Backend API",
-      description: "Node.js REST API server",
+      id: 'svc-backend',
+      name: 'Backend API',
+      description: 'Node.js REST API server',
       type: 1, // ServiceType.CUSTOM
-      created_at: "2024-01-22T11:00:00Z"
+      created_at: '2024-01-22T11:00:00Z',
     },
     {
-      id: "svc-database",
-      name: "PostgreSQL",
-      description: "PostgreSQL database",
+      id: 'svc-database',
+      name: 'PostgreSQL',
+      description: 'PostgreSQL database',
       type: 0, // ServiceType.MANAGED
-      created_at: "2024-01-22T11:30:00Z"
-    }
-  ]
+      created_at: '2024-01-22T11:30:00Z',
+    },
+  ],
 };
 
 export const getDeployedServices = (): Promise<DeployedServicesResponse> => {
@@ -184,10 +187,11 @@ export const deployedServicesOptions = queryOptions({
   queryKey: ['deployedServices'],
 });
 
-export const createDeployedServicesOptions = (isTourMode: boolean) => queryOptions({
-  queryFn: getDeployedServices,
-  queryKey: ['deployedServices', isTourMode],
-});
+export const createDeployedServicesOptions = (isTourMode: boolean) =>
+  queryOptions({
+    queryFn: getDeployedServices,
+    queryKey: ['deployedServices', isTourMode],
+  });
 
 const DEPLOY_SERVICE_ENDPOINT = 'DeployService/DeployService';
 export const deployService = (service_id: string): Promise<Success> =>

@@ -2,7 +2,11 @@ import { Input } from '@components/Input';
 import { Select } from '@components/Select/index.tsx';
 import { FormField } from '@scenes/components/CreateTemplate/components/FormField';
 import { Controller, useFormContext } from 'react-hook-form';
-import { configItems, rollbackConfigItems, restartPolicyFields } from '../constants';
+import {
+  configItems,
+  rollbackConfigItems,
+  restartPolicyFields,
+} from '../constants';
 import {
   numberRule,
   requiredRule,

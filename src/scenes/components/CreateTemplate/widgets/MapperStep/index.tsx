@@ -19,7 +19,8 @@ import { useQueryClient } from '@tanstack/react-query';
 
 export const MapperStep = () => {
   const { open } = useNotificationContext();
-  const { deleteDraftId, defaultValues, draftId, isUrlBased } = useDraftContext();
+  const { deleteDraftId, defaultValues, draftId, isUrlBased } =
+    useDraftContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mapper: mapperValues } = defaultValues;
@@ -54,20 +55,26 @@ export const MapperStep = () => {
             queryKey: [getTemplates.endpoint],
           });
           open({ title: 'Draft Published' });
-          navigate(isUrlBased ? RouteMap.currentUserTemplates : RouteMap.templates);
+          navigate(
+            isUrlBased ? RouteMap.currentUserTemplates : RouteMap.templates,
+          );
         },
       },
     );
   };
 
-  const handleTabChange = (tab: { id: string; label: string; value: MapperType }) => {
+  const handleTabChange = (tab: {
+    id: string;
+    label: string;
+    value: MapperType;
+  }) => {
     // Check if this is Custom (id: '1') or External (id: '2')
     if (tab.id === '1' || tab.id === '2') {
       const tabName = tab.id === '1' ? 'Custom' : 'External';
-      open({ 
-        title: 'Functionality unavailable', 
+      open({
+        title: 'Functionality unavailable',
         description: `${tabName} mapper is not yet supported`,
-        variant: 'error' 
+        variant: 'error',
       });
       return;
     }

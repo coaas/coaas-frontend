@@ -28,6 +28,7 @@ import { ServerType } from '@scenes/components/Deploy/model/dataCenter.types.ts'
 import { convertTypes } from '@scenes/components/Deploy/utils/converters.ts';
 import { ModalWarning } from '@scenes/components/Deploy/components/DataCenters/ModalWarning.tsx';
 import { useDataCenter } from '@scenes/components/Deploy/lib/useDataCenter.ts';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Clusters = ({
   clusters,
@@ -55,6 +56,9 @@ export const Clusters = ({
       await queryClient.invalidateQueries({ queryKey: ['clusters'] });
     },
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     nodeIds,
@@ -119,7 +123,13 @@ export const Clusters = ({
                 disk={'disk' in server ? server.disk : server.memory}
                 clusterType={clusters?.type}
                 renderInstance={instance => (
-                  <Instance key={instance.id} {...instance} />
+                  <Instance
+                    key={instance.id}
+                    {...instance}
+                    onClick={() => {
+                      navigate(`${location.pathname}/${instance.service.id}`);
+                    }}
+                  />
                 )}
               />
             ) : (
@@ -183,17 +193,20 @@ export const Clusters = ({
                 const docker_api = pick(convertedInput, 'token', 'url');
                 const { type } = pick(convertedInput, 'type');
 
+                const docker_engine = {
+                  docker_api,
+                  is_manager:
+                    nodeIds === null
+                      ? true
+                      : convertedInput.is_manager === 'manager',
+                  node_id: convertedInput?.node_id ?? null,
+                };
                 mutateAddServerToCluster({
                   ...mainObj,
                   type: Number(type) as ServerType,
-                  docker_engine: {
-                    docker_api,
-                    is_manager:
-                      nodeIds === null
-                        ? true
-                        : convertedInput.is_manager === 'manager',
-                    node_id: convertedInput?.node_id ?? null,
-                  },
+                  docker_engine: !docker_engine.is_manager
+                    ? omit(docker_engine, 'docker_api')
+                    : docker_engine,
                 });
                 setModalServerErrors(null);
                 setModalType(false);

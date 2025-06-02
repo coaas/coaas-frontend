@@ -6,7 +6,8 @@ export const BUTTON_VARIANT_OBJ: Record<ButtonVariant, string> = {
   default: 'bg-blue text-white shadow hover:bg-blue/70',
   outline:
     'border-2 border-blue text-blue bg-background dark:bg-background bg-white hover:border-blue-light hover:text-blue-light',
-  secondary: 'bg-stroke-gray dark:bg-stroke-gray bg-gray-200 text-white dark:text-white text-gray-900 hover:bg-gray dark:hover:bg-gray hover:bg-gray-300 hover:bg-stroke-gray/70 dark:hover:bg-stroke-gray/70',
+  secondary:
+    'bg-stroke-gray dark:bg-stroke-gray bg-gray-200 text-white dark:text-white text-gray-900 hover:bg-gray dark:hover:bg-gray hover:bg-gray-300 hover:bg-stroke-gray/70 dark:hover:bg-stroke-gray/70',
 };
 
 export const BUTTON_VARIANTS = cva(

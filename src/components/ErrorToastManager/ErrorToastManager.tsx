@@ -11,10 +11,5 @@ export const ErrorToastManager: FC = () => {
     setGlobalErrorHandler(showError);
   }, [showError]);
 
-  return (
-    <ErrorToastContainer
-      errors={errors}
-      onRemoveError={removeError}
-    />
-  );
-}; 
+  return <ErrorToastContainer errors={errors} onRemoveError={removeError} />;
+};

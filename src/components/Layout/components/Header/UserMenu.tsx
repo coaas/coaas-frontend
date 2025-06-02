@@ -20,7 +20,7 @@ export const UserMenu = () => {
     <div className="flex items-center gap-2">
       {/* Переключатель темы */}
       <ThemeToggle />
-      
+
       {/* Меню пользователя */}
       <Popover
         open={state}
@@ -29,9 +29,7 @@ export const UserMenu = () => {
         offsetNum={8}
         passWidth={false}
         render={({ close }) => (
-          <div
-            className="py-2 z-10 border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 border-[1.5px] rounded-lg bg-background dark:bg-background bg-white shadow-card-light dark:shadow-none min-w-[120px]"
-          >
+          <div className="py-2 z-10 border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 border-[1.5px] rounded-lg bg-background dark:bg-background bg-white shadow-card-light dark:shadow-none min-w-[120px]">
             <button
               onClick={() => {
                 close();
@@ -51,4 +49,4 @@ export const UserMenu = () => {
       </Popover>
     </div>
   );
-}; 
+};

@@ -49,4 +49,4 @@ export const useProjectTeam = () => {
   }
 
   return apiQuery;
-}; 
+};

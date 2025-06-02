@@ -21,9 +21,10 @@ export const useProjects = () => {
   } = useData(namespace_slug);
 
   // Use mock data in tour mode, otherwise use real data
-  const { projects } = isTourMode && namespace_slug === 'tour-demo-workspace'
-    ? { projects: mockData.getDemoProjects() }
-    : getParsedData(data);
+  const { projects } =
+    isTourMode && namespace_slug === 'tour-demo-workspace'
+      ? { projects: mockData.getDemoProjects() }
+      : getParsedData(data);
 
   const GridItem: FC<LazyGridItemProps> = props => (
     <CardGridItem {...props} projects={projects} />

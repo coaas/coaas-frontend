@@ -24,8 +24,8 @@ export const TemplateDraft = () => {
       )}
       {templateResponse && (
         <div className="flex flex-col gap-[30px]">
-          <Hero 
-            {...templateResponse.info} 
+          <Hero
+            {...templateResponse.info}
             isDraft={true}
             draftId={template_slug}
           />
@@ -58,4 +58,4 @@ export const TemplateDraft = () => {
       )}
     </section>
   );
-}; 
+};

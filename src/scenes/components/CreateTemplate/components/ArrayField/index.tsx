@@ -43,9 +43,12 @@ export const ArrayField = <T extends FieldValues>({
   const { append, fields, remove } = useFieldArray({
     name: name,
     control,
-    rules: required ? {
-      validate: fields => fields.length > 0 || 'required at least one entity',
-    } : undefined,
+    rules: required
+      ? {
+          validate: fields =>
+            fields.length > 0 || 'required at least one entity',
+        }
+      : undefined,
   });
 
   return (

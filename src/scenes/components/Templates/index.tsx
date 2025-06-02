@@ -1,7 +1,20 @@
-import { getTemplateFilters, getTemplates, createTemplateDraft } from '@api/queries';
+import {
+  getTemplateFilters,
+  getTemplates,
+  createTemplateDraft,
+} from '@api/queries';
 import { Banner } from '@components/Banner';
-import { useInfiniteApiQuery, useApiQuery, useApiMutation } from '@utils/lib/use-api-query';
-import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
+import {
+  useInfiniteApiQuery,
+  useApiQuery,
+  useApiMutation,
+} from '@utils/lib/use-api-query';
+import {
+  Link,
+  useLocation,
+  useSearchParams,
+  useNavigate,
+} from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';
 import { Search } from '@components/Search';
@@ -23,20 +36,23 @@ export const Templates = () => {
   });
 
   const handleCreateTemplate = () => {
-    createDraft({}, {
-      onSuccess: (response) => {
-        if (response?.id) {
-          navigate(
-            createDynamicPath(RouteMap.templatesDraftCreateStepInfo, {
-              draft_id: response.id,
-            }),
-          );
-        }
+    createDraft(
+      {},
+      {
+        onSuccess: response => {
+          if (response?.id) {
+            navigate(
+              createDynamicPath(RouteMap.templatesDraftCreateStepInfo, {
+                draft_id: response.id,
+              }),
+            );
+          }
+        },
+        onError: error => {
+          console.error('Failed to create draft:', error);
+        },
       },
-      onError: (error) => {
-        console.error('Failed to create draft:', error);
-      },
-    });
+    );
   };
 
   const { query, categories, types, languages, status } = Object.fromEntries([
@@ -156,8 +172,8 @@ export const Templates = () => {
         )}
       </div>
       <div className="flex row justify-between">
-        <Button 
-          className="mt-[14px] max-w-fit" 
+        <Button
+          className="mt-[14px] max-w-fit"
           onClick={handleCreateTemplate}
           disabled={isCreatingDraft}
         >

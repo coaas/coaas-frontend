@@ -24,7 +24,7 @@ export const tourMode = {
     const handler = () => callback(tourMode.isActive());
     window.addEventListener('tourModeChanged', handler);
     return () => window.removeEventListener('tourModeChanged', handler);
-  }
+  },
 };
 
 // Mock data for tour mode
@@ -43,8 +43,8 @@ export const mockData = {
       owner: {
         id: '1',
         username: 'tour_user',
-        email: 'tour@example.com'
-      }
+        email: 'tour@example.com',
+      },
     },
     {
       id: '1',
@@ -59,8 +59,8 @@ export const mockData = {
       owner: {
         id: '1',
         username: 'john_doe',
-        email: 'john@company.com'
-      }
+        email: 'john@company.com',
+      },
     },
     {
       id: '2',
@@ -75,8 +75,8 @@ export const mockData = {
       owner: {
         id: '2',
         username: 'jane_smith',
-        email: 'jane@company.com'
-      }
+        email: 'jane@company.com',
+      },
     },
     {
       id: '3',
@@ -91,8 +91,8 @@ export const mockData = {
       owner: {
         id: '1',
         username: 'john_doe',
-        email: 'john@company.com'
-      }
+        email: 'john@company.com',
+      },
     },
     {
       id: '4',
@@ -155,9 +155,9 @@ export const mockData = {
       owner: {
         id: '3',
         username: 'mike_wilson',
-        email: 'mike@company.com'
-      }
-    }
+        email: 'mike@company.com',
+      },
+    },
   ],
 
   projects: [
@@ -171,7 +171,7 @@ export const mockData = {
       services_count: 5,
       members_count: 4,
       status: 'active' as const,
-      namespace_slug: 'tour-demo-workspace'
+      namespace_slug: 'tour-demo-workspace',
     },
     {
       id: '2',
@@ -183,7 +183,7 @@ export const mockData = {
       services_count: 3,
       members_count: 3,
       status: 'active' as const,
-      namespace_slug: 'tour-demo-workspace'
+      namespace_slug: 'tour-demo-workspace',
     },
     {
       id: '3',
@@ -195,8 +195,8 @@ export const mockData = {
       services_count: 7,
       members_count: 6,
       status: 'active' as const,
-      namespace_slug: 'tour-demo-workspace'
-    }
+      namespace_slug: 'tour-demo-workspace',
+    },
   ],
 
   services: [
@@ -247,12 +247,12 @@ export const mockData = {
       owner: {
         id: '1',
         username: 'current_user',
-        email: 'user@company.com'
-      }
+        email: 'user@company.com',
+      },
     };
 
     // Simulate API delay
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         mockData.namespaces.unshift(newNamespace);
         resolve(newNamespace);
@@ -261,7 +261,11 @@ export const mockData = {
   },
 
   // Mock data for new project creation
-  createProject: (name: string, description: string, namespace_slug: string) => {
+  createProject: (
+    name: string,
+    description: string,
+    namespace_slug: string,
+  ) => {
     const newProject = {
       id: Date.now().toString(),
       slug: name.toLowerCase().replace(/\s+/g, '-'),
@@ -272,10 +276,10 @@ export const mockData = {
       services_count: 0,
       members_count: 1,
       status: 'active' as const,
-      namespace_slug
+      namespace_slug,
     };
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         mockData.projects.unshift(newProject);
         resolve(newProject);
@@ -284,7 +288,13 @@ export const mockData = {
   },
 
   // Mock data for new service creation
-  createService: (name: string, description: string, image: string, project_slug: string, namespace_slug: string) => {
+  createService: (
+    name: string,
+    description: string,
+    image: string,
+    project_slug: string,
+    namespace_slug: string,
+  ) => {
     const newService = {
       id: Date.now().toString(),
       name,
@@ -293,10 +303,10 @@ export const mockData = {
       image,
       created_at: new Date().toISOString(),
       project_slug,
-      namespace_slug
+      namespace_slug,
     };
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         mockData.services.unshift(newService as any);
         // Simulate deployment completion
@@ -310,12 +320,17 @@ export const mockData = {
 
   // Get current demo namespace for tour
   getDemoNamespace: () => {
-    return mockData.namespaces.find(ns => ns.slug === 'tour-demo-workspace') || mockData.namespaces[0];
+    return (
+      mockData.namespaces.find(ns => ns.slug === 'tour-demo-workspace') ||
+      mockData.namespaces[0]
+    );
   },
 
   // Get projects for demo namespace
   getDemoProjects: () => {
-    return mockData.projects.filter(p => p.namespace_slug === 'tour-demo-workspace');
+    return mockData.projects.filter(
+      p => p.namespace_slug === 'tour-demo-workspace',
+    );
   },
 
   // Get services for demo project
@@ -330,20 +345,20 @@ export const mockDeployData = {
   orchestration_engine: 0, // OrchEngine.DOCKER
   clusters: [
     {
-      id: "cluster-ru-central1",
-      name: "Russia (Moscow)",
-      region: "ru-central1",
-      availability_zone: "ru-central1-a",
-      provider: "Yandex Cloud",
-      country: "Russia",
-      city: "Moscow",
-      address: "Yandex DC Moscow",
+      id: 'cluster-ru-central1',
+      name: 'Russia (Moscow)',
+      region: 'ru-central1',
+      availability_zone: 'ru-central1-a',
+      provider: 'Yandex Cloud',
+      country: 'Russia',
+      city: 'Moscow',
+      address: 'Yandex DC Moscow',
       servers: [
         {
-          id: "srv-tour-1",
-          region: "ru-central1",
-          availability_zone: "ru-central1-a",
-          provider: "Yandex Cloud",
+          id: 'srv-tour-1',
+          region: 'ru-central1',
+          availability_zone: 'ru-central1-a',
+          provider: 'Yandex Cloud',
           type: 1,
           name: "web-frontend-node",
           ip: "10.128.0.10",
@@ -353,7 +368,7 @@ export const mockDeployData = {
           status: 1, // LOADED
           instances: [
             {
-              id: "inst-tour-1",
+              id: 'inst-tour-1',
               service: {
                 id: "svc-frontend",
                 name: "Frontend",
@@ -365,7 +380,7 @@ export const mockDeployData = {
               memory: 40
             },
             {
-              id: "inst-tour-2",
+              id: 'inst-tour-2',
               service: {
                 id: "svc-api-gateway",
                 name: "API Gateway",
@@ -391,10 +406,10 @@ export const mockDeployData = {
           ]
         },
         {
-          id: "srv-tour-2",
-          region: "ru-central1",
-          availability_zone: "ru-central1-b",
-          provider: "Yandex Cloud",
+          id: 'srv-tour-2',
+          region: 'ru-central1',
+          availability_zone: 'ru-central1-b',
+          provider: 'Yandex Cloud',
           type: 1,
           name: "database-cluster-primary",
           ip: "10.128.0.11",
@@ -752,6 +767,6 @@ export const useTourMode = () => {
     isActive,
     enable: tourMode.enable,
     disable: tourMode.disable,
-    mockData
+    mockData,
   };
-}; 
+};

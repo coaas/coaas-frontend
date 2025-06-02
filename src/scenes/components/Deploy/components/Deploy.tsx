@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -6,12 +6,12 @@ import { Clusters } from './Clusters/Clusters';
 import { Services } from './Services/Services.tsx';
 import { Achieve } from './Common/Achieve.tsx';
 import { ClusterType, OrchEngine, Status } from '../model/cluster.types.ts';
-import { clusterOptions, createClusterOptions } from '../api/getDeploy.ts';
+import { clusterOptions } from '../api/getDeploy.ts';
 import { DeployButton } from './Common/DeployButton.tsx';
 import { Deployed } from './Deployed/Deployed.tsx';
 import { DeployRules } from './Deployed/DeployRules.tsx';
 import { NotDeployed } from '@scenes/components/Deploy/components/NotDeployed.tsx';
-import { useTourMode } from '@utils/tourMode.ts';
+import { ServiceInfo } from '@scenes/components/Deploy/components/Deployed/ServiceInfo.tsx';
 
 const getDeployTypes = (type: ClusterType) =>
   [
@@ -27,17 +27,15 @@ export const Deploy = ({
 }) => {
   const [showNotDeployed, setShowNotDeployed] = useState(false);
   const [shouldDisableQuery, setShouldDisableQuery] = useState(false);
-  const { isActive: isTourMode } = useTourMode();
 
   const resetDeployState = () => {
     setShowNotDeployed(false);
     setShouldDisableQuery(false);
   };
 
-  // Regular API query
-  const regularClusterApi = useQuery({
+  const clusterApi = useQuery({
     ...clusterOptions,
-    enabled: !shouldDisableQuery && !isTourMode,
+    enabled: !shouldDisableQuery,
     retry: (failureCount, error) => {
       // Не делать retry если получили 404 с PROJECT_DEPLOY_NOT_FOUND
       const errorResponse = error as Error & { response?: Response };
@@ -48,12 +46,6 @@ export const Deploy = ({
       return failureCount < 3;
     },
   });
-
-  // Tour mode query
-  const tourClusterApi = useQuery(createClusterOptions(true));
-
-  // Use appropriate query based on tour mode
-  const clusterApi = isTourMode ? tourClusterApi : regularClusterApi;
 
   useEffect(() => {
     if (clusterApi.isError) {
@@ -120,12 +112,13 @@ export const Deploy = ({
 
   return (
     <div className="flex flex-col mt-8 px-20 items-center pb-16" data-tour="deploy-content">
+      {type === 'deployed' && <ServiceInfo />}
       <div className="self-start flex justify-between items-center w-full">
         <h1 className="text-2xl font-bold">
           {type === 'deploy' ? 'Deploy' : 'Instances'}
         </h1>
         {type === 'deploy' && (
-          <div className="flex gap-2" data-tour="deploy-status">
+          <div className="flex gap-2">
             {deployTags.map(tag => (
               <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
                 {tag}
@@ -135,7 +128,7 @@ export const Deploy = ({
         )}
       </div>
       {type === 'deploy' && (
-        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm" data-tour="deploy-tabs">
+        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm">
           <div className="flex">
             {deployTypes.map(name => (
               <DeployButton

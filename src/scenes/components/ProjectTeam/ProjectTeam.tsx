@@ -19,9 +19,7 @@ export const ProjectTeam: FC = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center text-error">
-          Error loading project team
-        </div>
+        <div className="text-center text-error">Error loading project team</div>
       </div>
     );
   }
@@ -34,9 +32,7 @@ export const ProjectTeam: FC = () => {
         <div className="space-y-6">
           <div>
             <h1 className="text-2xl font-bold text-white">Project Team</h1>
-            <p className="text-gray mt-1">
-              Team members: {members.length}
-            </p>
+            <p className="text-gray mt-1">Team members: {members.length}</p>
           </div>
 
           {members.length === 0 ? (
@@ -47,11 +43,8 @@ export const ProjectTeam: FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-4">
-              {members.map((member) => (
-                <TeamMemberCard
-                  key={member.id}
-                  member={member}
-                />
+              {members.map(member => (
+                <TeamMemberCard key={member.id} member={member} />
               ))}
             </div>
           )}
@@ -59,4 +52,4 @@ export const ProjectTeam: FC = () => {
       </section>
     </div>
   );
-}; 
+};

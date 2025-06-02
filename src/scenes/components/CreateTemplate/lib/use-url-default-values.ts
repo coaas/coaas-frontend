@@ -118,13 +118,13 @@ export const useUrlDefaultValues = () => {
 
   const draftSettings = {
     ...state,
-    settings: { 
-      ...restSettings, 
+    settings: {
+      ...restSettings,
       ports: ports.map(port => ({ name: port })),
       health_check: {
         ...health_check,
-        test: health_check.test || 'true'
-      }
+        test: health_check.test || 'true',
+      },
     },
     dependencies,
   };
@@ -142,4 +142,4 @@ export const useUrlDefaultValues = () => {
   };
 
   return { draftInfo, dockerImage, draftSettings, mapper };
-}; 
+};
