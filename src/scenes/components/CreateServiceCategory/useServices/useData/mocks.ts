@@ -1,4 +1,5 @@
 import { Info } from '@globalTypes/templates.draft.get';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { RequestParams, ResponseData } from './types';
 
@@ -100,8 +101,9 @@ export const getMockData = async ({
   const isDatabaseCategory = category === 'databases' || window.location.pathname.includes('/databases');
   const templates = isDatabaseCategory ? databaseTemplates : defaultTemplates;
 
-  // симулируем задержку
-  await new Promise(resolve => setTimeout(resolve, 300));
+  // Shorter delay in tour mode for better UX
+  const delay = tourMode.isActive() ? 100 : 300;
+  await new Promise(resolve => setTimeout(resolve, delay));
 
   return {
     templates,

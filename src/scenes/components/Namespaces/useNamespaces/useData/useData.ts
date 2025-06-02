@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   InfiniteData,
   QueryKey,
@@ -6,24 +6,38 @@ import {
 } from '@tanstack/react-query';
 
 import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 
-const getNamespaces = (params: RequestParams) =>
-  IS_MOCK_ACTIVE
+const getNamespaces = (params: RequestParams) => {
+  // Always use mock data in tour mode
+  if (tourMode.isActive()) {
+    return getMockData(params);
+  }
+  
+  return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
           body: JSON.stringify(params),
         })
         .json<ResponseData>();
+};
 
 export const useData = () => {
   const [searchValue, setSearchValue] = useState('');
+  const [isTourMode, setIsTourMode] = useState(tourMode.isActive());
 
-  const queryKey = ['namespaces', searchValue];
+  // Subscribe to tour mode changes
+  useEffect(() => {
+    const unsubscribe = tourMode.subscribe(setIsTourMode);
+    return unsubscribe;
+  }, []);
+
+  const queryKey = ['namespaces', searchValue, isTourMode];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<

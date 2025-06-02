@@ -8,12 +8,14 @@ interface TourOverlayProps {
   totalSteps: number;
   isAutoMode: boolean;
   isPaused: boolean;
+  speed: 'slow' | 'normal' | 'fast';
   onNext: () => void;
   onPrev: () => void;
   onStop: () => void;
   onGoToStep: (stepIndex: number) => void;
   onToggleAutoMode: () => void;
   onTogglePause: () => void;
+  onSetSpeed: (speed: 'slow' | 'normal' | 'fast') => void;
   isLastStep: boolean;
   isFirstStep: boolean;
   allSteps: TourStep[];
@@ -33,12 +35,14 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
   totalSteps,
   isAutoMode,
   isPaused,
+  speed,
   onNext,
   onPrev,
   onStop,
   onGoToStep,
   onToggleAutoMode,
   onTogglePause,
+  onSetSpeed,
   isLastStep,
   isFirstStep,
   allSteps,
@@ -46,9 +50,11 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
   const [targetRect, setTargetRect] = useState<ElementRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const [showStepMenu, setShowStepMenu] = useState(false);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [loadingStep, setLoadingStep] = useState<number | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const stepMenuRef = useRef<HTMLDivElement>(null);
+  const speedMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isActive || !currentStep) {
@@ -103,6 +109,17 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       }
     };
 
+    // Retry logic for elements that might load with delay
+    const tryUpdatePosition = (attempts = 0) => {
+      const targetElement = document.querySelector(currentStep.target);
+      if (targetElement) {
+        updateTargetPosition();
+      } else if (attempts < 20) {
+        // Retry up to 20 times with increasing delay
+        setTimeout(() => tryUpdatePosition(attempts + 1), 200 * (attempts + 1));
+      }
+    };
+
     // Auto-click for specific steps
     if (currentStep.id === 'create-namespace-button') {
       const createButton = document.querySelector('[data-tour="create-namespace-btn"] button');
@@ -141,17 +158,33 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       }
     }
 
+    // For service-categories step, use retry logic
+    if (currentStep.id === 'service-categories') {
+      setTimeout(() => tryUpdatePosition(), 500);
+    } else {
+      updateTargetPosition();
+    }
+
     // Auto-click on Databases category
     if (currentStep.id === 'service-categories') {
       const databaseCategory = document.querySelector('[data-tour="service-categories"] [data-category="databases"]');
       if (databaseCategory) {
         setTimeout(() => {
           (databaseCategory as HTMLElement).click();
+        }, 1500);
+      }
+    }
+
+    // Auto-click on PostgreSQL template
+    if (currentStep.id === 'select-postgresql') {
+      const postgresqlTemplate = document.querySelector('[data-tour="postgresql-template"]');
+      if (postgresqlTemplate) {
+        setTimeout(() => {
+          (postgresqlTemplate as HTMLElement).click();
         }, 1000);
       }
     }
 
-    updateTargetPosition();
     window.addEventListener('resize', updateTargetPosition);
     window.addEventListener('scroll', updateTargetPosition);
 
@@ -167,16 +200,19 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       if (stepMenuRef.current && !stepMenuRef.current.contains(event.target as Node)) {
         setShowStepMenu(false);
       }
+      if (speedMenuRef.current && !speedMenuRef.current.contains(event.target as Node)) {
+        setShowSpeedMenu(false);
+      }
     };
 
-    if (showStepMenu) {
+    if (showStepMenu || showSpeedMenu) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showStepMenu]);
+  }, [showStepMenu, showSpeedMenu]);
 
   const handleNext = () => {
     // Handle special cases for interactive steps
@@ -227,7 +263,7 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
             });
           }
           setLoadingStep(null);
-        }, 500);
+        }, targetStep.id === 'service-categories' ? 1500 : 500);
       } else {
         // For same-page steps, shorter delay
         setTimeout(() => {
@@ -336,6 +372,48 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
             )}
           </div>
           <div className="flex items-center gap-1">
+            {/* Speed Control - only show in auto mode */}
+            {isAutoMode && (
+              <div className="relative" ref={speedMenuRef}>
+                <button
+                  onClick={() => setShowSpeedMenu(!showSpeedMenu)}
+                  title="Change tour speed"
+                  className="p-1 rounded-lg transition-colors text-cyan-400 hover:text-cyan-300 bg-cyan-400/10 hover:bg-cyan-400/20 flex items-center gap-1"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span className="text-xs">{speed.toUpperCase()}</span>
+                </button>
+                
+                {showSpeedMenu && (
+                  <div className="absolute bottom-full mb-2 left-0 bg-slate-800 border border-cyan-500 rounded-lg shadow-2xl w-24 z-[70]">
+                    {(['slow', 'normal', 'fast'] as const).map((speedOption) => (
+                      <button
+                        key={speedOption}
+                        onClick={() => {
+                          onSetSpeed(speedOption);
+                          setShowSpeedMenu(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 text-sm transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                          speed === speedOption
+                            ? 'bg-cyan-600 text-white'
+                            : 'text-gray-300 hover:bg-slate-700 hover:text-white'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="capitalize">{speedOption}</span>
+                          <span className="text-xs text-gray-400">
+                            {speedOption === 'slow' ? '6s' : speedOption === 'normal' ? '4s' : '2s'}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            
             {/* Auto Mode Toggle */}
             <button
               onClick={onToggleAutoMode}

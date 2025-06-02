@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   InfiniteData,
   QueryKey,
@@ -7,6 +7,7 @@ import {
 import { useParams } from 'react-router-dom';
 
 import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData, SlugsParams } from './types';
@@ -15,8 +16,13 @@ import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 const getServices = (
   params: RequestParams,
   { namespace_slug, project_slug }: SlugsParams,
-) =>
-  IS_MOCK_ACTIVE
+) => {
+  // Always use mock data in tour mode
+  if (tourMode.isActive()) {
+    return getMockData(params);
+  }
+  
+  return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
@@ -28,13 +34,20 @@ const getServices = (
           },
         })
         .json<ResponseData>();
+};
 
 export const useData = () => {
   const { namespace_slug, project_slug } = useParams();
-
   const [searchValue, setSearchValue] = useState('');
+  const [isTourMode, setIsTourMode] = useState(tourMode.isActive());
 
-  const queryKey = [namespace_slug, project_slug, 'services', searchValue];
+  // Subscribe to tour mode changes
+  useEffect(() => {
+    const unsubscribe = tourMode.subscribe(setIsTourMode);
+    return unsubscribe;
+  }, []);
+
+  const queryKey = [namespace_slug, project_slug, 'services', searchValue, isTourMode];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<

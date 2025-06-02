@@ -130,20 +130,13 @@ const tourSteps: TourStep[] = [
     position: 'right',
   },
   {
-    id: 'services-page',
-    title: 'Services Management 🚀',
-    description: 'This is your services management center! Here you can deploy, monitor, and manage all your containerized applications and microservices.',
-    target: 'main',
-    position: 'top',
-    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services',
-    waitForNavigation: true,
-  },
-  {
     id: 'create-service-button',
     title: 'Create New Service',
     description: 'Click this button to create a new service. Services can be web applications, databases, APIs, or any containerized workload.',
     target: '[data-tour="create-service-btn"]',
     position: 'left',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services',
+    waitForNavigation: true,
   },
   {
     id: 'service-categories',
@@ -151,7 +144,7 @@ const tourSteps: TourStep[] = [
     description: 'Choose from various service categories: Web Applications, Databases, Messaging systems, and more. Each category contains pre-configured templates.',
     target: '[data-tour="service-categories"]',
     position: 'top',
-    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services/create',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services/new/categories',
     waitForNavigation: true,
   },
   {
@@ -161,6 +154,22 @@ const tourSteps: TourStep[] = [
     target: '[data-tour="database-templates"]',
     position: 'top',
   },
+  {
+    id: 'select-postgresql',
+    title: 'Select PostgreSQL Template',
+    description: 'Let\'s select PostgreSQL - a powerful, open source object-relational database system. Click on the PostgreSQL template to continue.',
+    target: '[data-tour="postgresql-template"]',
+    position: 'top',
+  },
+  {
+    id: 'service-creation-form',
+    title: 'Service Creation Form 🎉',
+    description: 'Perfect! Now you can configure your PostgreSQL service with custom settings, environment variables, and deployment options. This is where you bring your infrastructure to life!',
+    target: 'main',
+    position: 'top',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services/new/postgresql-template',
+    waitForNavigation: true,
+  },
 ];
 
 interface TourContextType {
@@ -169,6 +178,7 @@ interface TourContextType {
   steps: TourStep[];
   isAutoMode: boolean;
   isPaused: boolean;
+  speed: 'slow' | 'normal' | 'fast';
   startTour: (autoMode?: boolean) => void;
   stopTour: () => void;
   nextStep: () => void;
@@ -176,6 +186,7 @@ interface TourContextType {
   goToStep: (stepIndex: number) => void;
   toggleAutoMode: () => void;
   togglePause: () => void;
+  setSpeed: (speed: 'slow' | 'normal' | 'fast') => void;
   currentStepData: TourStep | undefined;
   isLastStep: boolean;
   isFirstStep: boolean;

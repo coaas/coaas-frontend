@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import {
   InfiniteData,
   QueryKey,
@@ -6,13 +7,19 @@ import {
 } from '@tanstack/react-query';
 
 import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
 
-const getInvitations = (params: RequestParams, namespaceSlug?: string) =>
-  IS_MOCK_ACTIVE
+const getInvitations = (params: RequestParams, namespaceSlug?: string) => {
+  // Always use mock data in tour mode
+  if (tourMode.isActive()) {
+    return getMockData(params);
+  }
+  
+  return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
@@ -22,11 +29,19 @@ const getInvitations = (params: RequestParams, namespaceSlug?: string) =>
           },
         })
         .json<ResponseData>();
+};
 
 export const useData = () => {
   const { namespace_slug } = useParams();
+  const [isTourMode, setIsTourMode] = useState(tourMode.isActive());
 
-  const queryKey = [namespace_slug, 'staffInvitations'];
+  // Subscribe to tour mode changes
+  useEffect(() => {
+    const unsubscribe = tourMode.subscribe(setIsTourMode);
+    return unsubscribe;
+  }, []);
+
+  const queryKey = [namespace_slug, 'staffInvitations', isTourMode];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<

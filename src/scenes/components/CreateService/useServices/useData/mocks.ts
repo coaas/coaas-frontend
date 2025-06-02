@@ -1,4 +1,5 @@
 import { CategoryData } from '@globalTypes/categories';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { ResponseData } from './types';
 
@@ -30,8 +31,9 @@ const categories: CategoryData[] = [
 ];
 
 export const getMockData = async (): Promise<ResponseData> => {
-  // симулируем задержку
-  await new Promise(resolve => setTimeout(resolve, 300));
+  // Shorter delay in tour mode for better UX
+  const delay = tourMode.isActive() ? 100 : 300;
+  await new Promise(resolve => setTimeout(resolve, delay));
 
   return {
     categories,
@@ -39,8 +41,9 @@ export const getMockData = async (): Promise<ResponseData> => {
 };
 
 export const getMockCategories = async (): Promise<ResponseData> => {
-  // симулируем задержку
-  await new Promise(resolve => setTimeout(resolve, 300));
+  // Shorter delay in tour mode for better UX
+  const delay = tourMode.isActive() ? 100 : 300;
+  await new Promise(resolve => setTimeout(resolve, delay));
 
   return {
     categories,

@@ -3,16 +3,22 @@ import {
   QueryKey,
   useInfiniteQuery,
 } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 
 import { api, IS_MOCK_ACTIVE, queryClient } from '@api/constants';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { getMockData } from './mocks';
 import { RequestParams, ResponseData } from './types';
 import { BASE_REQUEST_PARAMS, ENDPOINT } from './constants';
-import { useState } from 'react';
 
-const getProjects = (params: RequestParams, namespaceSlug?: string) =>
-  IS_MOCK_ACTIVE
+const getProjects = (params: RequestParams, namespaceSlug?: string) => {
+  // Always use mock data in tour mode
+  if (tourMode.isActive()) {
+    return getMockData(params);
+  }
+  
+  return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
         .post(ENDPOINT, {
@@ -22,11 +28,19 @@ const getProjects = (params: RequestParams, namespaceSlug?: string) =>
           },
         })
         .json<ResponseData>();
+};
 
 export const useData = (namespaceSlug?: string) => {
   const [searchValue, setSearchValue] = useState('');
+  const [isTourMode, setIsTourMode] = useState(tourMode.isActive());
 
-  const queryKey = [`${namespaceSlug}_projects`, searchValue];
+  // Subscribe to tour mode changes
+  useEffect(() => {
+    const unsubscribe = tourMode.subscribe(setIsTourMode);
+    return unsubscribe;
+  }, []);
+
+  const queryKey = [`${namespaceSlug}_projects`, searchValue, isTourMode];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<

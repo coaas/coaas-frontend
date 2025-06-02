@@ -19,7 +19,14 @@ export interface TourState {
   steps: TourStep[];
   isAutoMode: boolean;
   isPaused: boolean;
+  speed: 'slow' | 'normal' | 'fast';
 }
+
+const SPEED_DURATIONS = {
+  slow: 6000,    // 6 seconds
+  normal: 4000,  // 4 seconds
+  fast: 2000,    // 2 seconds
+};
 
 export const useTour = (steps: TourStep[]) => {
   const navigate = useNavigate();
@@ -30,6 +37,7 @@ export const useTour = (steps: TourStep[]) => {
     steps,
     isAutoMode: false,
     isPaused: false,
+    speed: 'normal',
   });
 
   const startTour = useCallback((autoMode = false) => {
@@ -76,6 +84,13 @@ export const useTour = (steps: TourStep[]) => {
     setTourState(prev => ({
       ...prev,
       isPaused: !prev.isPaused,
+    }));
+  }, []);
+
+  const setSpeed = useCallback((speed: 'slow' | 'normal' | 'fast') => {
+    setTourState(prev => ({
+      ...prev,
+      speed,
     }));
   }, []);
 
@@ -193,7 +208,7 @@ export const useTour = (steps: TourStep[]) => {
     if (tourState.isActive && tourState.isAutoMode && !tourState.isPaused) {
       autoTimerRef.current = setTimeout(() => {
         nextStep();
-      }, 4000); // 4 seconds auto-advance
+      }, SPEED_DURATIONS[tourState.speed]);
     }
 
     return () => {
@@ -202,7 +217,7 @@ export const useTour = (steps: TourStep[]) => {
         autoTimerRef.current = null;
       }
     };
-  }, [tourState.isActive, tourState.isAutoMode, tourState.isPaused, tourState.currentStep, nextStep]);
+  }, [tourState.isActive, tourState.isAutoMode, tourState.isPaused, tourState.currentStep, nextStep, tourState.speed]);
 
   return {
     ...tourState,
@@ -213,6 +228,7 @@ export const useTour = (steps: TourStep[]) => {
     goToStep,
     toggleAutoMode,
     togglePause,
+    setSpeed,
     currentStepData: tourState.steps[tourState.currentStep],
     isLastStep: tourState.currentStep === tourState.steps.length - 1,
     isFirstStep: tourState.currentStep === 0,

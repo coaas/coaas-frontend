@@ -12,7 +12,7 @@ export const CreateServiceCategory: FC = () => {
   const { isFetching, GridItem, dataCount } = useServices();
 
   return (
-    <section className="p-10">
+    <section className="p-10" data-tour="database-templates">
       <h3 className="font-semibold text-2xl text-white mb-5">{title}</h3>
       <LazyGrid
         gap={16}

@@ -8,7 +8,7 @@ export const CreateServiceForm = () => {
   if (!data) return <div>Error</div>;
 
   return (
-    <section className="p-10 max-w-[700px]">
+    <section className="p-10 max-w-[700px]" data-tour="service-creation-form">
       <h3 className="font-semibold text-2xl text-white mb-5">
         {`Creating ${data.info.name}`}
       </h3>

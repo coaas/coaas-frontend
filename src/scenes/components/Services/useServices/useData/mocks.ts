@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { tourMode } from '../../../../../utils/tourMode';
 
 import { ServiceData } from '@globalTypes/services';
 
@@ -18,8 +19,9 @@ export const getMockData = async ({
 }: RequestParams): Promise<ResponseData> => {
   const dbServices = [...services];
 
-  // симулируем задержку
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  // Shorter delay in tour mode for better UX
+  const delay = tourMode.isActive() ? 100 : 1500;
+  await new Promise(resolve => setTimeout(resolve, delay));
 
   const firstNewItemIdx =
     (dbServices.findIndex(({ id }) => id === after?.id) || -1) + 1;
