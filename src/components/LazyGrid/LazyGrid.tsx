@@ -10,6 +10,15 @@ export const LazyGrid: FC<LazyGridProps> = ({ className, Item, ...props }) => {
   const { wrapperRef, onScroll, grid, isFetchingAllGrid, isFetchingNextPage } =
     useLazyGrid(props);
 
+  // Extract data-tour and other data attributes
+  const dataTour = (props as any)['data-tour'];
+  const dataAttributes = Object.keys(props).reduce((acc, key) => {
+    if (key.startsWith('data-')) {
+      acc[key] = (props as any)[key];
+    }
+    return acc;
+  }, {} as Record<string, any>);
+
   if (isFetchingAllGrid) {
     return <div ref={wrapperRef}>Loading...</div>;
   }
@@ -19,6 +28,7 @@ export const LazyGrid: FC<LazyGridProps> = ({ className, Item, ...props }) => {
       ref={wrapperRef}
       className={cn('h-[500px] overflow-auto', className)}
       onScroll={onScroll}
+      {...dataAttributes}
     >
       <Grid grid={grid}>
         {idx => <Item key={idx} className="h-full w-full" idx={idx} />}

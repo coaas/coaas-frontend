@@ -1,8 +1,31 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useTourContext } from '../../../utils/TourContext';
+import { useNotificationContext } from '@components/Notification';
 
 export const Home: FC = () => {
   const tour = useTourContext();
+  const { open: showNotification } = useNotificationContext();
+
+  // Check if user just registered and auto-start tour
+  useEffect(() => {
+    const justRegistered = localStorage.getItem('just_registered');
+    if (justRegistered === 'true') {
+      // Clear the flag
+      localStorage.removeItem('just_registered');
+      
+      // Show welcome notification
+      showNotification({
+        title: 'Welcome to CloudOps! 🎉',
+        description: 'Your account has been successfully created. Let\'s take a tour to explore the platform!',
+        variant: 'success',
+      }, 5000);
+      
+      // Start auto tour after a short delay to ensure page is fully loaded
+      setTimeout(() => {
+        tour.startTour(true);
+      }, 1500);
+    }
+  }, [tour, showNotification]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">

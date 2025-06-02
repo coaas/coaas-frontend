@@ -67,7 +67,7 @@ export const Clusters = ({
   } = useDataCenter({ clusters, setModalType });
 
   return (
-    <Wrapper>
+    <Wrapper data-tour="servers-content">
       {view === 'dataCenter' && clusters.type === ClusterType.REGIONS && (
         <DcButton onClick={() => setModalType('cluster')}>Add cluster</DcButton>
       )}

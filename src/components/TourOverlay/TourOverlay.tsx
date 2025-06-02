@@ -81,6 +81,11 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
           let left = elementRect.left;
 
           switch (currentStep.position || 'bottom') {
+            case 'center':
+              // Center the tooltip on the screen
+              top = (window.innerHeight - tooltipRect.height) / 2;
+              left = (window.innerWidth - tooltipRect.width) / 2;
+              break;
             case 'top':
               top = elementRect.top - tooltipRect.height - 20;
               left = elementRect.left + elementRect.width / 2 - tooltipRect.width / 2;
@@ -99,10 +104,12 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
               break;
           }
 
-          // Keep tooltip within viewport
-          const padding = 20;
-          top = Math.max(padding, Math.min(top, window.innerHeight - tooltipRect.height - padding));
-          left = Math.max(padding, Math.min(left, window.innerWidth - tooltipRect.width - padding));
+          // Keep tooltip within viewport (except for center position)
+          if (currentStep.position !== 'center') {
+            const padding = 20;
+            top = Math.max(padding, Math.min(top, window.innerHeight - tooltipRect.height - padding));
+            left = Math.max(padding, Math.min(left, window.innerWidth - tooltipRect.width - padding));
+          }
 
           setTooltipPosition({ top, left });
         }
@@ -161,6 +168,9 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
     // For service-categories step, use retry logic
     if (currentStep.id === 'service-categories') {
       setTimeout(() => tryUpdatePosition(), 500);
+    } else if (currentStep.id === 'deploy-services-content' || currentStep.id === 'deploy-servers-content') {
+      // For deploy content steps, use retry logic with more attempts
+      setTimeout(() => tryUpdatePosition(), 800);
     } else {
       updateTargetPosition();
     }
@@ -198,6 +208,53 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
     // For deploy page and other deploy steps, use retry logic
     if (currentStep.id === 'deploy-page' || currentStep.id === 'deploy-tabs' || currentStep.id === 'deploy-status') {
       setTimeout(() => tryUpdatePosition(), 500);
+    }
+
+    // Auto-click on Services tab and show content
+    if (currentStep.id === 'deploy-services-content') {
+      const servicesTab = document.querySelector('[data-tour="deploy-tabs"] button') as HTMLElement;
+      const allTabs = document.querySelectorAll('[data-tour="deploy-tabs"] button');
+      let targetTab: HTMLElement | null = null;
+      
+      allTabs.forEach(tab => {
+        if (tab.textContent?.includes('Services')) {
+          targetTab = tab as HTMLElement;
+        }
+      });
+      
+      if (targetTab) {
+        setTimeout(() => {
+          targetTab!.click();
+          // Wait for content to load, then use retry logic to find the element
+          setTimeout(() => tryUpdatePosition(), 800);
+        }, 1000);
+      } else {
+        // If tab not found, use retry logic
+        setTimeout(() => tryUpdatePosition(), 800);
+      }
+    }
+
+    // Auto-click on Servers/Data Centers tab and show content
+    if (currentStep.id === 'deploy-servers-content') {
+      const allTabs = document.querySelectorAll('[data-tour="deploy-tabs"] button');
+      let targetTab: HTMLElement | null = null;
+      
+      allTabs.forEach(tab => {
+        if (tab.textContent?.includes('Servers') || tab.textContent?.includes('Data Centers')) {
+          targetTab = tab as HTMLElement;
+        }
+      });
+      
+      if (targetTab) {
+        setTimeout(() => {
+          targetTab!.click();
+          // Wait for content to load, then use retry logic to find the element
+          setTimeout(() => tryUpdatePosition(), 800);
+        }, 1000);
+      } else {
+        // If tab not found, use retry logic
+        setTimeout(() => tryUpdatePosition(), 800);
+      }
     }
 
     window.addEventListener('resize', updateTargetPosition);
@@ -250,6 +307,15 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
         }, 500);
         return;
       }
+    }
+    
+    // Handle tour completion - navigate to home page
+    if (currentStep?.id === 'tour-complete') {
+      // Navigate to home page after a short delay
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
+      return;
     }
     
     onNext();

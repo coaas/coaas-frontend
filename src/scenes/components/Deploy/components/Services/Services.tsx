@@ -155,7 +155,7 @@ export const Services = () => {
   }
 
   return (
-    <Dotted>
+    <Dotted data-tour="services-content">
       <Modal open={isDeployModal} onOpenChange={toggleIsDeployModal}>
         <ModalContent>
           <ModalHeader>

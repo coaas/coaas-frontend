@@ -15,9 +15,9 @@ export const getProjectMockData = async (): Promise<{
 
   return {
     id: 'demo-project-id',
-    slug: 'web-app',
-    name: 'Web Application',
-    description: 'A demo web application project showcasing modern web development with microservices architecture, containerized deployment, and scalable infrastructure.',
+    slug: 'core-api',
+    name: 'Core API',
+    description: 'Core API microservices',
     members_count: 5,
     created_at: new Date('2024-01-15').toISOString(),
   };

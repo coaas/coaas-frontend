@@ -7,7 +7,7 @@ export interface TourStep {
   title: string;
   description: string;
   target: string; // CSS selector
-  position?: 'top' | 'bottom' | 'left' | 'right';
+  position?: 'top' | 'bottom' | 'left' | 'right' | 'center';
   disableBeacon?: boolean;
   navigateTo?: string; // Route to navigate to before showing this step
   waitForNavigation?: boolean; // Wait for navigation to complete
@@ -31,6 +31,9 @@ const SPEED_DURATIONS = {
 export const useTour = (steps: TourStep[]) => {
   const navigate = useNavigate();
   const autoTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const tourCompletedRef = useRef<boolean>(false);
+  const tourStoppedRef = useRef<boolean>(false);
+  
   const [tourState, setTourState] = useState<TourState>({
     isActive: false,
     currentStep: 0,
@@ -39,6 +42,26 @@ export const useTour = (steps: TourStep[]) => {
     isPaused: false,
     speed: 'normal',
   });
+
+  // Handle tour completion navigation
+  useEffect(() => {
+    if (tourCompletedRef.current) {
+      tourCompletedRef.current = false;
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
+    }
+  }, [navigate, tourState.isActive]);
+
+  // Handle tour stop navigation
+  useEffect(() => {
+    if (tourStoppedRef.current) {
+      tourStoppedRef.current = false;
+      setTimeout(() => {
+        navigate('/');
+      }, 100);
+    }
+  }, [navigate, tourState.isActive]);
 
   const startTour = useCallback((autoMode = false) => {
     // Enable tour mode when starting tour
@@ -71,11 +94,9 @@ export const useTour = (steps: TourStep[]) => {
       isPaused: false,
     }));
     
-    // Navigate back to home page with a small delay to ensure state is updated
-    setTimeout(() => {
-      navigate('/');
-    }, 100);
-  }, [navigate]);
+    // Mark tour as stopped for navigation in useEffect
+    tourStoppedRef.current = true;
+  }, []);
 
   const toggleAutoMode = useCallback(() => {
     setTourState(prev => ({
@@ -140,6 +161,9 @@ export const useTour = (steps: TourStep[]) => {
           clearTimeout(autoTimerRef.current);
           autoTimerRef.current = null;
         }
+        
+        // Mark tour as completed for navigation in useEffect
+        tourCompletedRef.current = true;
         
         return {
           ...prev,

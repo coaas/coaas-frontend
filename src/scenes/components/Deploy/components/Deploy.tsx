@@ -119,7 +119,7 @@ export const Deploy = ({
   }[selectedDeploy];
 
   return (
-    <div className="flex flex-col mt-8 px-20 items-center pb-16">
+    <div className="flex flex-col mt-8 px-20 items-center pb-16" data-tour="deploy-content">
       <div className="self-start flex justify-between items-center w-full">
         <h1 className="text-2xl font-bold">
           {type === 'deploy' ? 'Deploy' : 'Instances'}

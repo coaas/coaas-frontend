@@ -5,9 +5,9 @@ const tourSteps: TourStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to CloudOps Platform! 🚀',
-    description: 'Let us take you on a quick tour to show you the main features and capabilities of our cloud infrastructure management platform.',
+    description: 'Thanks for joining CloudOps! Let us take you on a quick tour to show you the main features and capabilities of our cloud infrastructure management platform. This tour will help you get started and explore everything you can do here.',
     target: 'h1',
-    position: 'bottom',
+    position: 'center',
   },
   {
     id: 'sidebar',
@@ -65,7 +65,7 @@ const tourSteps: TourStep[] = [
     title: 'Create New Namespace',
     description: 'Click this button to create a new namespace. Let\'s try creating one as part of our tour! The form will open automatically.',
     target: '[data-tour="create-namespace-btn"]',
-    position: 'left',
+    position: 'bottom',
   },
   {
     id: 'namespace-form',
@@ -84,13 +84,6 @@ const tourSteps: TourStep[] = [
     waitForNavigation: true,
   },
   {
-    id: 'projects-nav',
-    title: 'Projects Section',
-    description: 'Projects are containers for your services and applications. Each project groups related services together for better organization and management.',
-    target: 'nav a[href*="/projects"]',
-    position: 'right',
-  },
-  {
     id: 'projects-page',
     title: 'Your Projects Overview 📁',
     description: 'Here you can see all projects in this namespace. Each project can contain multiple services, configurations, and deployments. Let\'s explore the existing projects!',
@@ -98,13 +91,6 @@ const tourSteps: TourStep[] = [
     position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects',
     waitForNavigation: true,
-  },
-  {
-    id: 'create-project-button',
-    title: 'Create New Project',
-    description: 'Click this button to create a new project. Projects help you organize related services and manage them as a unit.',
-    target: '[data-tour="create-project-btn"]',
-    position: 'left',
   },
   {
     id: 'enter-project',
@@ -128,6 +114,15 @@ const tourSteps: TourStep[] = [
     description: 'Services are the core building blocks - they represent your containerized applications, databases, and microservices.',
     target: 'nav a[href*="/services"]',
     position: 'right',
+  },
+  {
+    id: 'services-list',
+    title: 'Your Services Overview 📋',
+    description: 'Here you can see all services in your project. Each service card shows the name, description, and type. In tour mode, we\'ve created some sample services to demonstrate the platform.',
+    target: '[data-tour="namespace-grid"]',
+    position: 'top',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services',
+    waitForNavigation: true,
   },
   {
     id: 'create-service-button',
@@ -183,8 +178,8 @@ const tourSteps: TourStep[] = [
     id: 'deploy-page',
     title: 'Deploy Dashboard 🚀',
     description: 'Welcome to the Deploy dashboard! Here you can view and manage your deployed infrastructure: clusters, services, and deployment configurations.',
-    target: 'h1',
-    position: 'bottom',
+    target: '[data-tour="deploy-content"]',
+    position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/deploy',
     waitForNavigation: true,
   },
@@ -203,11 +198,27 @@ const tourSteps: TourStep[] = [
     position: 'bottom',
   },
   {
+    id: 'deploy-services-content',
+    title: 'Deployed Services Management 📦',
+    description: 'Now let\'s switch to the Services tab to see deployed services and deploy new ones. Here you can manage individual service deployments and monitor their status.',
+    target: '[data-tour="services-content"]',
+    position: 'top',
+  },
+  {
+    id: 'deploy-servers-content',
+    title: 'Infrastructure Servers 🖥️',
+    description: 'Now let\'s switch to the Servers view to see detailed information about the physical servers and data centers where your services are running.',
+    target: '[data-tour="servers-content"]',
+    position: 'top',
+  },
+  {
     id: 'tour-complete',
     title: 'Tour Complete! 🎉',
-    description: 'Congratulations! You\'ve completed the CloudOps platform tour. You now know how to navigate namespaces, manage projects, create services, and monitor deployments. Start building your cloud infrastructure!',
+    description: 'Congratulations! You\'ve completed the CloudOps platform tour. You now know how to navigate namespaces, manage projects, create services, and monitor deployments. You\'ll now be taken back to the home page to start building your cloud infrastructure!',
     target: 'main',
     position: 'bottom',
+    navigateTo: '/',
+    waitForNavigation: true,
   },
 ];
 

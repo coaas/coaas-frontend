@@ -20,6 +20,10 @@ export default async function registerUser(
   if (response.ok) {
     const data = await response.json<ResponseAuthRegisterJson>();
     setAccess(data.access_token);
+    
+    // Set flag to indicate successful registration for auto-tour
+    localStorage.setItem('just_registered', 'true');
+    
     window.location.href = RouteMap.home;
   }
   // If response.ok = false, ky will automatically throw an error

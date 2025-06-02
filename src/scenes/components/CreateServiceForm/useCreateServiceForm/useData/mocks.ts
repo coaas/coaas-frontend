@@ -23,8 +23,8 @@ const postgresqlTemplateData: GetDraftTemplateResponse = {
     stars: 98,
   },
   managed: {
-    url: 'postgres:15-alpine',
-    versions: ['15', '14', '13', '12'],
+    url: 'postgres',
+    versions: ['latest', '17', '16', '15', '14'],
   },
   custom: {
     dockerfiles: {
@@ -34,17 +34,12 @@ const postgresqlTemplateData: GetDraftTemplateResponse = {
     },
   },
   settings: {
-    secrets: [
-      { name: 'POSTGRES_PASSWORD' },
-      { name: 'POSTGRES_USER' },
-    ],
-    configs: [
-      { path: '/etc/postgresql/postgresql.conf' },
-    ],
+    secrets: [],
+    configs: [],
     env_vars: [
-      { key: 'POSTGRES_DB', value: 'myapp_db' },
+      { key: 'POSTGRES_DB', value: 'postgres' },
       { key: 'POSTGRES_USER', value: 'postgres' },
-      { key: 'POSTGRES_PASSWORD', value: 'secure_password' },
+      { key: 'POSTGRES_PASSWORD', value: 'postgres' },
     ],
     ports: ['5432'],
     health_check: {
@@ -81,7 +76,7 @@ const postgresqlTemplateData: GetDraftTemplateResponse = {
   },
   dependencies: [],
   mapper: {
-    type: 1,
+    type: 0,
     custom: {
       blocks: [
         {
