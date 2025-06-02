@@ -45,7 +45,9 @@ export const Sidebar = () => {
               <p>{title}</p>
             </button>
           ))}
-          <Avatar userName={'User profile'} />
+          <div data-tour="user-profile">
+            <Avatar userName={'User profile'} />
+          </div>
         </div>
         <div className="border-t-[1.5px] border-stroke-gray dark:border-stroke-gray border-gray-200 flex items-center justify-center p-2">
           <button className="text-blue-light dark:text-blue-light text-blue" onClick={toggle}>
