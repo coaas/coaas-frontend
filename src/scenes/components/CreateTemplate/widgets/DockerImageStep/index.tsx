@@ -66,13 +66,13 @@ export const DockerImageStep = () => {
   const handleTabChange = ({ value }: { value: TemplateType }) => {
     if (value === TemplateType.custom) {
       open({ 
-        title: 'Функциональность недоступна', 
-        description: 'Custom шаблоны пока не поддерживаются',
+        title: 'Functionality unavailable', 
+        description: 'Custom templates are not yet supported',
         variant: 'error' 
       });
       return;
     }
-    // Если это Managed тип, то устанавливаем значение
+    // If this is Managed type, then set the value
     setValue('type', value);
   };
 
@@ -145,11 +145,9 @@ export const DockerImageStep = () => {
             label="Development"
             hint={
               <p className="max-w-[300px] text-sm">
-                Представленные здесь команды описаны минимально (с акцентом на
-                читаемость как есть) и включают в себя установку Docker, работу
-                с реестрами и репозиториями, контейнерами, образами, сетью,
-                Docker Swarm. Ниже представлен перевод шпаргалки в её состоянии
-                на 2 сентября с дополнениями из комментариев ниже.
+                The commands presented here are described minimally (with an emphasis on 
+                readability as is) and include Docker installation, working with registries 
+                and repositories, containers, images, network, Docker Swarm.
               </p>
             }
           >

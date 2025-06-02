@@ -23,8 +23,8 @@ export function RegisterForm() {
         form.password_confirm.value,
       );
     } catch (error) {
-      // Ошибки уже обрабатываются автоматически через apiErrorHandler
-      // Просто игнорируем ошибку здесь
+      // Errors are already handled automatically through apiErrorHandler
+      // Just ignore the error here
     }
   }
 

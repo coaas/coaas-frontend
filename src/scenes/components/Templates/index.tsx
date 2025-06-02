@@ -122,7 +122,7 @@ export const Templates = () => {
     <section className=" w-full m-auto max-w-[1268px] py-[70px]">
       <Banner
         title="Template Hub"
-        subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
+        subtitle={`Service provides scalable computing resources\nfor hosting and testing your projects.`}
       />
       <div className="flex  gap-4 mt-5">
         <Search

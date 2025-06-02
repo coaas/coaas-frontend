@@ -34,7 +34,7 @@ export const InputSection: FC<InputSectionProps> = ({
             })}
           />
           {
-            // TODO: реализовать целевые заглушки и иконки
+            // TODO: implement proper placeholders and icons
             isSlugCheckingPending ? (
               <div>Checking...</div>
             ) : (

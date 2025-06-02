@@ -6,11 +6,11 @@ export const Default: FC = () => (
   <div className="p-10">
     <Banner
       title="Compute Cloud"
-      subtitle="Сервис предоставляет масштабируемые вычислительные мощности
-для размещения и тестирования ваших проектов."
+      subtitle="Service provides scalable computing resources
+for hosting and testing your projects."
       buttons={[
-        { title: 'Создать ресурс' },
-        { title: 'Документация', variant: 'secondary' },
+        { title: 'Create Resource' },
+        { title: 'Documentation', variant: 'secondary' },
       ]}
     />
   </div>

@@ -27,7 +27,7 @@ export const ErrorToast: FC<ErrorToastProps> = ({
     }
   }, [autoHide, duration, onClose]);
 
-  // Подставляем kwargs в текст ошибки
+  // Substitute kwargs into error text
   const formatErrorMessage = (message: string, kwargs?: Record<string, any>) => {
     if (!kwargs) return message;
     

@@ -6,7 +6,7 @@ import { setGlobalErrorHandler } from '../../api/errorHandler';
 export const ErrorToastManager: FC = () => {
   const { errors, removeError, showError } = useErrorContext();
 
-  // Устанавливаем глобальный обработчик ошибок API
+  // Set global API error handler
   useEffect(() => {
     setGlobalErrorHandler(showError);
   }, [showError]);

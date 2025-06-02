@@ -2,7 +2,7 @@ import { SimpleInfoCardProps } from './components';
 
 export enum CardType {
   /**
-   * Простая карточка с информацией (как для проекта, неймспейса и тд)
+   * Simple card with information (for project, namespace, etc.)
    */
   simpleInfo = 'simpleInfo',
 }

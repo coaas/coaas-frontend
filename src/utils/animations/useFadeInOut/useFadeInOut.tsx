@@ -10,12 +10,12 @@ export const useFadeInOut = <TData extends WithId>({
   const [animatedData, setAnimatedData] = useState(data);
   const containerRef = useRef(null);
 
-  // На каждое обновление передаваемой data запускаем fade-in-out эффект:
-  // Зануляем opacity
-  // Оновляем данные для отображения
-  // Возвращаем исходный opacity
+  // On each update of passed data, run fade-in-out effect:
+  // Reset opacity to zero
+  // Update data for display
+  // Return original opacity
   useEffect(() => {
-    // запускаем переходы только при смене данных
+    // run transitions only when data changes
     if (animatedData.id === data.id || !containerRef.current) {
       return;
     }

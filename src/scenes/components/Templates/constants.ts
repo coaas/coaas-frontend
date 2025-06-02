@@ -8,4 +8,4 @@ export const templateStatus = [
   { key: 1, value: 'VERIFIED' },
   { key: 2, value: 'COMMUNITY' },
 ];
-// чтоб не путаться : будет изменено когда бек поменяет нейминг.
+// to avoid confusion: will be changed when backend changes naming.

@@ -61,17 +61,17 @@ export const MapperStep = () => {
   };
 
   const handleTabChange = (tab: { id: string; label: string; value: MapperType }) => {
-    // Проверяем, если это Custom (id: '1') или External (id: '2')
+    // Check if this is Custom (id: '1') or External (id: '2')
     if (tab.id === '1' || tab.id === '2') {
       const tabName = tab.id === '1' ? 'Custom' : 'External';
       open({ 
-        title: 'Функциональность недоступна', 
-        description: `${tabName} mapper пока не поддерживается`,
+        title: 'Functionality unavailable', 
+        description: `${tabName} mapper is not yet supported`,
         variant: 'error' 
       });
       return;
     }
-    // Если это Managed тип, то устанавливаем значение
+    // If this is Managed type, then set the value
     setValue('mapper.type', tab.value);
   };
 

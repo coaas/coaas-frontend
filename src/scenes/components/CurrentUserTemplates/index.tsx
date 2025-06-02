@@ -63,10 +63,10 @@ export const CurrentUserTemplates = () => {
     <section className=" w-full m-auto max-w-[1268px] py-[70px] px-3.5">
       <Banner
         title="Template Hub"
-        subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
+        subtitle={`Service provides scalable computing resources\nfor hosting and testing your projects.`}
       />
-      <Section name={'шаблоны'} entries={templates} isDraft={false} />
-      <Section name={'черновики'} entries={drafts} isDraft={true} />
+      <Section name={'Templates'} entries={templates} isDraft={false} />
+      <Section name={'Drafts'} entries={drafts} isDraft={true} />
     </section>
   );
 };

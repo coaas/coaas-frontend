@@ -13,7 +13,7 @@ export const useApiError = (): UseApiErrorReturn => {
     if (isApiError(error)) {
       showError(error);
     } else {
-      // Если ошибка не в ожидаемом формате, показываем общее сообщение
+      // If error is not in expected format, show general message
       showError({
         code: 'UNKNOWN_ERROR',
         default: 'An unknown error occurred. Please try again later.',
@@ -27,7 +27,7 @@ export const useApiError = (): UseApiErrorReturn => {
   };
 };
 
-// Проверяем, является ли ошибка API ошибкой в ожидаемом формате
+// Check if error is an API error in expected format
 function isApiError(error: unknown): error is ApiError {
   return (
     typeof error === 'object' &&

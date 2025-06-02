@@ -1,8 +1,8 @@
 import { AfterResponseHook } from 'ky';
 import { ApiError } from '@components/ErrorToast';
 
-// Глобальная функция для показа ошибок
-// Будет установлена из компонента приложения
+// Global function for showing errors
+// Will be set from the application component
 let globalErrorHandler: ((error: ApiError) => void) | null = null;
 
 export const setGlobalErrorHandler = (handler: (error: ApiError) => void) => {
@@ -14,18 +14,18 @@ export const apiErrorHandler: AfterResponseHook = async (
   _options,
   response,
 ) => {
-  // Обрабатываем только ошибки (статус >= 400)
+  // Handle only errors (status >= 400)
   if (response.status >= 400 && globalErrorHandler) {
     try {
       const errorData = await response.clone().json();
       
-      // Проверяем, что ошибка в ожидаемом формате
+      // Check that the error is in the expected format
       if (isApiError(errorData)) {
         globalErrorHandler(errorData);
       }
     } catch (error) {
-      // Если не удалось распарсить JSON или ошибка не в ожидаемом формате
-      // показываем общую ошибку
+      // If failed to parse JSON or error is not in expected format
+      // show general error
       globalErrorHandler({
         code: `HTTP_${response.status}`,
         default: `Server error: ${response.status} ${response.statusText}`,
@@ -34,7 +34,7 @@ export const apiErrorHandler: AfterResponseHook = async (
   }
 };
 
-// Проверяем, является ли объект API ошибкой в ожидаемом формате
+// Check if the object is an API error in the expected format
 function isApiError(error: unknown): error is ApiError {
   return (
     typeof error === 'object' &&

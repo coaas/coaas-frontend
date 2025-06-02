@@ -11,7 +11,7 @@ export const Default: FC = () => {
         initValue={value}
         onChange={setValue}
         config={{
-          placeholder: 'Можно передать кастомный placeholder',
+          placeholder: 'You can pass a custom placeholder',
           delay: 1000 * 1.5,
         }}
       />

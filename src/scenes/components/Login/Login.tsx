@@ -25,8 +25,8 @@ export const Login = () => {
         return true;
       }
     } catch (error) {
-      // Ошибки уже обрабатываются автоматически через apiErrorHandler
-      // Просто не возвращаем success
+      // Errors are already handled automatically through apiErrorHandler
+      // Just don't return success
     }
   };
 

@@ -32,12 +32,12 @@ export const CreateServiceModal: FC<CreateServiceModalProps> = ({
   const [namespace, setNamespace] = useState<string>('');
   const [project, setProject] = useState<string>('');
 
-  // Получаем список namespace
+  // Get list of namespaces
   const namespaces = useMemo(
     () => (data ? Object.entries(data.namespaces) : []),
     [data],
   );
-  // Получаем список проектов для выбранного namespace
+  // Get list of projects for selected namespace
   const projects = useMemo(() => {
     if (!namespace || !data) return [];
     const ns = data.namespaces[namespace];

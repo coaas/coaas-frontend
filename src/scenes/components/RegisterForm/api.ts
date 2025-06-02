@@ -22,6 +22,6 @@ export default async function registerUser(
     setAccess(data.access_token);
     window.location.href = RouteMap.home;
   }
-  // Если response.ok = false, то ky автоматически бросит ошибку
-  // которая будет обработана через apiErrorHandler
+  // If response.ok = false, ky will automatically throw an error
+  // which will be handled through apiErrorHandler
 }

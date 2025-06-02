@@ -169,7 +169,7 @@ export const routes = [
 
 const router = createBrowserRouter(routes, {
   future: {
-    // включаем функционал будущих версий для более легкого обновления в дальнейшем
+    // enable future version functionality for easier updates later
     // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
     v7_fetcherPersist: true,
     v7_normalizeFormMethod: true,
@@ -183,7 +183,7 @@ export const Scenes: FC = () => (
   <ErrorProvider>
     <RouterProvider
       router={router}
-      // включаем функционал будущих версий для более легкого обновления в дальнейшем
+      // enable future version functionality for easier updates later
       // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
       future={{
         v7_startTransition: true,

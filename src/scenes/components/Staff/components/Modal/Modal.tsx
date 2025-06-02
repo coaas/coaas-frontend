@@ -46,7 +46,7 @@ export const Modal: FC<ModalProps> = ({ isOpen, onIsOpenChange, refetch }) => {
           <div className="flex flex-col gap-5">
             <div>
               <Label label="Nickname or email" id={INPUT_IDS.searchValue} />
-              {/* если пользователь выбран, показываем его, а иначе - поисковую стркоу */}
+              {/* if user is selected, show them, otherwise show search input */}
               {pickedInvite ? (
                 <div className="h-[42px] rounded-sm py-1.5 flex items-center px-2 outline-none bg-stroke-gray-dark justify-between">
                   <div>
