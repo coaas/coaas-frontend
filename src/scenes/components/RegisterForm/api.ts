@@ -9,26 +9,19 @@ export default async function registerUser(
   password: string,
   password_confirm: string,
 ) {
-  try {
-    const response = await authApi.post('auth/register', {
-      json: {
-        username,
-        password,
-        password_confirm,
-      },
-    });
+  const response = await authApi.post('auth/register', {
+    json: {
+      username,
+      password,
+      password_confirm,
+    },
+  });
 
-    if (response.ok) {
-      const data = await response.json<ResponseAuthRegisterJson>();
-      setAccess(data.access_token);
-      window.location.href = RouteMap.home;
-    } else {
-      throw new Error(
-        'Failed to obtain access token' +
-          `\nServer response status code: ${response.status}`,
-      );
-    }
-  } catch (error) {
-    console.error(error);
+  if (response.ok) {
+    const data = await response.json<ResponseAuthRegisterJson>();
+    setAccess(data.access_token);
+    window.location.href = RouteMap.home;
   }
+  // Если response.ok = false, то ky автоматически бросит ошибку
+  // которая будет обработана через apiErrorHandler
 }

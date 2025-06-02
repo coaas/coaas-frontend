@@ -79,6 +79,7 @@ export default defineConfig(({ mode }) => {
         '@components': path.resolve(__dirname, './src/components'),
         '@utils': path.resolve(__dirname, './src/utils'),
         '@globalTypes': path.resolve(__dirname, './src/globalTypes'),
+        '@global': path.resolve(__dirname, './src/global'),
         '@scenes': path.resolve(__dirname, './src/scenes'),
       },
     },

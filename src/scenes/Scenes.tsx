@@ -37,6 +37,8 @@ import { Template } from './components/Template';
 import { Logout } from './components/Logout';
 import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 import { Deploy } from '@scenes/components/Deploy';
+import { ErrorProvider } from '@global/ErrorContext';
+import { ErrorToastManager } from '@components/ErrorToastManager';
 
 export const routes = [
   {
@@ -171,12 +173,15 @@ const router = createBrowserRouter(routes, {
 });
 
 export const Scenes: FC = () => (
-  <RouterProvider
-    router={router}
-    // включаем функционал будущих версий для более легкого обновления в дальнейшем
-    // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
-    future={{
-      v7_startTransition: true,
-    }}
-  />
+  <ErrorProvider>
+    <RouterProvider
+      router={router}
+      // включаем функционал будущих версий для более легкого обновления в дальнейшем
+      // https://reactrouter.com/en/6.28.0/upgrading/future#future-flags
+      future={{
+        v7_startTransition: true,
+      }}
+    />
+    <ErrorToastManager />
+  </ErrorProvider>
 );

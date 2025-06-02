@@ -2,10 +2,14 @@ import ky from 'ky';
 import { QueryClient } from '@tanstack/react-query';
 import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
 import { afterResponse } from '@api/authBeforeRequest/afterResponse.ts';
+import { apiErrorHandler } from './errorHandler';
 
 export const authApi = ky.create({
   prefixUrl: import.meta.env.VITE_API_AUTH_PREFIX,
   credentials: 'include',
+  hooks: {
+    afterResponse: [apiErrorHandler],
+  },
 });
 
 export const IS_PREFIX = import.meta.env.VITE_PROXY_BACK === 'True';
@@ -16,7 +20,7 @@ export const api = ky.create({
   credentials: 'include',
   hooks: {
     beforeRequest: [beforeRequest],
-    afterResponse: [afterResponse],
+    afterResponse: [afterResponse, apiErrorHandler],
   },
   headers: {
     'Content-Type': 'application/json',

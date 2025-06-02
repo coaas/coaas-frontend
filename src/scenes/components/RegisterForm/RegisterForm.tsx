@@ -16,11 +16,16 @@ export function RegisterForm() {
 
     const form = event.target as typeof event.target & SubmitFormElements;
 
-    await registerUser(
-      form.username.value,
-      form.password.value,
-      form.password_confirm.value,
-    );
+    try {
+      await registerUser(
+        form.username.value,
+        form.password.value,
+        form.password_confirm.value,
+      );
+    } catch (error) {
+      // Ошибки уже обрабатываются автоматически через apiErrorHandler
+      // Просто игнорируем ошибку здесь
+    }
   }
 
   return (

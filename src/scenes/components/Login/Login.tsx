@@ -3,32 +3,32 @@ import { setAccess } from '@api/setAccess/setAccess';
 import { useNavigate, Link } from 'react-router-dom';
 import { RouteMap } from '@components/Layout/components/types';
 
-const submit = async (data: FormData) => {
-  const login_path = 'auth/login';
-  try {
-    const resp = await authApi.post(login_path, {
-      json: {
-        identification_method: 'username',
-        auth_mode: 'password',
-
-        login: data.get('username'),
-        secret: data.get('password'),
-      },
-    });
-    if (resp.ok) {
-      const data = await resp.json<{
-        access_token: string;
-      }>();
-      setAccess(data.access_token);
-      return true;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 export const Login = () => {
   const navigator = useNavigate();
+
+  const submit = async (data: FormData) => {
+    const login_path = 'auth/login';
+    try {
+      const resp = await authApi.post(login_path, {
+        json: {
+          identification_method: 'username',
+          auth_mode: 'password',
+          login: data.get('username'),
+          secret: data.get('password'),
+        },
+      });
+      if (resp.ok) {
+        const data = await resp.json<{
+          access_token: string;
+        }>();
+        setAccess(data.access_token);
+        return true;
+      }
+    } catch (error) {
+      // Ошибки уже обрабатываются автоматически через apiErrorHandler
+      // Просто не возвращаем success
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center dark:bg-background">
