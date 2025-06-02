@@ -12,14 +12,14 @@ export const Sidebar = () => {
   return (
     <aside
       className={cn(
-        'flex flex-col border-r-[1.5px] p-[8px_8px_2px] border-r-stroke-gray w-full overflow-x-hidden transition-[max-width] max-w-[280px]',
+        'flex flex-col border-r-[1.5px] p-[8px_8px_2px] border-r-stroke-gray dark:border-r-stroke-gray border-r-gray-200 w-full overflow-x-hidden transition-[max-width] max-w-[280px] bg-background dark:bg-background bg-white',
         { 'max-w-[62px]': !state },
       )}
     >
       <div className="flex gap-[10px] items-center p-[6px]">
         <Icon type={IconType.cube} props={{ size: 32, color: '#507EF5' }} />
         <h1
-          className={cn('text-[25px] text-white transition-all', {
+          className={cn('text-[25px] text-white dark:text-white text-gray-900 transition-all', {
             'translate-x-[150%] opacity-0': !state,
           })}
         >
@@ -36,7 +36,7 @@ export const Sidebar = () => {
           {actionButtons.map(({ iconType, title }) => (
             <button
               key={title}
-              className="p-3 flex gap-4 items-center text-[15px] rounded-[10px] hover:text-white text-blue-light hover:bg-area transition-colors"
+              className="p-3 flex gap-4 items-center text-[15px] rounded-[10px] hover:text-white dark:hover:text-white hover:text-gray-900 text-blue-light dark:text-blue-light text-blue hover:bg-area dark:hover:bg-area hover:bg-gray-100 transition-colors"
             >
               <Icon
                 props={{ size: 20, color: 'currentColor' }}
@@ -47,8 +47,8 @@ export const Sidebar = () => {
           ))}
           <Avatar userName={'User profile'} />
         </div>
-        <div className="border-t-[1.5px] border-stroke-gray flex items-center justify-center p-2 ">
-          <button className="text-blue-light" onClick={toggle}>
+        <div className="border-t-[1.5px] border-stroke-gray dark:border-stroke-gray border-gray-200 flex items-center justify-center p-2">
+          <button className="text-blue-light dark:text-blue-light text-blue" onClick={toggle}>
             <Icon
               props={{
                 size: 20,

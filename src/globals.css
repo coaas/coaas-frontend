@@ -1,11 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Темная тема (по умолчанию) */
 body {
-  @apply bg-background text-white font-inter;
+  @apply bg-background text-white font-inter transition-colors duration-300;
 }
 
-/* Scrollbar styles */
+/* Светлая тема */
+.light body {
+  @apply bg-white text-gray-900;
+}
+
+/* Обеспечиваем правильные цвета для всех дочерних элементов */
+.light {
+  color: theme('colors.gray.900');
+}
+
+.light * {
+  border-color: theme('colors.gray.200');
+}
+
+/* CSS переменные для цветов */
+:root {
+  --color-background: #2D2C33;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B6B6B6;
+  --color-area: #343D5C;
+  --color-area-dark: #323548;
+  --color-stroke: #4E608D;
+  --color-stroke-gray: #43424A;
+}
+
+.light {
+  --color-background: #FFFFFF;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+  --color-area: #FFFFFF;
+  --color-area-dark: #F8F9FA;
+  --color-stroke: #E5E7EB;
+  --color-stroke-gray: #E5E7EB;
+}
+
+/* Scrollbar styles для темной темы */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -26,8 +63,106 @@ body {
   background: #6B7280;
 }
 
+/* Scrollbar styles для светлой темы */
+.light ::-webkit-scrollbar-track {
+  background: rgba(229, 231, 235, 0.2);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
 /* For Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #323548 #2D2C33;
+}
+
+.light * {
+  scrollbar-color: #D1D5DB #F3F4F6;
+}
+
+/* Принудительно устанавливаем цвета для светлой темы */
+.light .text-white {
+  color: theme('colors.gray.900') !important;
+}
+
+.light .text-gray {
+  color: theme('colors.gray.700') !important;
+}
+
+.light .bg-background {
+  background-color: theme('colors.white') !important;
+}
+
+.light .bg-area {
+  background-color: theme('colors.gray.50') !important;
+}
+
+.light .bg-area-dark {
+  background-color: theme('colors.gray.100') !important;
+}
+
+.light .border-stroke-gray {
+  border-color: theme('colors.gray.200') !important;
+}
+
+.light .border-stroke-gray-dark {
+  border-color: theme('colors.gray.300') !important;
+}
+
+/* Дополнительные правила для компонентов */
+.light .text-blue-light {
+  color: theme('colors.blue.DEFAULT') !important;
+}
+
+.light input,
+.light textarea,
+.light select {
+  background-color: theme('colors.white') !important;
+  color: theme('colors.gray.900') !important;
+  border-color: theme('colors.gray.300') !important;
+}
+
+.light input:focus,
+.light textarea:focus,
+.light select:focus {
+  color: theme('colors.gray.900') !important;
+}
+
+.light button {
+  transition: all 0.2s ease;
+}
+
+.light svg {
+  color: inherit;
+}
+
+/* Специальные правила для навигации */
+.light nav a,
+.light nav button,
+.light nav span {
+  color: theme('colors.gray.700') !important;
+}
+
+.light nav a:hover,
+.light nav button:hover {
+  color: theme('colors.blue.DEFAULT') !important;
+}
+
+/* Правила для карточек и контейнеров */
+.light .bg-stroke-gray {
+  background-color: theme('colors.gray.200') !important;
+}
+
+.light .hover\:bg-area:hover {
+  background-color: theme('colors.gray.50') !important;
+}
+
+.light .hover\:bg-area-dark:hover {
+  background-color: theme('colors.gray.100') !important;
 }

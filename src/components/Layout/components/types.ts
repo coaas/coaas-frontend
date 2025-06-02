@@ -28,4 +28,5 @@ export const enum RouteMap {
   git = '/namespaces/:namespace_slug/projects/:project_slug/git',
   registries = '/namespaces/:namespace_slug/projects/:project_slug/registries',
   team = '/namespaces/:namespace_slug/projects/:project_slug/team',
+  themeDemo = '/theme-demo',
 }

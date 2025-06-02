@@ -11,7 +11,7 @@ export const Layout = () => {
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-background dark:bg-background bg-white transition-colors duration-300">
       {!isLogin && <Sidebar />}
       <div className="w-full max-w-[1560px] flex flex-col justify-start">
         {!isLogin && <Header />}

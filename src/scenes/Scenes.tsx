@@ -41,6 +41,7 @@ import { CurrentUserTemplates } from './components/CurrentUserTemplates';
 import { Deploy } from '@scenes/components/Deploy';
 import { ErrorProvider } from '@global/ErrorContext';
 import { ErrorToastManager } from '@components/ErrorToastManager';
+import { ThemeDemo } from '@components/ThemeDemo';
 
 export const routes = [
   {
@@ -69,6 +70,10 @@ export const routes = [
       {
         path: RouteMap.home,
         element: <Home />,
+      },
+      {
+        path: RouteMap.themeDemo,
+        element: <ThemeDemo />,
       },
       {
         path: RouteMap.namespaces,

@@ -10,7 +10,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, Props>(
     return (
       <textarea
         className={cn(
-          'text-sm text-white placeholder:text-gray border bg-transparent rounded-md border-stroke-gray-dark p-2 outline-none resize-none',
+          'text-sm text-white dark:text-white text-gray-900 placeholder:text-gray dark:placeholder:text-gray placeholder:text-gray-500 border bg-transparent dark:bg-transparent bg-white rounded-md border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 p-2 outline-none resize-none transition-colors',
           { 'border-error': error },
           className,
         )}

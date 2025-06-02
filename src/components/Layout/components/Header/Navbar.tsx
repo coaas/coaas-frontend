@@ -49,11 +49,11 @@ export const Navbar = () => {
       render={({ close }) => (
         <div
           onClick={close}
-          className="py-[14px] z-10 px-[22px] border-stroke-gray-dark border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background max-h-[400px] overflow-auto"
+          className="py-[14px] z-10 px-[22px] border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background dark:bg-background bg-white max-h-[400px] overflow-auto shadow-xl"
         >
           {namespacesSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
-              <h3 className="text-gray text-xl font-inter leading-5 font-semibold">
+              <h3 className="text-gray dark:text-gray text-gray-700 text-xl font-inter leading-5 font-semibold">
                 Namespaces
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
@@ -69,10 +69,10 @@ export const Navbar = () => {
                     <li key={namespaceSlug}>
                       <Link
                         className={cn(
-                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5',
+                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
                           {
-                            'bg-area': currentNamespaceSlug === namespaceSlug,
-                            'hover:bg-area':
+                            'bg-area dark:bg-area bg-gray-100': currentNamespaceSlug === namespaceSlug,
+                            'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
                               currentNamespaceSlug !== namespaceSlug,
                           },
                         )}
@@ -89,11 +89,11 @@ export const Navbar = () => {
             </div>
           )}
           {currentNamespace && currentNamespaceProjectsSlugs.length > 0 && (
-            <span className="w-[1px] bg-stroke-gray-dark" />
+            <span className="w-[1px] bg-stroke-gray-dark dark:bg-stroke-gray-dark bg-gray-300" />
           )}
           {currentNamespace && currentNamespaceProjectsSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
-              <h3 className="text-gray text-xl font-inter leading-5 font-semibold">
+              <h3 className="text-gray dark:text-gray text-gray-700 text-xl font-inter leading-5 font-semibold">
                 Projects
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
@@ -104,10 +104,10 @@ export const Navbar = () => {
                     <li key={projectSlug}>
                       <Link
                         className={cn(
-                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5',
+                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
                           {
-                            'bg-area': currentProjectSlug === projectSlug,
-                            'hover:bg-area':
+                            'bg-area dark:bg-area bg-gray-100': currentProjectSlug === projectSlug,
+                            'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
                               currentNamespaceSlug !== projectSlug,
                           },
                         )}
@@ -127,17 +127,17 @@ export const Navbar = () => {
         </div>
       )}
     >
-      <nav className="flex items-center gap-2 px-2 py-[6px] rounded-lg select-none max-w-fit cursor-pointer hover:bg-area-dark">
+      <nav className="flex items-center gap-2 px-2 py-[6px] rounded-lg select-none max-w-fit cursor-pointer hover:bg-area-dark dark:hover:bg-area-dark hover:bg-gray-100 transition-colors">
         <div className="flex items-center gap-1">
           <Icon type={IconType.cube} props={{ size: 20 }} />
-          <span className="text-[15px] leading-5 font-medium text-gray">
+          <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
             {user?.username}
           </span>
         </div>
         {currentNamespace && (
           <div className="flex items-center gap-1">
             <Icon type={IconType.support} props={{ size: 20 }} />
-            <span className="text-[15px] leading-5 font-medium text-gray">
+            <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
               {currentNamespaceSlug}
             </span>
             {objectKeys(currentNamespace.projects).length > 0 && (
@@ -147,7 +147,7 @@ export const Navbar = () => {
         )}
         {currentProject && (
           <div className="flex items-center gap-1">
-            <span className="text-[15px] leading-5 font-medium text-gray">
+            <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
               {currentProjectSlug}
             </span>
           </div>
