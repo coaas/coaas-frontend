@@ -172,6 +172,43 @@ const tourSteps: TourStep[] = [
     navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services/new/postgresql-template',
     waitForNavigation: true,
   },
+  {
+    id: 'deploy-nav',
+    title: 'Deploy - Infrastructure Management',
+    description: 'Now let\'s explore the Deploy section! This is where you manage and monitor your deployed services, clusters, and infrastructure.',
+    target: 'nav a[href*="/deploy"]',
+    position: 'right',
+  },
+  {
+    id: 'deploy-page',
+    title: 'Deploy Dashboard 🚀',
+    description: 'Welcome to the Deploy dashboard! Here you can view and manage your deployed infrastructure: clusters, services, and deployment configurations.',
+    target: 'h1',
+    position: 'bottom',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/deploy',
+    waitForNavigation: true,
+  },
+  {
+    id: 'deploy-tabs',
+    title: 'Deployment Views',
+    description: 'Switch between different views: Clusters (infrastructure overview), Services (application deployments), and Data Centers (server details).',
+    target: '[data-tour="deploy-tabs"]',
+    position: 'top',
+  },
+  {
+    id: 'deploy-status',
+    title: 'Infrastructure Status',
+    description: 'Monitor the health and status of your infrastructure. See cluster information, deployment tags (regions/servers, docker/kubernetes), and overall system status.',
+    target: '[data-tour="deploy-status"]',
+    position: 'bottom',
+  },
+  {
+    id: 'tour-complete',
+    title: 'Tour Complete! 🎉',
+    description: 'Congratulations! You\'ve completed the CloudOps platform tour. You now know how to navigate namespaces, manage projects, create services, and monitor deployments. Start building your cloud infrastructure!',
+    target: 'main',
+    position: 'bottom',
+  },
 ];
 
 interface TourContextType {

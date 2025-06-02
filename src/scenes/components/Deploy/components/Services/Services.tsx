@@ -32,8 +32,11 @@ import {
   deployService,
   listServicesOptions,
   ListServicesResponse,
+  createDeployedServicesOptions,
+  createListServicesOptions,
 } from '../../api/getServiceManager.ts';
 import { WrapperModal } from '../../components/Common/WrapperModal.tsx';
+import { useTourMode } from '@utils/tourMode.ts';
 
 const Service = ({
   description,
@@ -78,8 +81,13 @@ export const Services = () => {
   const [isDeployModal, toggleIsDeployModal] = useReducer(d => !d, false);
   const [deployValue, setDeployValue] = useState('');
   const [showNotDeployed, setShowNotDeployed] = useState(false);
+  const { isActive: isTourMode } = useTourMode();
+
   const [deployResult, listResult] = useQueries({
-    queries: [deployedServicesOptions, listServicesOptions],
+    queries: [
+      isTourMode ? createDeployedServicesOptions(isTourMode) : deployedServicesOptions,
+      isTourMode ? createListServicesOptions(isTourMode) : listServicesOptions,
+    ],
   });
 
   const deployedServices = deployResult.data as DeployedServicesResponse;

@@ -31,6 +31,22 @@ export const tourMode = {
 export const mockData = {
   namespaces: [
     {
+      id: 'tour-demo',
+      slug: 'tour-demo-workspace',
+      name: 'Tour Demo Workspace',
+      description: 'Demo workspace created during the platform tour',
+      created_at: '2024-01-22T10:00:00Z',
+      updated_at: '2024-01-25T14:30:00Z',
+      projects_count: 3,
+      members_count: 1,
+      status: 'active' as const,
+      owner: {
+        id: '1',
+        username: 'tour_user',
+        email: 'tour@example.com'
+      }
+    },
+    {
       id: '1',
       slug: 'production-env',
       name: 'Production Environment',
@@ -258,6 +274,131 @@ export const mockData = {
   getDemoServices: () => {
     return mockData.services.filter(s => s.namespace_slug === 'tour-demo-workspace' && s.project_slug === 'web-app');
   }
+};
+
+// Mock data for deploy during tour
+export const mockDeployData = {
+  type: 0, // ClusterType.REGIONS
+  orchestration_engine: 1, // OrchEngine.KUBERNETES
+  clusters: [
+    {
+      id: "cluster-ru-central1",
+      name: "Russia (Moscow)",
+      region: "ru-central1",
+      availability_zone: "ru-central1-a",
+      provider: "Yandex Cloud",
+      country: "Russia",
+      city: "Moscow",
+      address: "Yandex DC Moscow",
+      servers: [
+        {
+          id: "srv-tour-1",
+          region: "ru-central1",
+          availability_zone: "ru-central1-a",
+          provider: "Yandex Cloud",
+          type: 1,
+          name: "web-app-node-1",
+          ip: "10.128.0.10",
+          cpu: 4,
+          ram: 8192,
+          disk: 100,
+          status: 1, // Running
+          instances: [
+            {
+              id: "inst-tour-1",
+              service: {
+                id: "svc-frontend",
+                name: "Frontend App",
+                description: "React frontend application"
+              },
+              status: 1,
+              cpu: 1,
+              ram: 2048,
+              memory: 2048
+            },
+            {
+              id: "inst-tour-2",
+              service: {
+                id: "svc-backend",
+                name: "Backend API",
+                description: "Node.js REST API server"
+              },
+              status: 1,
+              cpu: 2,
+              ram: 4096,
+              memory: 4096
+            }
+          ]
+        },
+        {
+          id: "srv-tour-2",
+          region: "ru-central1",
+          availability_zone: "ru-central1-b",
+          provider: "Yandex Cloud",
+          type: 1,
+          name: "database-node-1",
+          ip: "10.128.0.11",
+          cpu: 2,
+          ram: 4096,
+          disk: 100,
+          status: 1, // Running
+          instances: [
+            {
+              id: "inst-tour-3",
+              service: {
+                id: "svc-database",
+                name: "PostgreSQL",
+                description: "PostgreSQL database"
+              },
+              status: 1,
+              cpu: 2,
+              ram: 4096,
+              memory: 4096
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "cluster-eu-west1",
+      name: "Europe (Frankfurt)",
+      region: "eu-west1",
+      availability_zone: "eu-west1-a",
+      provider: "Google Cloud",
+      country: "Germany",
+      city: "Frankfurt",
+      address: "Google Cloud Frankfurt",
+      servers: [
+        {
+          id: "srv-tour-3",
+          region: "eu-west1",
+          availability_zone: "eu-west1-a",
+          provider: "Google Cloud",
+          type: 1,
+          name: "backup-node-1",
+          ip: "10.132.0.10",
+          cpu: 2,
+          ram: 4096,
+          disk: 50,
+          status: 1, // Running
+          instances: [
+            {
+              id: "inst-tour-4",
+              service: {
+                id: "svc-backup",
+                name: "Backup Service",
+                description: "Data backup and replication"
+              },
+              status: 1,
+              cpu: 1,
+              ram: 2048,
+              memory: 2048
+            }
+          ]
+        }
+      ]
+    }
+  ]
 };
 
 // Hook for using tour mode in components

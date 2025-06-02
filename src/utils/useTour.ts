@@ -70,7 +70,12 @@ export const useTour = (steps: TourStep[]) => {
       isAutoMode: false,
       isPaused: false,
     }));
-  }, []);
+    
+    // Navigate back to home page with a small delay to ensure state is updated
+    setTimeout(() => {
+      navigate('/');
+    }, 100);
+  }, [navigate]);
 
   const toggleAutoMode = useCallback(() => {
     setTourState(prev => ({

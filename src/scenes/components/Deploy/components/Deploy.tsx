@@ -6,11 +6,12 @@ import { Clusters } from './Clusters/Clusters';
 import { Services } from './Services/Services.tsx';
 import { Achieve } from './Common/Achieve.tsx';
 import { ClusterType, OrchEngine, Status } from '../model/cluster.types.ts';
-import { clusterOptions } from '../api/getDeploy.ts';
+import { clusterOptions, createClusterOptions } from '../api/getDeploy.ts';
 import { DeployButton } from './Common/DeployButton.tsx';
 import { Deployed } from './Deployed/Deployed.tsx';
 import { DeployRules } from './Deployed/DeployRules.tsx';
 import { NotDeployed } from '@scenes/components/Deploy/components/NotDeployed.tsx';
+import { useTourMode } from '@utils/tourMode.ts';
 
 const getDeployTypes = (type: ClusterType) =>
   [
@@ -26,15 +27,17 @@ export const Deploy = ({
 }) => {
   const [showNotDeployed, setShowNotDeployed] = useState(false);
   const [shouldDisableQuery, setShouldDisableQuery] = useState(false);
+  const { isActive: isTourMode } = useTourMode();
 
   const resetDeployState = () => {
     setShowNotDeployed(false);
     setShouldDisableQuery(false);
   };
 
-  const clusterApi = useQuery({
+  // Regular API query
+  const regularClusterApi = useQuery({
     ...clusterOptions,
-    enabled: !shouldDisableQuery,
+    enabled: !shouldDisableQuery && !isTourMode,
     retry: (failureCount, error) => {
       // Не делать retry если получили 404 с PROJECT_DEPLOY_NOT_FOUND
       const errorResponse = error as Error & { response?: Response };
@@ -45,6 +48,12 @@ export const Deploy = ({
       return failureCount < 3;
     },
   });
+
+  // Tour mode query
+  const tourClusterApi = useQuery(createClusterOptions(true));
+
+  // Use appropriate query based on tour mode
+  const clusterApi = isTourMode ? tourClusterApi : regularClusterApi;
 
   useEffect(() => {
     if (clusterApi.isError) {
@@ -116,7 +125,7 @@ export const Deploy = ({
           {type === 'deploy' ? 'Deploy' : 'Instances'}
         </h1>
         {type === 'deploy' && (
-          <div className="flex gap-2">
+          <div className="flex gap-2" data-tour="deploy-status">
             {deployTags.map(tag => (
               <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
                 {tag}
@@ -126,7 +135,7 @@ export const Deploy = ({
         )}
       </div>
       {type === 'deploy' && (
-        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm">
+        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm" data-tour="deploy-tabs">
           <div className="flex">
             {deployTypes.map(name => (
               <DeployButton

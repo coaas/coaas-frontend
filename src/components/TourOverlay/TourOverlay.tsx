@@ -185,6 +185,21 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       }
     }
 
+    // Auto-click on Deploy navigation
+    if (currentStep.id === 'deploy-nav') {
+      const deployNav = document.querySelector('nav a[href*="/deploy"]');
+      if (deployNav) {
+        setTimeout(() => {
+          (deployNav as HTMLElement).click();
+        }, 1000);
+      }
+    }
+
+    // For deploy page and other deploy steps, use retry logic
+    if (currentStep.id === 'deploy-page' || currentStep.id === 'deploy-tabs' || currentStep.id === 'deploy-status') {
+      setTimeout(() => tryUpdatePosition(), 500);
+    }
+
     window.addEventListener('resize', updateTargetPosition);
     window.addEventListener('scroll', updateTargetPosition);
 
@@ -288,7 +303,7 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
   return (
     <div className="fixed inset-0 z-50 pointer-events-none">
       {/* Dark overlay with hole for highlighted element */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-auto" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
         <defs>
           <mask id="tour-mask">
             <rect width="100%" height="100%" fill="white" />
