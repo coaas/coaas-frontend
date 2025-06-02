@@ -10,6 +10,7 @@ import {
   GraphIcon,
   HintIcon,
   LayersIcon,
+  MenuIcon,
   MetricsIcon,
   SearchIcon,
   SecretIcon,
@@ -94,6 +95,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.star: {
       return <StarIcon {...props.props} />;
+    }
+
+    case IconType.menu: {
+      return <MenuIcon {...props.props} />;
     }
 
     default: {

@@ -13,3 +13,4 @@ export * from './SettingsIcon';
 export * from './SupportIcon';
 export * from './TemplateIcon';
 export * from './StarIcon';
+export { MenuIcon } from './MenuIcon';
