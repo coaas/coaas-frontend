@@ -1,39 +1,48 @@
-import { faker } from '@faker-js/faker';
+import { CategoryData } from '@globalTypes/categories';
 
-import { ServiceData } from '@globalTypes/services';
+import { ResponseData } from './types';
 
-import { RequestParams, ResponseData } from './types';
+const categories: CategoryData[] = [
+  {
+    key: 'web-applications',
+    value: 'Web Applications',
+  },
+  {
+    key: 'databases',
+    value: 'Databases',
+  },
+  {
+    key: 'messaging',
+    value: 'Messaging & Queues',
+  },
+  {
+    key: 'monitoring',
+    value: 'Monitoring & Analytics',
+  },
+  {
+    key: 'storage',
+    value: 'Storage & File Systems',
+  },
+  {
+    key: 'networking',
+    value: 'Networking & Proxy',
+  },
+];
 
-const services: ServiceData[] = (() =>
-  Array.from({ length: 50 }).map(() => ({
-    name: faker.string.alpha(15),
-    description: faker.word.words(20),
-    created_at: faker.date.anytime().toISOString(),
-    id: faker.string.uuid(),
-  })))();
-
-export const getMockData = async ({
-  after,
-  limit = 20,
-}: RequestParams): Promise<ResponseData> => {
-  const dbServices = [...services];
-
+export const getMockData = async (): Promise<ResponseData> => {
   // симулируем задержку
-  await new Promise(resolve => setTimeout(resolve, 1500));
-
-  const firstNewItemIdx =
-    (dbServices.findIndex(({ id }) => id === after?.id) || -1) + 1;
-  const hasMore = firstNewItemIdx + limit < dbServices.length;
-  const newPageServices = dbServices.slice(
-    firstNewItemIdx,
-    firstNewItemIdx + limit,
-  );
+  await new Promise(resolve => setTimeout(resolve, 300));
 
   return {
-    services: newPageServices,
-    hasMore,
-    nextKey: {
-      id: newPageServices[newPageServices.length - 1].id,
-    },
+    categories,
+  };
+};
+
+export const getMockCategories = async (): Promise<ResponseData> => {
+  // симулируем задержку
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  return {
+    categories,
   };
 };

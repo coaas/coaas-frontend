@@ -31,10 +31,14 @@ const LayoutContent = () => {
         currentStep={tour.currentStepData}
         currentStepIndex={tour.currentStep}
         totalSteps={tour.steps.length}
+        isAutoMode={tour.isAutoMode}
+        isPaused={tour.isPaused}
         onNext={tour.nextStep}
         onPrev={tour.prevStep}
         onStop={tour.stopTour}
         onGoToStep={tour.goToStep}
+        onToggleAutoMode={tour.toggleAutoMode}
+        onTogglePause={tour.togglePause}
         isLastStep={tour.isLastStep}
         isFirstStep={tour.isFirstStep}
         allSteps={tour.steps}

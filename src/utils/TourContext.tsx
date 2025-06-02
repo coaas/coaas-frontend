@@ -47,16 +47,9 @@ const tourSteps: TourStep[] = [
     waitForNavigation: true,
   },
   {
-    id: 'namespaces-content',
-    title: 'Your Workspaces Overview',
-    description: 'Here you can see all your namespaces (workspaces). Each namespace contains projects, team members, and resources. Notice we\'re showing sample data for this tour.',
-    target: 'main',
-    position: 'top',
-  },
-  {
     id: 'search-and-filters',
-    title: 'Search & Filters',
-    description: 'Use the search bar to quickly find namespaces. You can also switch between table and card views to customize how you view your workspaces.',
+    title: 'Your Workspaces & Search',
+    description: 'Here you can see all your namespaces (workspaces). Each namespace contains projects, team members, and resources. Use the search bar to quickly find namespaces and switch between table and card views.',
     target: '[data-tour="search-section"]',
     position: 'bottom',
   },
@@ -70,7 +63,7 @@ const tourSteps: TourStep[] = [
   {
     id: 'create-namespace-button',
     title: 'Create New Namespace',
-    description: 'Click this button to create a new namespace. Let\'s try creating one as part of our tour!',
+    description: 'Click this button to create a new namespace. Let\'s try creating one as part of our tour! The form will open automatically.',
     target: '[data-tour="create-namespace-btn"]',
     position: 'left',
   },
@@ -80,13 +73,6 @@ const tourSteps: TourStep[] = [
     description: 'Fill in the namespace details: name, description, and configuration. In tour mode, this will create a sample namespace to demonstrate the process.',
     target: '[data-tour="namespace-modal"]',
     position: 'left',
-  },
-  {
-    id: 'enter-namespace',
-    title: 'Enter Your New Workspace 🎯',
-    description: 'Great! Now let\'s enter the newly created namespace to explore its structure and capabilities. Click on the "Tour Demo Workspace" to continue.',
-    target: '[data-tour="demo-namespace-card"]',
-    position: 'top',
   },
   {
     id: 'namespace-navigation',
@@ -106,19 +92,12 @@ const tourSteps: TourStep[] = [
   },
   {
     id: 'projects-page',
-    title: 'Exploring Projects',
-    description: 'Let\'s visit the Projects page to see how you can organize your applications and services within a namespace.',
-    target: 'nav a[href*="/projects"]',
-    position: 'right',
+    title: 'Your Projects Overview 📁',
+    description: 'Here you can see all projects in this namespace. Each project can contain multiple services, configurations, and deployments. Let\'s explore the existing projects!',
+    target: '[data-tour="projects-grid"]',
+    position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects',
     waitForNavigation: true,
-  },
-  {
-    id: 'projects-overview',
-    title: 'Your Projects Overview 📁',
-    description: 'Here you can see all projects in this namespace. Each project can contain multiple services, configurations, and deployments.',
-    target: 'main',
-    position: 'top',
   },
   {
     id: 'create-project-button',
@@ -152,48 +131,34 @@ const tourSteps: TourStep[] = [
   },
   {
     id: 'services-page',
-    title: 'Managing Services',
-    description: 'Let\'s explore the Services page where you can see all running applications and create new ones.',
-    target: 'nav a[href*="/services"]',
-    position: 'right',
+    title: 'Services Management 🚀',
+    description: 'This is your services management center! Here you can deploy, monitor, and manage all your containerized applications and microservices.',
+    target: 'main',
+    position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services',
     waitForNavigation: true,
   },
   {
-    id: 'services-overview',
-    title: 'Your Running Services 🚀',
-    description: 'Here are your deployed services! You can see their status, manage configurations, and monitor performance. Notice the sample services we\'ve prepared.',
-    target: 'main',
-    position: 'top',
-  },
-  {
     id: 'create-service-button',
     title: 'Create New Service',
-    description: 'Ready to deploy something new? Click this button to create and deploy a new service from our template library.',
+    description: 'Click this button to create a new service. Services can be web applications, databases, APIs, or any containerized workload.',
     target: '[data-tour="create-service-btn"]',
     position: 'left',
   },
   {
-    id: 'deploy-nav',
-    title: 'Deploy & Monitor 📊',
-    description: 'The Deploy section is where you can monitor deployments, view logs, and manage the lifecycle of your services.',
-    target: 'nav a[href*="/deploy"]',
-    position: 'right',
-  },
-  {
-    id: 'deploy-page',
-    title: 'Deployment Dashboard',
-    description: 'This is your deployment control center! Here you can monitor all deployments, view real-time status, and manage the complete application lifecycle.',
-    target: 'main',
+    id: 'service-categories',
+    title: 'Service Template Categories',
+    description: 'Choose from various service categories: Web Applications, Databases, Messaging systems, and more. Each category contains pre-configured templates.',
+    target: '[data-tour="service-categories"]',
     position: 'top',
-    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/deploy',
+    navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services/create',
     waitForNavigation: true,
   },
   {
-    id: 'tour-complete',
-    title: 'Tour Complete! 🎉',
-    description: 'Congratulations! You\'ve completed the full platform tour. You now understand the complete workflow: Namespaces → Projects → Services → Deploy. Ready to build something amazing?',
-    target: 'main',
+    id: 'database-templates',
+    title: 'Database Templates',
+    description: 'Here are the available database templates: PostgreSQL, MySQL, MongoDB, Redis, and more. Each template comes with optimized configurations and best practices.',
+    target: '[data-tour="database-templates"]',
     position: 'top',
   },
 ];
@@ -202,11 +167,15 @@ interface TourContextType {
   isActive: boolean;
   currentStep: number;
   steps: TourStep[];
-  startTour: () => void;
+  isAutoMode: boolean;
+  isPaused: boolean;
+  startTour: (autoMode?: boolean) => void;
   stopTour: () => void;
   nextStep: () => void;
   prevStep: () => void;
   goToStep: (stepIndex: number) => void;
+  toggleAutoMode: () => void;
+  togglePause: () => void;
   currentStepData: TourStep | undefined;
   isLastStep: boolean;
   isFirstStep: boolean;

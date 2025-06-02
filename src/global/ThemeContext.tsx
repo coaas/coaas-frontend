@@ -19,12 +19,13 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     // Проверяем сохраненную тему в localStorage
     const savedTheme = localStorage.getItem('theme') as Theme;
     
-    // Если нет сохраненной темы, проверяем системные настройки
-    if (!savedTheme) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Если есть сохраненная тема, используем её
+    if (savedTheme) {
+      return savedTheme;
     }
     
-    return savedTheme;
+    // По умолчанию устанавливаем темную тему для новых пользователей
+    return 'dark';
   });
 
   useEffect(() => {

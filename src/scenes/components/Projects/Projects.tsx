@@ -23,6 +23,7 @@ export const Projects: FC = () => {
     <SceneWithTabs
       onChangeSearch={onChangeSearch}
       searchPlaceholder="Search projects"
+      tourGridId="projects-grid"
       Button={
         <NavLink to="create" data-tour="create-project-btn">
           <Button>Create project</Button>

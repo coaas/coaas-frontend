@@ -34,13 +34,23 @@ export const Home: FC = () => {
           Automate deployment, monitoring, and scaling of your applications with our ready-made templates and tools
         </p>
 
-        {/* CTA Button */}
-        <div className="mb-16">
+        {/* CTA Buttons */}
+        <div className="mb-16 flex gap-4">
           <button 
-            onClick={tour.startTour}
+            onClick={() => tour.startTour(false)}
             className="px-8 py-4 border border-gray-600 hover:border-gray-500 rounded-lg font-semibold text-gray-300 hover:text-white hover:bg-gray-800/50 transition-all duration-300 backdrop-blur-sm"
           >
             Start Platform Tour
+          </button>
+          
+          <button 
+            onClick={() => tour.startTour(true)}
+            className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 rounded-lg font-semibold text-white transition-all duration-300 backdrop-blur-sm flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            Auto Tour
           </button>
         </div>
 

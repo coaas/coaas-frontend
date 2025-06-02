@@ -6,4 +6,5 @@ export type SceneWithTabsProps = {
   Button: ReactNode;
   onChangeSearch: (search: string) => void;
   searchPlaceholder?: string;
+  tourGridId?: string;
 };

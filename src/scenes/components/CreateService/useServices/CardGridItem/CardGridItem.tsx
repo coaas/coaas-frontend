@@ -28,7 +28,10 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     className: innerClassName,
     children,
   }) => (
-    <div className={cn(className, innerClassName)}>
+    <div 
+      className={cn(className, innerClassName)}
+      {...(id === 'databases' && { 'data-tour': 'database-category' })}
+    >
       <NavLink to={id} state={{ title }}>
         {children}
       </NavLink>

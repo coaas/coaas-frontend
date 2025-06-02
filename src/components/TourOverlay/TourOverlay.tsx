@@ -6,10 +6,14 @@ interface TourOverlayProps {
   currentStep: TourStep | undefined;
   currentStepIndex: number;
   totalSteps: number;
+  isAutoMode: boolean;
+  isPaused: boolean;
   onNext: () => void;
   onPrev: () => void;
   onStop: () => void;
   onGoToStep: (stepIndex: number) => void;
+  onToggleAutoMode: () => void;
+  onTogglePause: () => void;
   isLastStep: boolean;
   isFirstStep: boolean;
   allSteps: TourStep[];
@@ -27,10 +31,14 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
   currentStep,
   currentStepIndex,
   totalSteps,
+  isAutoMode,
+  isPaused,
   onNext,
   onPrev,
   onStop,
   onGoToStep,
+  onToggleAutoMode,
+  onTogglePause,
   isLastStep,
   isFirstStep,
   allSteps,
@@ -101,17 +109,11 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       if (createButton) {
         setTimeout(() => {
           (createButton as HTMLButtonElement).click();
+          // Automatically move to next step after form opens
+          setTimeout(() => {
+            onNext();
+          }, 800);
         }, 500);
-      }
-    }
-
-    // Auto-click for entering demo namespace
-    if (currentStep.id === 'enter-namespace') {
-      const demoCard = document.querySelector('[data-tour="demo-namespace-card"]');
-      if (demoCard) {
-        setTimeout(() => {
-          (demoCard as HTMLElement).click();
-        }, 1000);
       }
     }
 
@@ -121,6 +123,30 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       if (demoProjectCard) {
         setTimeout(() => {
           (demoProjectCard as HTMLElement).click();
+        }, 1000);
+      }
+    }
+
+    // Auto-click for create service button
+    if (currentStep.id === 'create-service-button') {
+      const createServiceButton = document.querySelector('[data-tour="create-service-btn"] button');
+      if (createServiceButton) {
+        setTimeout(() => {
+          (createServiceButton as HTMLButtonElement).click();
+          // Automatically move to next step after service creation page opens
+          setTimeout(() => {
+            onNext();
+          }, 800);
+        }, 500);
+      }
+    }
+
+    // Auto-click on Databases category
+    if (currentStep.id === 'service-categories') {
+      const databaseCategory = document.querySelector('[data-tour="service-categories"] [data-category="databases"]');
+      if (databaseCategory) {
+        setTimeout(() => {
+          (databaseCategory as HTMLElement).click();
         }, 1000);
       }
     }
@@ -226,7 +252,7 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
   return (
     <div className="fixed inset-0 z-50 pointer-events-none">
       {/* Dark overlay with hole for highlighted element */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-auto" style={{ background: 'rgba(0, 0, 0, 0.5)' }}>
+      <svg className="absolute inset-0 w-full h-full pointer-events-auto" style={{ background: 'rgba(0, 0, 0, 0.15)' }}>
         <defs>
           <mask id="tour-mask">
             <rect width="100%" height="100%" fill="white" />
@@ -240,18 +266,45 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
             />
           </mask>
         </defs>
-        <rect width="100%" height="100%" fill="rgba(0, 0, 0, 0.5)" mask="url(#tour-mask)" />
+        <rect width="100%" height="100%" fill="rgba(0, 0, 0, 0.2)" mask="url(#tour-mask)" />
       </svg>
+
+      {/* Bright glowing background for target element */}
+      <div
+        className="absolute rounded-xl pointer-events-none"
+        style={{
+          top: targetRect.top - 16,
+          left: targetRect.left - 16,
+          width: targetRect.width + 32,
+          height: targetRect.height + 32,
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(168, 85, 247, 0.05) 100%)',
+          boxShadow: '0 0 30px rgba(168, 85, 247, 0.3), 0 0 60px rgba(255, 255, 255, 0.1)',
+        }}
+      />
+
+      {/* Additional bright overlay directly on element */}
+      <div
+        className="absolute rounded-lg pointer-events-none"
+        style={{
+          top: targetRect.top - 4,
+          left: targetRect.left - 4,
+          width: targetRect.width + 8,
+          height: targetRect.height + 8,
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'brightness(1.1) contrast(1.05)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+        }}
+      />
 
       {/* Highlight border around target element */}
       <div
-        className="absolute border-2 border-purple-400 rounded-xl animate-pulse"
+        className="absolute border-2 border-purple-300 rounded-xl animate-pulse pointer-events-none"
         style={{
           top: targetRect.top - 8,
           left: targetRect.left - 8,
           width: targetRect.width + 16,
           height: targetRect.height + 16,
-          boxShadow: '0 0 30px rgba(168, 85, 247, 0.6), 0 0 60px rgba(168, 85, 247, 0.3)',
+          boxShadow: '0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3)',
         }}
       />
 
@@ -272,15 +325,65 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
             <span className="text-sm font-medium text-purple-300">
               Step {currentStepIndex + 1} of {totalSteps}
             </span>
+            {isAutoMode && (
+              <div className="flex items-center gap-1 ml-2">
+                <svg className="w-3 h-3 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <span className="text-xs text-green-400">AUTO</span>
+                {isPaused && <span className="text-xs text-yellow-400">PAUSED</span>}
+              </div>
+            )}
           </div>
-          <button
-            onClick={onStop}
-            className="text-gray-400 hover:text-purple-300 transition-colors p-1 rounded-lg hover:bg-slate-700"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-1">
+            {/* Auto Mode Toggle */}
+            <button
+              onClick={onToggleAutoMode}
+              title={isAutoMode ? "Disable auto mode" : "Enable auto mode"}
+              className={`p-1 rounded-lg transition-colors ${
+                isAutoMode 
+                  ? 'text-green-400 hover:text-green-300 bg-green-400/10' 
+                  : 'text-gray-400 hover:text-purple-300 hover:bg-slate-700'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+              </svg>
+            </button>
+            
+            {/* Pause/Resume Button - only show in auto mode */}
+            {isAutoMode && (
+              <button
+                onClick={onTogglePause}
+                title={isPaused ? "Resume auto tour" : "Pause auto tour"}
+                className={`p-1 rounded-lg transition-colors ${
+                  isPaused
+                    ? 'text-yellow-400 hover:text-yellow-300 bg-yellow-400/10'
+                    : 'text-green-400 hover:text-green-300 bg-green-400/10'
+                }`}
+              >
+                {isPaused ? (
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                  </svg>
+                )}
+              </button>
+            )}
+            
+            {/* Close Button */}
+            <button
+              onClick={onStop}
+              className="text-gray-400 hover:text-purple-300 transition-colors p-1 rounded-lg hover:bg-slate-700"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Content */}

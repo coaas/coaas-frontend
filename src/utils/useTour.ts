@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tourMode } from './tourMode';
 
@@ -17,17 +17,22 @@ export interface TourState {
   isActive: boolean;
   currentStep: number;
   steps: TourStep[];
+  isAutoMode: boolean;
+  isPaused: boolean;
 }
 
 export const useTour = (steps: TourStep[]) => {
   const navigate = useNavigate();
+  const autoTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [tourState, setTourState] = useState<TourState>({
     isActive: false,
     currentStep: 0,
     steps,
+    isAutoMode: false,
+    isPaused: false,
   });
 
-  const startTour = useCallback(() => {
+  const startTour = useCallback((autoMode = false) => {
     // Enable tour mode when starting tour
     tourMode.enable();
     
@@ -35,6 +40,8 @@ export const useTour = (steps: TourStep[]) => {
       ...prev,
       isActive: true,
       currentStep: 0,
+      isAutoMode: autoMode,
+      isPaused: false,
     }));
   }, []);
 
@@ -42,14 +49,43 @@ export const useTour = (steps: TourStep[]) => {
     // Disable tour mode when stopping tour
     tourMode.disable();
     
+    // Clear auto timer
+    if (autoTimerRef.current) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+    
     setTourState(prev => ({
       ...prev,
       isActive: false,
       currentStep: 0,
+      isAutoMode: false,
+      isPaused: false,
+    }));
+  }, []);
+
+  const toggleAutoMode = useCallback(() => {
+    setTourState(prev => ({
+      ...prev,
+      isAutoMode: !prev.isAutoMode,
+      isPaused: false,
+    }));
+  }, []);
+
+  const togglePause = useCallback(() => {
+    setTourState(prev => ({
+      ...prev,
+      isPaused: !prev.isPaused,
     }));
   }, []);
 
   const nextStep = useCallback(() => {
+    // Clear auto timer when manually advancing
+    if (autoTimerRef.current) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+
     setTourState(prev => {
       if (prev.currentStep < prev.steps.length - 1) {
         const nextStepIndex = prev.currentStep + 1;
@@ -79,16 +115,31 @@ export const useTour = (steps: TourStep[]) => {
       } else {
         // Tour finished - disable tour mode
         tourMode.disable();
+        
+        // Clear auto timer
+        if (autoTimerRef.current) {
+          clearTimeout(autoTimerRef.current);
+          autoTimerRef.current = null;
+        }
+        
         return {
           ...prev,
           isActive: false,
           currentStep: 0,
+          isAutoMode: false,
+          isPaused: false,
         };
       }
     });
   }, [navigate]);
 
   const prevStep = useCallback(() => {
+    // Clear auto timer when manually going back
+    if (autoTimerRef.current) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+
     setTourState(prev => {
       if (prev.currentStep > 0) {
         const prevStepIndex = prev.currentStep - 1;
@@ -120,6 +171,12 @@ export const useTour = (steps: TourStep[]) => {
   }, [navigate]);
 
   const goToStep = useCallback((stepIndex: number) => {
+    // Clear auto timer when jumping to step
+    if (autoTimerRef.current) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+
     const targetStep = steps[stepIndex];
     if (targetStep?.navigateTo) {
       navigate(targetStep.navigateTo);
@@ -131,6 +188,22 @@ export const useTour = (steps: TourStep[]) => {
     }));
   }, [navigate, steps]);
 
+  // Auto-advance timer
+  useEffect(() => {
+    if (tourState.isActive && tourState.isAutoMode && !tourState.isPaused) {
+      autoTimerRef.current = setTimeout(() => {
+        nextStep();
+      }, 4000); // 4 seconds auto-advance
+    }
+
+    return () => {
+      if (autoTimerRef.current) {
+        clearTimeout(autoTimerRef.current);
+        autoTimerRef.current = null;
+      }
+    };
+  }, [tourState.isActive, tourState.isAutoMode, tourState.isPaused, tourState.currentStep, nextStep]);
+
   return {
     ...tourState,
     startTour,
@@ -138,6 +211,8 @@ export const useTour = (steps: TourStep[]) => {
     nextStep,
     prevStep,
     goToStep,
+    toggleAutoMode,
+    togglePause,
     currentStepData: tourState.steps[tourState.currentStep],
     isLastStep: tourState.currentStep === tourState.steps.length - 1,
     isFirstStep: tourState.currentStep === 0,
