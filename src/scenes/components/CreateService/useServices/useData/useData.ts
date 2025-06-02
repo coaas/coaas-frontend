@@ -14,7 +14,7 @@ const getCategories = ({ namespace_slug, project_slug }: SlugsParams) => {
   if (tourMode.isActive()) {
     return getMockData();
   }
-  
+
   return IS_MOCK_ACTIVE
     ? getMockData()
     : api

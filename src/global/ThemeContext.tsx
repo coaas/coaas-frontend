@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -18,12 +24,12 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(() => {
     // Проверяем сохраненную тему в localStorage
     const savedTheme = localStorage.getItem('theme') as Theme;
-    
+
     // Если есть сохраненная тема, используем её
     if (savedTheme) {
       return savedTheme;
     }
-    
+
     // По умолчанию устанавливаем темную тему для новых пользователей
     return 'dark';
   });
@@ -31,7 +37,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useEffect(() => {
     // Сохраняем тему в localStorage
     localStorage.setItem('theme', theme);
-    
+
     // Добавляем/убираем класс dark в документе
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -41,7 +47,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   return (
@@ -57,4 +63,4 @@ export const useTheme = () => {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-}; 
+};

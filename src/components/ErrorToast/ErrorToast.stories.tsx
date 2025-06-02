@@ -10,28 +10,29 @@ const TestComponent: FC = () => {
     showError({
       code: 'PROJECT_DEPLOY_NOT_FOUND',
       default: 'Project {name} deploy not found.',
-      kwargs: { name: 'alpha' }
+      kwargs: { name: 'alpha' },
     });
   };
 
   const showServerError = () => {
     showError({
       code: 'HTTP_500',
-      default: 'Server error: 500 Internal Server Error'
+      default: 'Server error: 500 Internal Server Error',
     });
   };
 
   const showGenericError = () => {
     showError({
       code: 'VALIDATION_ERROR',
-      default: 'Invalid input data provided.'
+      default: 'Invalid input data provided.',
     });
   };
 
   const showLongError = () => {
     showError({
       code: 'VERY_LONG_ERROR_CODE_THAT_SHOULD_WRAP_PROPERLY_IN_THE_TOAST_NOTIFICATION',
-      default: 'This is a very long error message that should wrap properly within the toast notification boundaries and not overflow outside the card container.'
+      default:
+        'This is a very long error message that should wrap properly within the toast notification boundaries and not overflow outside the card container.',
     });
   };
 
@@ -39,7 +40,7 @@ const TestComponent: FC = () => {
     <div style={{ padding: '20px' }}>
       <h1 style={{ color: 'white', marginBottom: '20px' }}>Error Toast Demo</h1>
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        <button 
+        <button
           onClick={showTestError}
           style={{
             padding: '10px 15px',
@@ -47,13 +48,13 @@ const TestComponent: FC = () => {
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Show Project Error (with kwargs)
         </button>
-        
-        <button 
+
+        <button
           onClick={showServerError}
           style={{
             padding: '10px 15px',
@@ -61,13 +62,13 @@ const TestComponent: FC = () => {
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Show Server Error
         </button>
-        
-        <button 
+
+        <button
           onClick={showGenericError}
           style={{
             padding: '10px 15px',
@@ -75,13 +76,13 @@ const TestComponent: FC = () => {
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Show Generic Error
         </button>
 
-        <button 
+        <button
           onClick={showLongError}
           style={{
             padding: '10px 15px',
@@ -89,7 +90,7 @@ const TestComponent: FC = () => {
             color: 'white',
             border: 'none',
             borderRadius: '6px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Show Long Error (overflow test)
@@ -106,4 +107,4 @@ export const ErrorToastDemo: FC = () => {
       <ErrorToastManager />
     </ErrorProvider>
   );
-}; 
+};

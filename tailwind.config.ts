@@ -9,12 +9,14 @@ export default {
     backgroundImage: {
       net: "url('src/assets/images/net.svg')",
       card: 'linear-gradient(180deg, rgba(50, 53, 72, 0.7) 0%, rgba(50, 53, 72, 0.2) 75%)',
-      'card-light': 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 75%)',
+      'card-light':
+        'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 75%)',
       'bg-linear-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
     },
     boxShadow: {
       card: '0px 1px 2px 0px #0000000D',
-      'card-light': '0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)',
+      'card-light':
+        '0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)',
     },
     screens: {
       xl: { max: '1780px' },

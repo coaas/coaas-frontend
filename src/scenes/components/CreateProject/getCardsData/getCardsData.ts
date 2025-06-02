@@ -1,9 +1,9 @@
 import { GetCardsDataParams } from './types';
 
-export const getCardsData = ({ 
-  onBlankClick, 
-  onGitImportClick, 
-  onDockerComposeImportClick 
+export const getCardsData = ({
+  onBlankClick,
+  onGitImportClick,
+  onDockerComposeImportClick,
 }: GetCardsDataParams) => [
   {
     onClick: onBlankClick,

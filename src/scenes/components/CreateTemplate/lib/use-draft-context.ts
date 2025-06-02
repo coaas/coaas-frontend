@@ -11,4 +11,4 @@ export const useDraftContext = () => {
     deleteDraftId: () => {}, // Для URL не нужно удалять из localStorage
     isUrlBased: true,
   };
-}; 
+};

@@ -19,4 +19,4 @@ export const useUrlDraft = () => {
     isLoading: draftDataLoading,
     draftData,
   };
-}; 
+};

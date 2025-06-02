@@ -24,8 +24,14 @@ export const Avatar = ({
         {...props}
       >
         {imgUrl && <img className="size-[29px] rounded-full" />}
-        {!imgUrl && <span className="size-[29px] rounded-full bg-area dark:bg-area bg-gray-200" />}
-        {userName && <p className="text-blue-light dark:text-blue-light text-blue text-[15px]">{userName}</p>}
+        {!imgUrl && (
+          <span className="size-[29px] rounded-full bg-area dark:bg-area bg-gray-200" />
+        )}
+        {userName && (
+          <p className="text-blue-light dark:text-blue-light text-blue text-[15px]">
+            {userName}
+          </p>
+        )}
       </div>
     </Link>
   );

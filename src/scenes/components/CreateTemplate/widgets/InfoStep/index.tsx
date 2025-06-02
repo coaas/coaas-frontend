@@ -23,7 +23,7 @@ export const InfoStep = () => {
   const queryClient = useQueryClient();
   const { defaultValues } = useDraftContext();
   const defaultInfoValues = defaultValues.draftInfo;
-  
+
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
     request: getTemplateFilters,
   });
@@ -55,7 +55,9 @@ export const InfoStep = () => {
     name: 'languages',
   });
 
-  const selectedCategories = Array.isArray(categoriesValue) ? categoriesValue : [];
+  const selectedCategories = Array.isArray(categoriesValue)
+    ? categoriesValue
+    : [];
   const selectedLanguages = Array.isArray(languagesValue) ? languagesValue : [];
 
   const addCategory = (categoryKey: string) => {
@@ -89,7 +91,8 @@ export const InfoStep = () => {
     });
   });
 
-  const hasFilters = filters.categories.length > 0 && filters.languages.length > 0;
+  const hasFilters =
+    filters.categories.length > 0 && filters.languages.length > 0;
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
@@ -121,7 +124,7 @@ export const InfoStep = () => {
             <div className="flex flex-col gap-3">
               <select
                 className="max-w-[200px] px-3 py-2 border border-stroke-gray-dark bg-stroke-gray rounded-md text-white"
-                onChange={(e) => {
+                onChange={e => {
                   if (e.target.value) {
                     addCategory(e.target.value);
                     e.target.value = '';
@@ -159,7 +162,7 @@ export const InfoStep = () => {
             <div className="flex flex-col gap-3">
               <select
                 className="max-w-[200px] px-3 py-2 border border-stroke-gray-dark bg-stroke-gray rounded-md text-white"
-                onChange={(e) => {
+                onChange={e => {
                   if (e.target.value) {
                     addLanguage(e.target.value);
                     e.target.value = '';

@@ -1,1 +1,1 @@
-export { ErrorToastManager } from './ErrorToastManager'; 
+export { ErrorToastManager } from './ErrorToastManager';

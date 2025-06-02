@@ -71,7 +71,8 @@ export const Navbar = () => {
                         className={cn(
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
                           {
-                            'bg-area dark:bg-area bg-gray-100': currentNamespaceSlug === namespaceSlug,
+                            'bg-area dark:bg-area bg-gray-100':
+                              currentNamespaceSlug === namespaceSlug,
                             'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
                               currentNamespaceSlug !== namespaceSlug,
                           },
@@ -106,7 +107,8 @@ export const Navbar = () => {
                         className={cn(
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
                           {
-                            'bg-area dark:bg-area bg-gray-100': currentProjectSlug === projectSlug,
+                            'bg-area dark:bg-area bg-gray-100':
+                              currentProjectSlug === projectSlug,
                             'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
                               currentNamespaceSlug !== projectSlug,
                           },

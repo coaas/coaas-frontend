@@ -47,8 +47,10 @@ export const NavLinks = ({ sidebarOpened, className }: Props) => {
                 cn(
                   'p-3 rounded-[10px] flex gap-4 items-center max-h-[46.5px] text-blue-light dark:text-blue-light text-blue transition-colors',
                   {
-                    'text-white dark:text-white text-gray-900 bg-area dark:bg-area bg-gray-100': isActive,
-                    'hover:bg-area-dark dark:hover:bg-area-dark hover:bg-gray-50': !isActive,
+                    'text-white dark:text-white text-gray-900 bg-area dark:bg-area bg-gray-100':
+                      isActive,
+                    'hover:bg-area-dark dark:hover:bg-area-dark hover:bg-gray-50':
+                      !isActive,
                   },
                 )
               }

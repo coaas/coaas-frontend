@@ -29,12 +29,14 @@ export const Hero = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   //
   const isAuthor = author.id == user?.id;
-  
+
   const handleEditClick = () => {
     if (isDraft && draftId) {
-      navigate(createDynamicPath(RouteMap.templatesDraftCreateStepInfo, { 
-        draft_id: draftId 
-      }));
+      navigate(
+        createDynamicPath(RouteMap.templatesDraftCreateStepInfo, {
+          draft_id: draftId,
+        }),
+      );
     }
   };
 
@@ -112,9 +114,9 @@ export const Hero = ({
                 >
                   Edit
                 </FormButton>
-                <FormButton 
-                  size="sm" 
-                  variant="red" 
+                <FormButton
+                  size="sm"
+                  variant="red"
                   className="rounded-[4px] whitespace-nowrap"
                 >
                   Delete

@@ -29,7 +29,7 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     className: innerClassName,
     children,
   }) => (
-    <div 
+    <div
       className={cn(className, innerClassName)}
       data-tour={slug === 'web-app' ? 'demo-project-card' : undefined}
     >

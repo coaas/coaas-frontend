@@ -9,7 +9,7 @@ const invitations: Invitation[] = (() =>
     id: faker.string.uuid(),
     user_id: faker.string.uuid(),
     email: faker.internet.email(),
-    username: faker.internet.userName(),
+    username: faker.internet.username(),
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
     expires_at: faker.date.future().toISOString(),

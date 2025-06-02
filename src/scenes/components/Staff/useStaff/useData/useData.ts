@@ -18,7 +18,7 @@ const getProjects = (params: RequestParams, namespaceSlug?: string) => {
   if (tourMode.isActive()) {
     return getMockData(params);
   }
-  
+
   return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api
@@ -43,7 +43,13 @@ export const useData = () => {
     return unsubscribe;
   }, []);
 
-  const queryKey = [namespace_slug, 'staff', searchValue, isFiredChecked, isTourMode];
+  const queryKey = [
+    namespace_slug,
+    'staff',
+    searchValue,
+    isFiredChecked,
+    isTourMode,
+  ];
 
   const { data, fetchNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<

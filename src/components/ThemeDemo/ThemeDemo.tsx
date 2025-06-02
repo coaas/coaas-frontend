@@ -14,11 +14,12 @@ export const ThemeDemo: FC = () => {
       <div className="max-w-4xl mx-auto">
         {/* Заголовок */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">
-            Демонстрация системы тем
-          </h1>
+          <h1 className="text-4xl font-bold mb-4">Демонстрация системы тем</h1>
           <p className="text-lg mb-4">
-            Текущая тема: <span className="font-semibold text-blue">{theme === 'dark' ? 'Темная' : 'Светлая'}</span>
+            Текущая тема:{' '}
+            <span className="font-semibold text-blue">
+              {theme === 'dark' ? 'Темная' : 'Светлая'}
+            </span>
           </p>
           <button
             onClick={toggleTheme}
@@ -38,9 +39,7 @@ export const ThemeDemo: FC = () => {
             <p className="text-gray dark:text-gray text-gray-600">
               Вторичный текст (text-gray / text-gray-600)
             </p>
-            <p className="text-blue">
-              Акцентный текст (text-blue)
-            </p>
+            <p className="text-blue">Акцентный текст (text-blue)</p>
             <p className="text-blue-light dark:text-blue-light text-blue">
               Светло-синий текст (text-blue-light / text-blue)
             </p>
@@ -50,18 +49,15 @@ export const ThemeDemo: FC = () => {
         {/* Информационные карточки */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <div className="p-6 rounded-lg bg-area dark:bg-area bg-gray-50 border border-stroke-gray dark:border-stroke-gray border-gray-200 shadow-lg">
-            <h3 className="text-xl font-semibold mb-3">
-              Стандартная карточка
-            </h3>
+            <h3 className="text-xl font-semibold mb-3">Стандартная карточка</h3>
             <p className="text-gray dark:text-gray text-gray-600">
-              Это пример стандартной карточки с адаптивным дизайном для темной и светлой темы.
+              Это пример стандартной карточки с адаптивным дизайном для темной и
+              светлой темы.
             </p>
           </div>
 
           <div className="p-6 rounded-lg bg-area-dark dark:bg-area-dark bg-gray-100 border border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 shadow-lg">
-            <h3 className="text-xl font-semibold mb-3">
-              Вторичная карточка
-            </h3>
+            <h3 className="text-xl font-semibold mb-3">Вторичная карточка</h3>
             <p className="text-gray dark:text-gray text-gray-600">
               Карточка с немного другим фоном для создания визуальной иерархии.
             </p>
@@ -81,17 +77,11 @@ export const ThemeDemo: FC = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Кнопки</h2>
           <div className="flex flex-wrap gap-4">
-            <Button variant="default">
-              Основная кнопка
-            </Button>
-            
-            <Button variant="secondary">
-              Вторичная кнопка
-            </Button>
-            
-            <Button variant="outline">
-              Кнопка с обводкой
-            </Button>
+            <Button variant="default">Основная кнопка</Button>
+
+            <Button variant="secondary">Вторичная кнопка</Button>
+
+            <Button variant="outline">Кнопка с обводкой</Button>
 
             <button className="px-6 py-3 bg-green text-white rounded-lg hover:opacity-80 transition-opacity">
               Успех
@@ -115,10 +105,10 @@ export const ThemeDemo: FC = () => {
                 <Input
                   placeholder="Введите текст..."
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={e => setInputValue(e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Компонент TextArea
@@ -127,10 +117,10 @@ export const ThemeDemo: FC = () => {
                   placeholder="Введите длинный текст..."
                   rows={4}
                   value={textareaValue}
-                  onChange={(e) => setTextareaValue(e.target.value)}
+                  onChange={e => setTextareaValue(e.target.value)}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Обычный input
@@ -141,7 +131,7 @@ export const ThemeDemo: FC = () => {
                   className="w-full px-4 py-2 rounded-lg bg-background dark:bg-background bg-white text-white dark:text-white text-gray-900 border border-stroke-gray dark:border-stroke-gray border-gray-300 focus:border-blue transition-colors"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Выпадающий список
@@ -178,21 +168,21 @@ export const ThemeDemo: FC = () => {
               </div>
               <span className="text-sm">#507EF5</span>
             </div>
-            
+
             <div className="text-center">
               <div className="w-full h-16 rounded-lg bg-green mb-2 flex items-center justify-center">
                 <span className="text-white font-medium">Green</span>
               </div>
               <span className="text-sm">#1EA574</span>
             </div>
-            
+
             <div className="text-center">
               <div className="w-full h-16 rounded-lg bg-orange mb-2 flex items-center justify-center">
                 <span className="text-white font-medium">Orange</span>
               </div>
               <span className="text-sm">#FFBB4F</span>
             </div>
-            
+
             <div className="text-center">
               <div className="w-full h-16 rounded-lg bg-error mb-2 flex items-center justify-center">
                 <span className="text-white font-medium">Error</span>
@@ -230,7 +220,10 @@ export const ThemeDemo: FC = () => {
           <nav className="bg-area dark:bg-area bg-gray-50 p-4 rounded-lg border border-stroke-gray dark:border-stroke-gray border-gray-200">
             <ul className="flex space-x-6">
               <li>
-                <a href="#" className="text-blue hover:text-blue-lighter transition-colors">
+                <a
+                  href="#"
+                  className="text-blue hover:text-blue-lighter transition-colors"
+                >
                   Главная
                 </a>
               </li>
@@ -274,4 +267,4 @@ export const ThemeDemo: FC = () => {
       </div>
     </div>
   );
-}; 
+};

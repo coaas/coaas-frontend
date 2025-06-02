@@ -14,11 +14,11 @@ interface ErrorToastProps {
   duration?: number;
 }
 
-export const ErrorToast: FC<ErrorToastProps> = ({ 
-  error, 
-  onClose, 
-  autoHide = true, 
-  duration = 5000 
+export const ErrorToast: FC<ErrorToastProps> = ({
+  error,
+  onClose,
+  autoHide = true,
+  duration = 5000,
 }) => {
   useEffect(() => {
     if (autoHide) {
@@ -28,9 +28,12 @@ export const ErrorToast: FC<ErrorToastProps> = ({
   }, [autoHide, duration, onClose]);
 
   // Substitute kwargs into error text
-  const formatErrorMessage = (message: string, kwargs?: Record<string, any>) => {
+  const formatErrorMessage = (
+    message: string,
+    kwargs?: Record<string, any>,
+  ) => {
     if (!kwargs) return message;
-    
+
     return Object.entries(kwargs).reduce((text, [key, value]) => {
       return text.replace(new RegExp(`\\{${key}\\}`, 'g'), String(value));
     }, message);
@@ -45,11 +48,9 @@ export const ErrorToast: FC<ErrorToastProps> = ({
           <div className={styles.text}>
             {formatErrorMessage(error.default, error.kwargs)}
           </div>
-          {error.code && (
-            <div className={styles.code}>Code: {error.code}</div>
-          )}
+          {error.code && <div className={styles.code}>Code: {error.code}</div>}
         </div>
-        <button 
+        <button
           className={styles.closeButton}
           onClick={onClose}
           aria-label="Close"
@@ -59,4 +60,4 @@ export const ErrorToast: FC<ErrorToastProps> = ({
       </div>
     </div>
   );
-}; 
+};

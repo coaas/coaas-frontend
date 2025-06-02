@@ -31,10 +31,12 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     className: innerClassName,
     children,
   }) => (
-    <div 
+    <div
       className={cn(className, innerClassName)}
       data-template={id}
-      {...(id === 'postgresql-template' && { 'data-tour': 'postgresql-template' })}
+      {...(id === 'postgresql-template' && {
+        'data-tour': 'postgresql-template',
+      })}
     >
       <NavLink
         to={`/namespaces/${namespace_slug}/projects/${project_slug}/services/new/${id}`}

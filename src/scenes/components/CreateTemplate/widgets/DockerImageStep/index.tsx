@@ -65,10 +65,10 @@ export const DockerImageStep = () => {
 
   const handleTabChange = ({ value }: { value: TemplateType }) => {
     if (value === TemplateType.custom) {
-      open({ 
-        title: 'Functionality unavailable', 
+      open({
+        title: 'Functionality unavailable',
         description: 'Custom templates are not yet supported',
-        variant: 'error' 
+        variant: 'error',
       });
       return;
     }
@@ -145,9 +145,10 @@ export const DockerImageStep = () => {
             label="Development"
             hint={
               <p className="max-w-[300px] text-sm">
-                The commands presented here are described minimally (with an emphasis on 
-                readability as is) and include Docker installation, working with registries 
-                and repositories, containers, images, network, Docker Swarm.
+                The commands presented here are described minimally (with an
+                emphasis on readability as is) and include Docker installation,
+                working with registries and repositories, containers, images,
+                network, Docker Swarm.
               </p>
             }
           >

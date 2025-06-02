@@ -14,8 +14,8 @@ export const ThemeToggle: FC = () => {
       {/* Иконка солнца */}
       <svg
         className={`absolute w-5 h-5 transition-all duration-300 ${
-          theme === 'light' 
-            ? 'opacity-100 rotate-0 scale-100' 
+          theme === 'light'
+            ? 'opacity-100 rotate-0 scale-100'
             : 'opacity-0 rotate-180 scale-0'
         }`}
         fill="none"
@@ -37,8 +37,8 @@ export const ThemeToggle: FC = () => {
       {/* Иконка луны */}
       <svg
         className={`absolute w-5 h-5 transition-all duration-300 ${
-          theme === 'dark' 
-            ? 'opacity-100 rotate-0 scale-100' 
+          theme === 'dark'
+            ? 'opacity-100 rotate-0 scale-100'
             : 'opacity-0 -rotate-180 scale-0'
         }`}
         fill="none"
@@ -50,4 +50,4 @@ export const ThemeToggle: FC = () => {
       </svg>
     </button>
   );
-}; 
+};

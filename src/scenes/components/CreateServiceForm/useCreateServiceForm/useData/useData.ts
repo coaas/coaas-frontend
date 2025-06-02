@@ -14,7 +14,7 @@ const getTemplates = (params: RequestParams) => {
   if (tourMode.isActive()) {
     return getMockData(params);
   }
-  
+
   return IS_MOCK_ACTIVE
     ? getMockData(params)
     : api

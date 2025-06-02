@@ -148,7 +148,10 @@ export const routes = [
       {
         element: <CreateTemplateDraftLayout state={StateType.DRAFT} />,
         children: [
-          { path: RouteMap.templatesDraftCreateStepInfo, element: <InfoStep /> },
+          {
+            path: RouteMap.templatesDraftCreateStepInfo,
+            element: <InfoStep />,
+          },
           {
             path: RouteMap.templatesDraftCreateStepImage,
             element: <DockerImageStep />,
@@ -157,7 +160,10 @@ export const routes = [
             path: RouteMap.templatesDraftCreateStepSettings,
             element: <SettingsStep />,
           },
-          { path: RouteMap.templatesDraftCreateStepMapper, element: <MapperStep /> },
+          {
+            path: RouteMap.templatesDraftCreateStepMapper,
+            element: <MapperStep />,
+          },
         ],
       },
       {

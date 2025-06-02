@@ -20,17 +20,14 @@ export const ErrorToastContainer: FC<ErrorToastContainerProps> = ({
   return (
     <div className={styles.container}>
       {errors.map((error, index) => (
-        <div 
-          key={error.id} 
+        <div
+          key={error.id}
           className={styles.toastWrapper}
           style={{ top: `${index * 80}px` }}
         >
-          <ErrorToast
-            error={error}
-            onClose={() => onRemoveError(error.id)}
-          />
+          <ErrorToast error={error} onClose={() => onRemoveError(error.id)} />
         </div>
       ))}
     </div>
   );
-}; 
+};

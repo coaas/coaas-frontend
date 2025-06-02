@@ -76,12 +76,12 @@ export const Namespace: FC = () => {
             <div className="flex items-start space-x-6">
               {/* Icon */}
               <div className="flex-shrink-0">
-                <Icon 
-                  type={IconType.cube} 
-                  props={{ size: 64, className: 'text-stroke-blue' }} 
+                <Icon
+                  type={IconType.cube}
+                  props={{ size: 64, className: 'text-stroke-blue' }}
                 />
               </div>
-              
+
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <h1 className="text-2xl font-semibold text-white mb-2">
@@ -90,19 +90,20 @@ export const Namespace: FC = () => {
                 <p className="text-gray text-base leading-relaxed mb-4">
                   {namespace.description || 'No description provided'}
                 </p>
-                
+
                 {/* Additional info */}
                 <div className="flex items-center space-x-6 text-sm text-gray">
                   <div className="flex items-center space-x-2">
-                    <Icon 
-                      type={IconType.user} 
-                      props={{ size: 16, className: 'text-gray' }} 
+                    <Icon
+                      type={IconType.user}
+                      props={{ size: 16, className: 'text-gray' }}
                     />
                     <span>
-                      {namespace.members_count} {getMembersText(namespace.members_count)}
+                      {namespace.members_count}{' '}
+                      {getMembersText(namespace.members_count)}
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span>Created:</span>
                     <span>{formatDate(namespace.created_at)}</span>
@@ -110,23 +111,21 @@ export const Namespace: FC = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Right side - Action Buttons */}
             <div className="flex items-center space-x-3 flex-shrink-0 ml-6">
-              <Button variant="outline">
-                Settings
-              </Button>
-              <button 
+              <Button variant="outline">Settings</Button>
+              <button
                 className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-normal transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 h-9 px-4 py-2 border-2 bg-background"
                 style={{
                   borderColor: '#ef4444',
                   color: '#ef4444',
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   e.currentTarget.style.backgroundColor = '#ef4444';
                   e.currentTarget.style.color = '#ffffff';
                 }}
-                onMouseLeave={(e) => {
+                onMouseLeave={e => {
                   e.currentTarget.style.backgroundColor = 'transparent';
                   e.currentTarget.style.color = '#ef4444';
                 }}
@@ -138,9 +137,7 @@ export const Namespace: FC = () => {
         </div>
 
         {/* Empty space below */}
-        <div className="mt-8">
-          {/* Future content can be added here */}
-        </div>
+        <div className="mt-8">{/* Future content can be added here */}</div>
       </section>
     </div>
   );
