@@ -2,17 +2,17 @@ import { FC } from 'react';
 import { Icon, IconType } from '@components/Icon';
 import { Button } from '@components/Button';
 import { cn } from '@utils/styles';
-import { useProject } from './useProject';
+import { useService } from './useService';
 
-export const Project: FC = () => {
-  const { data: project, isLoading, error } = useProject();
+export const Service: FC = () => {
+  const { data: service, isLoading, error } = useService();
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stroke-blue"></div>
-          <p className="text-gray text-sm">Loading project...</p>
+          <p className="text-gray text-sm">Loading service...</p>
         </div>
       </div>
     );
@@ -29,14 +29,14 @@ export const Project: FC = () => {
             Loading Error
           </h2>
           <p className="text-gray">
-            Failed to load project data. Please try refreshing the page.
+            Failed to load service data. Please try refreshing the page.
           </p>
         </div>
       </div>
     );
   }
 
-  if (!project) {
+  if (!service) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
@@ -44,10 +44,10 @@ export const Project: FC = () => {
             <div className="text-4xl">⚠️</div>
           </div>
           <h2 className="text-2xl font-semibold text-white mb-3">
-            Project Not Found
+            Service Not Found
           </h2>
           <p className="text-gray">
-            The specified project does not exist or has been deleted.
+            The specified service does not exist or has been deleted.
           </p>
         </div>
       </div>
@@ -62,14 +62,21 @@ export const Project: FC = () => {
     });
   };
 
-  const getMembersText = (count: number) => {
-    return count === 1 ? 'member' : 'members';
+  const getServiceTypeText = (type: number) => {
+    switch (type) {
+      case 0:
+        return 'Managed';
+      case 1:
+        return 'Custom';
+      default:
+        return `Type ${type}`;
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <section className="w-full m-auto max-w-[1268px] py-[70px] px-3.5">
-        {/* Main Project Card */}
+        {/* Main Service Card */}
         <div className="bg-area-dark border border-stroke-gray rounded-xl p-6">
           <div className="flex items-start justify-between">
             {/* Left side - Icon and Content */}
@@ -85,27 +92,25 @@ export const Project: FC = () => {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <h1 className="text-2xl font-semibold text-white mb-2">
-                  {project.name}
+                  {service.name}
                 </h1>
                 <p className="text-gray text-base leading-relaxed mb-4">
-                  {project.description || 'No description provided'}
+                  {service.description || 'No description provided'}
                 </p>
                 
                 {/* Additional info */}
                 <div className="flex items-center space-x-6 text-sm text-gray">
                   <div className="flex items-center space-x-2">
                     <Icon 
-                      type={IconType.user} 
+                      type={IconType.settings} 
                       props={{ size: 16, className: 'text-gray' }} 
                     />
-                    <span>
-                      {project.members_count} {getMembersText(project.members_count)}
-                    </span>
+                    <span>Type: {getServiceTypeText(service.type)}</span>
                   </div>
                   
                   <div className="flex items-center space-x-2">
                     <span>Created:</span>
-                    <span>{formatDate(project.created_at)}</span>
+                    <span>{formatDate(service.created_at)}</span>
                   </div>
                 </div>
               </div>
@@ -144,4 +149,4 @@ export const Project: FC = () => {
       </section>
     </div>
   );
-};
+}; 

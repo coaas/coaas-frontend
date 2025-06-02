@@ -8,6 +8,7 @@ import {
   CreateServiceForm,
   Namespaces,
   Services,
+  Service,
   Staff,
   StaffInvitations,
   NotFound,
@@ -88,6 +89,10 @@ export const routes = [
       {
         path: '/namespaces/:namespace_slug/projects/:project_slug/services',
         element: <Services />,
+      },
+      {
+        path: RouteMap.service,
+        element: <Service />,
       },
       {
         path: '/namespaces/:namespace_slug/projects/:project_slug/services/new/categories',

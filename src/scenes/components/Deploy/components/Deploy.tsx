@@ -24,8 +24,27 @@ export const Deploy = ({
 }: {
   type?: 'deploy' | 'deployed';
 }) => {
-  const clusterApi = useQuery(clusterOptions);
   const [showNotDeployed, setShowNotDeployed] = useState(false);
+  const [shouldDisableQuery, setShouldDisableQuery] = useState(false);
+
+  const resetDeployState = () => {
+    setShowNotDeployed(false);
+    setShouldDisableQuery(false);
+  };
+
+  const clusterApi = useQuery({
+    ...clusterOptions,
+    enabled: !shouldDisableQuery,
+    retry: (failureCount, error) => {
+      // Не делать retry если получили 404 с PROJECT_DEPLOY_NOT_FOUND
+      const errorResponse = error as Error & { response?: Response };
+      if (errorResponse.response?.status === 404) {
+        return false;
+      }
+      // Для других ошибок использовать стандартную логику retry
+      return failureCount < 3;
+    },
+  });
 
   useEffect(() => {
     if (clusterApi.isError) {
@@ -34,6 +53,7 @@ export const Deploy = ({
         error.response.json().then((data: { code?: string }) => {
           if (data.code === 'PROJECT_DEPLOY_NOT_FOUND') {
             setShowNotDeployed(true);
+            setShouldDisableQuery(true); // Отключаем дальнейшие запросы
           }
         });
       }
@@ -65,14 +85,19 @@ export const Deploy = ({
   );
 
   if (showNotDeployed) {
-    return <NotDeployed />;
+    return <NotDeployed resetDeployState={resetDeployState} />;
   }
 
-  if (clusterApi.isError) {
+  if (clusterApi.isError && !showNotDeployed) {
     return null;
   }
 
-  if (clusterApi.isPending) {
+  if (clusterApi.isPending && !shouldDisableQuery) {
+    return null;
+  }
+
+  // Если нет данных (например, запрос отключен), не рендерим компонент
+  if (!clusterApi.data) {
     return null;
   }
 

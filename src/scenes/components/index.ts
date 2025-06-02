@@ -4,6 +4,7 @@ export * from './CreateProject';
 export * from './Staff';
 export * from './StaffInvitations';
 export * from './Services';
+export * from './Service';
 export * from './CreateService';
 export * from './CreateServiceCategory';
 export * from './CreateServiceForm';

@@ -17,7 +17,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@api/constants.ts';
 import { ClusterType } from '@scenes/components/Deploy/model/types.ts';
 
-export const NotDeployed = () => {
+export const NotDeployed = ({ resetDeployState }: { resetDeployState?: () => void }) => {
   const [addDeployInput, setAddDeployInput] =
     useState<Partial<AddProjectDeployRequest> | null>(null);
 
@@ -27,6 +27,7 @@ export const NotDeployed = () => {
       await queryClient.invalidateQueries({
         queryKey: clusterOptions.queryKey,
       });
+      resetDeployState?.();
     },
   });
 
@@ -91,8 +92,8 @@ export const NotDeployed = () => {
           onClick={() => {
             if (
               !addDeployInput ||
-              !addDeployInput.type ||
-              !addDeployInput.orchestration_engine
+              addDeployInput.type === undefined ||
+              addDeployInput.orchestration_engine === undefined
             )
               return;
             mutateAddProject(addDeployInput as AddProjectDeployRequest);

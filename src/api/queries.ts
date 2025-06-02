@@ -24,6 +24,28 @@ export const getUserNamespacesAndProjects: ApiRequest<{
   endpoint: 'NamespacesManager/GetUserNamespacesAndProjectsList',
 };
 
+export const getNamespace: ApiRequest<{
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  members_count: number;
+  created_at: string;
+}> = {
+  endpoint: 'NamespacesManager/GetNamespace',
+};
+
+export const getProject: ApiRequest<{
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  members_count: number;
+  created_at: string;
+}> = {
+  endpoint: 'ProjectsManager/GetProject',
+};
+
 export const getCurrentUserData: ApiRequest<User> = {
   endpoint: 'UserService/GetCurrentUserData',
 };
@@ -109,4 +131,16 @@ export const getTemplateDependencies: ApiRequest<
   GetDependenciesDto
 > = {
   endpoint: 'TemplateHubService/SearchTemplatesByName',
+};
+
+export const getService: ApiRequest<{
+  id: string;
+  name: string;
+  description: string;
+  type: number;
+  created_at: string;
+}, {
+  service_id: string;
+}> = {
+  endpoint: 'ServicesManager/GetService',
 };
