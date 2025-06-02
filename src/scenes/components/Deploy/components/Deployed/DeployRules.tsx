@@ -78,13 +78,15 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
       <div className="my-8 self-start">
         <Heading>Deploy rules</Heading>
       </div>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 w-full">
         {ruleClusters?.clusters.map(cluster => (
           <Cluster
+            key={cluster.info.id}
             isHidden={clusters.type === ClusterType.SERVERS}
             renderServer={rule =>
               isFixedRule(rule) && (
                 <Server
+                  key={rule.id}
                   name={rule.node.name}
                   type={'deployRules'}
                   clusterType={ClusterType.SERVERS}
@@ -207,17 +209,20 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
               {
                 type: 'input',
                 label: { id: 'cpu', label: 'CPU' },
-                defaultValue: serverInfo.cpu,
+                defaultValue: serverInfo.cpu ?? 0,
+                isNumber: true,
               },
               {
                 type: 'input',
                 label: { id: 'ram', label: 'RAM' },
-                defaultValue: serverInfo.ram,
+                defaultValue: serverInfo.ram ?? 0,
+                isNumber: true,
               },
               {
                 type: 'input',
                 label: { id: 'disk', label: 'DISK' },
-                defaultValue: serverInfo.disk,
+                defaultValue: serverInfo.disk ?? 0,
+                isNumber: true,
               },
               {
                 type: 'input',
@@ -228,11 +233,7 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
             ] as const
           }
           onSelect={(_key, value) => {
-            const cluster = clusters.clusters.find(
-              c => c.id === selectClusterId,
-            );
-            if (!cluster) return;
-            const server = cluster.servers.find(s => s.id === value);
+            const server = selectedCluster.servers.find(s => s.id === value);
             if (!server) return;
             setServerInfo({
               cpu: server.cpu.toString(),

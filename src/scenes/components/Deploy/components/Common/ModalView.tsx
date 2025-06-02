@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/Select/Select.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Optional<T extends object> = {
   [K in keyof T]?: T[K];
@@ -111,6 +111,18 @@ export const ModalView = <T extends readonly Content[]>({
       {} as Record<Keys, string>,
     ),
   );
+
+  useEffect(() => {
+    setInput(
+      content.reduce(
+        (acc, val) => {
+          acc[val.label.id as Keys] = val.defaultValue || '';
+          return acc;
+        },
+        {} as Record<Keys, string>,
+      ),
+    );
+  }, [content]);
 
   const renderContent = (content: Content) =>
     ({

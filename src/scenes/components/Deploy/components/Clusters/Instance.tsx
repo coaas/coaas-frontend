@@ -7,7 +7,8 @@ export const Instance = ({
   cpu,
   ram,
   service: { name },
-}: InstanceType) => {
+  onClick,
+}: InstanceType & { onClick: () => void }) => {
   const variants = {
     color: {
       [Status.ACTIVE]: 'bg-green/20 border-green',
@@ -26,9 +27,10 @@ export const Instance = ({
   return (
     <div
       className={clsx(
-        'w-[334px] h-[52px] py-4 px-6 rounded-lg border',
+        'w-[334px] h-[52px] py-4 px-6 rounded-lg border cursor-pointer',
         variants.color[status],
       )}
+      onClick={onClick}
     >
       <div className="flex justify-between items-center">
         <p className={variants.text[status]}>{name}</p>

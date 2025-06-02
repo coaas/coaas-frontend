@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -11,6 +11,7 @@ import { DeployButton } from './Common/DeployButton.tsx';
 import { Deployed } from './Deployed/Deployed.tsx';
 import { DeployRules } from './Deployed/DeployRules.tsx';
 import { NotDeployed } from '@scenes/components/Deploy/components/NotDeployed.tsx';
+import { ServiceInfo } from '@scenes/components/Deploy/components/Deployed/ServiceInfo.tsx';
 
 const getDeployTypes = (type: ClusterType) =>
   [
@@ -111,6 +112,7 @@ export const Deploy = ({
 
   return (
     <div className="flex flex-col mt-8 px-20 items-center pb-16">
+      {type === 'deployed' && <ServiceInfo />}
       <div className="self-start flex justify-between items-center w-full">
         <h1 className="text-2xl font-bold">
           {type === 'deploy' ? 'Deploy' : 'Instances'}

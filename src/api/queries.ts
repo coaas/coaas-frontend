@@ -133,15 +133,18 @@ export const getTemplateDependencies: ApiRequest<
   endpoint: 'TemplateHubService/SearchTemplatesByName',
 };
 
-export const getService: ApiRequest<{
-  id: string;
-  name: string;
-  description: string;
-  type: number;
-  created_at: string;
-}, {
-  service_id: string;
-}> = {
+export const getService: ApiRequest<
+  {
+    id: string;
+    name: string;
+    description: string;
+    type: number;
+    created_at: string;
+  },
+  {
+    service_id: string;
+  }
+> = {
   endpoint: 'ServicesManager/GetService',
 };
 
