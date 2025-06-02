@@ -1,29 +1,9 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
-import { useApiQuery } from '@utils/lib/use-api-query';
-import { getProjectTeam } from '@api/queries';
 import { TeamMemberCard } from '@components/TeamMemberCard';
+import { useProjectTeam } from './useProjectTeam';
 
 export const ProjectTeam: FC = () => {
-  const { namespace_slug, project_slug } = useParams<{
-    namespace_slug: string;
-    project_slug: string;
-  }>();
-
-  const { data, isLoading, error } = useApiQuery({
-    request: getProjectTeam,
-    payload: {},
-    options: {
-      enabled: !!namespace_slug && !!project_slug,
-    },
-    requestOptions: {
-      prefixUrl: '/api',
-      headers: {
-        'x-namespace-slug': namespace_slug,
-        'x-project-slug': project_slug,
-      },
-    },
-  });
+  const { data, isLoading, error } = useProjectTeam();
 
   if (isLoading) {
     return (

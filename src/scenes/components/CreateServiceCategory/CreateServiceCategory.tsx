@@ -6,9 +6,8 @@ import { useServices } from './useServices';
 import { useLocation } from 'react-router-dom';
 
 export const CreateServiceCategory: FC = () => {
-  const {
-    state: { title },
-  } = useLocation();
+  const location = useLocation();
+  const title = location.state?.title || 'Templates';
   const { isFetching, GridItem, dataCount } = useServices();
 
   return (
