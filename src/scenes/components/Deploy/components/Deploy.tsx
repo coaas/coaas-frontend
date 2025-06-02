@@ -118,7 +118,7 @@ export const Deploy = ({
           {type === 'deploy' ? 'Deploy' : 'Instances'}
         </h1>
         {type === 'deploy' && (
-          <div className="flex gap-2">
+          <div className="flex gap-2" data-tour="deploy-status">
             {deployTags.map(tag => (
               <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
                 {tag}
@@ -128,7 +128,7 @@ export const Deploy = ({
         )}
       </div>
       {type === 'deploy' && (
-        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm">
+        <div className="w-full mt-4 border-2 border-stroke-blue p-1 rounded-sm" data-tour="deploy-tabs">
           <div className="flex">
             {deployTypes.map(name => (
               <DeployButton
