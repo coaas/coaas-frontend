@@ -14,6 +14,7 @@ import {
   NotFound,
   Profile,
   PublicProfile,
+  ProjectTeam,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -91,6 +92,10 @@ export const routes = [
       {
         path: '/namespaces/:namespace_slug/projects/:project_slug/services',
         element: <Services />,
+      },
+      {
+        path: '/namespaces/:namespace_slug/projects/:project_slug/team',
+        element: <ProjectTeam />,
       },
       {
         path: RouteMap.service,

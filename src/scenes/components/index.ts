@@ -11,3 +11,4 @@ export * from './CreateServiceForm';
 export * from './NotFound';
 export * from './Profile';
 export * from './PublicProfile';
+export * from './ProjectTeam';

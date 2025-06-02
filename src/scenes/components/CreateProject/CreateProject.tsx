@@ -1,21 +1,43 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 
 import { Card, CardType } from '@components/Card';
+import { useNotificationContext } from '@components/Notification';
 
 import { getCardsData } from './getCardsData';
 import { Modal } from './components';
 
 export const CreateProject: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { open } = useNotificationContext();
 
   const onBlankClick = useCallback(
     () => setIsModalOpen(true),
     [setIsModalOpen],
   );
 
+  const onGitImportClick = useCallback(() => {
+    open({
+      title: 'Feature not available',
+      description: 'Import from Git functionality is not implemented yet',
+      variant: 'error'
+    });
+  }, [open]);
+
+  const onDockerComposeImportClick = useCallback(() => {
+    open({
+      title: 'Feature not available',
+      description: 'Import from Docker Compose functionality is not implemented yet',
+      variant: 'error'
+    });
+  }, [open]);
+
   const cardsData = useMemo(
-    () => getCardsData({ onBlankClick }),
-    [onBlankClick],
+    () => getCardsData({ 
+      onBlankClick, 
+      onGitImportClick, 
+      onDockerComposeImportClick 
+    }),
+    [onBlankClick, onGitImportClick, onDockerComposeImportClick],
   );
 
   return (
@@ -35,9 +57,19 @@ export const CreateProject: FC = () => {
                 settings: { shape: 'rect' },
               }}
               Wrapper={({ children, className }) => (
-                <button onClick={onClick} className={className}>
+                <div 
+                  onClick={onClick} 
+                  className={`${className} text-left cursor-pointer`}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      onClick();
+                    }
+                  }}
+                >
                   {children}
-                </button>
+                </div>
               )}
             />
           ))}

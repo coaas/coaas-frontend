@@ -14,6 +14,13 @@ interface Props extends ComponentPropsWithoutRef<'ul'> {
 const getCurrentLinks = (path: string, params: Params) => {
   const namespacePath = createDynamicPath(RouteMap.namespace, params);
   const projectPath = createDynamicPath(RouteMap.project, params);
+  const createProjectPath = createDynamicPath(RouteMap.createProject, params);
+  const projectsPath = createDynamicPath(RouteMap.projects, params);
+
+  // Проверяем специальные случаи сначала
+  if (path === createProjectPath || path === projectsPath) {
+    return navLinksMap.get(RouteMap.namespace) || [];
+  }
 
   return (
     navLinksMap.get(

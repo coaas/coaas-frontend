@@ -144,3 +144,18 @@ export const getService: ApiRequest<{
 }> = {
   endpoint: 'ServicesManager/GetService',
 };
+
+export const getProjectTeam: ApiRequest<{
+  members: Array<{
+    id: string;
+    user: {
+      id: string;
+      first_name: string;
+      last_name: string;
+      username: string;
+      email: string;
+    };
+  }>;
+}> = {
+  endpoint: 'ProjectTeamsManager/GetTeam',
+};
