@@ -17,20 +17,24 @@ export const SceneWithTabs: FC<SceneWithTabsProps> = ({
 
   return (
     <section className="p-10 items-center">
-      <Search
-        onChange={onChangeSearch}
-        config={{
-          placeholder: searchPlaceholder,
-          delay: 1000,
-        }}
-        className="mb-4"
-      />
+      <div data-tour="search-section">
+        <Search
+          onChange={onChangeSearch}
+          config={{
+            placeholder: searchPlaceholder,
+            delay: 1000,
+          }}
+          className="mb-4"
+        />
+      </div>
       <div className="w-full">
         <div className="flex justify-between items-center">
-          {Button}
+          <div data-tour="create-namespace-btn">
+            {Button}
+          </div>
           <Tabs {...tabsProps} type={TabsType.icon} />
         </div>
-        <div className="mt-6" ref={containerRef}>
+        <div className="mt-6" ref={containerRef} data-tour="namespace-grid">
           {currentTab.id === TabId.tableView ? TableView : CardsView}
         </div>
       </div>

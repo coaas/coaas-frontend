@@ -1,9 +1,12 @@
 import { Outlet, useLocation } from 'react-router-dom'; // ?? react-router
 import { Header, Sidebar } from './components';
 import { useMemo } from 'react';
+import { TourProvider, useTourContext } from '../../utils/TourContext';
+import { TourOverlay } from '../TourOverlay';
 
-export const Layout = () => {
+const LayoutContent = () => {
   const location = useLocation();
+  const tour = useTourContext();
 
   const isLogin = useMemo(
     () => location.pathname === '/login',
@@ -11,14 +14,37 @@ export const Layout = () => {
   );
 
   return (
-    <div className="flex h-screen bg-background dark:bg-background bg-white transition-colors duration-300">
-      {!isLogin && <Sidebar />}
-      <div className="w-full max-w-[1560px] flex flex-col justify-start">
-        {!isLogin && <Header />}
-        <div className="h-full overflow-auto">
-          <Outlet />
+    <>
+      <div className="flex h-screen bg-background dark:bg-background bg-white transition-colors duration-300">
+        {!isLogin && <Sidebar />}
+        <div className="w-full max-w-[1560px] flex flex-col justify-start">
+          {!isLogin && <Header />}
+          <div className="h-full overflow-auto">
+            <Outlet />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Global Tour Overlay */}
+      <TourOverlay
+        isActive={tour.isActive}
+        currentStep={tour.currentStepData}
+        currentStepIndex={tour.currentStep}
+        totalSteps={tour.steps.length}
+        onNext={tour.nextStep}
+        onPrev={tour.prevStep}
+        onStop={tour.stopTour}
+        onGoToStep={tour.goToStep}
+        isLastStep={tour.isLastStep}
+        isFirstStep={tour.isFirstStep}
+        allSteps={tour.steps}
+      />
+    </>
   );
 };
+
+export const Layout = () => (
+  <TourProvider>
+    <LayoutContent />
+  </TourProvider>
+);

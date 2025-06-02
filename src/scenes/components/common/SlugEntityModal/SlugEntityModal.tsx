@@ -72,7 +72,7 @@ export const SlugEntityModal: FC<SlugEntityModalProps> = ({
 
   return (
     <ModalComponent open={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent>
+      <ModalContent data-tour="namespace-modal">
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
         </ModalHeader>

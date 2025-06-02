@@ -29,7 +29,10 @@ export const CardGridItem: FC<CardGridItemProps> = ({
     className: innerClassName,
     children,
   }) => (
-    <div className={cn(className, innerClassName)}>
+    <div 
+      className={cn(className, innerClassName)}
+      data-tour={slug === 'tour-demo-workspace' ? 'demo-namespace-card' : undefined}
+    >
       <NavLink to={slug}>{children}</NavLink>
     </div>
   );

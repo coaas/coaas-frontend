@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { tourMode } from './tourMode';
 
 export interface TourStep {
   id: string;
@@ -27,6 +28,9 @@ export const useTour = (steps: TourStep[]) => {
   });
 
   const startTour = useCallback(() => {
+    // Enable tour mode when starting tour
+    tourMode.enable();
+    
     setTourState(prev => ({
       ...prev,
       isActive: true,
@@ -35,6 +39,9 @@ export const useTour = (steps: TourStep[]) => {
   }, []);
 
   const stopTour = useCallback(() => {
+    // Disable tour mode when stopping tour
+    tourMode.disable();
+    
     setTourState(prev => ({
       ...prev,
       isActive: false,
@@ -70,6 +77,8 @@ export const useTour = (steps: TourStep[]) => {
           currentStep: nextStepIndex,
         };
       } else {
+        // Tour finished - disable tour mode
+        tourMode.disable();
         return {
           ...prev,
           isActive: false,

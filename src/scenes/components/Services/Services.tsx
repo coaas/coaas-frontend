@@ -27,7 +27,11 @@ export const Services: FC = () => {
     <SceneWithTabs
       onChangeSearch={onChangeSearch}
       searchPlaceholder="Search services"
-      Button={<Button onClick={onCreateServiceBtnClick}>Create service</Button>}
+      Button={
+        <div data-tour="create-service-btn">
+          <Button onClick={onCreateServiceBtnClick}>Create service</Button>
+        </div>
+      }
       TableView={
         <Table
           isLoading={isFetching}

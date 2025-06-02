@@ -24,7 +24,7 @@ export const Projects: FC = () => {
       onChangeSearch={onChangeSearch}
       searchPlaceholder="Search projects"
       Button={
-        <NavLink to="create">
+        <NavLink to="create" data-tour="create-project-btn">
           <Button>Create project</Button>
         </NavLink>
       }
