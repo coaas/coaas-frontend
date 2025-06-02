@@ -15,6 +15,7 @@ import {
   Profile,
   PublicProfile,
   ProjectTeam,
+  TemplateDraft,
 } from './components';
 import { Login } from './components/Login';
 import { RegisterForm } from './components/RegisterForm';
@@ -26,7 +27,7 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { RouteMap } from '@components/Layout/components/types';
 import {
-  CreateTemplateLayout,
+  CreateTemplateDraftLayout,
   DockerImageStep,
   MapperStep,
   SettingsStep,
@@ -138,19 +139,20 @@ export const routes = [
         element: <Deploy type={'deployed'} />,
       },
       { path: RouteMap.template, element: <Template /> },
+      { path: RouteMap.templateDraft, element: <TemplateDraft /> },
       {
-        element: <CreateTemplateLayout state={StateType.DRAFT} />,
+        element: <CreateTemplateDraftLayout state={StateType.DRAFT} />,
         children: [
-          { path: RouteMap.templatesCreateStepInfo, element: <InfoStep /> },
+          { path: RouteMap.templatesDraftCreateStepInfo, element: <InfoStep /> },
           {
-            path: RouteMap.templatesCreateStepImage,
+            path: RouteMap.templatesDraftCreateStepImage,
             element: <DockerImageStep />,
           },
           {
-            path: RouteMap.templatesCreateStepSettings,
+            path: RouteMap.templatesDraftCreateStepSettings,
             element: <SettingsStep />,
           },
-          { path: RouteMap.templatesCreateStepMapper, element: <MapperStep /> },
+          { path: RouteMap.templatesDraftCreateStepMapper, element: <MapperStep /> },
         ],
       },
       {

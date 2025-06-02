@@ -1,5 +1,5 @@
 import { Input } from '@components/Input';
-import { Select } from '@components/Select';
+import { Select } from '@components/Select/index.tsx';
 import { TextArea } from '@components/TextArea';
 import { MapperPreview } from '@globalTypes/templates.draft';
 import { FormButton } from '@scenes/components/CreateTemplate/components/FormButton';

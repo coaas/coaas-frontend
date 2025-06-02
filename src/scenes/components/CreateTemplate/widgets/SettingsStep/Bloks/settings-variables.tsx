@@ -41,6 +41,7 @@ export const SettingsVariables = () => {
         btnLabel="Add secret"
         defaultValue={{ name: '' }}
         error={errors.settings?.secrets?.root?.message}
+        required={false}
         renderField={(field, remove, index) => {
           const error = errors.settings?.secrets?.[index]?.name?.message;
           return (
@@ -55,7 +56,6 @@ export const SettingsVariables = () => {
               />
               <DeleteButton
                 onClick={() => remove(index)}
-                disabled={index === 0}
               />
               {error && <span className="text-xs text-error">{error}</span>}
             </div>
@@ -69,6 +69,7 @@ export const SettingsVariables = () => {
         btnLabel="Add config"
         defaultValue={{ path: '' }}
         error={errors.settings?.configs?.root?.message}
+        required={false}
         renderField={(field, remove, index) => {
           const error = errors.settings?.configs?.[index]?.path?.message;
           return (
@@ -83,7 +84,6 @@ export const SettingsVariables = () => {
               />
               <DeleteButton
                 onClick={() => remove(index)}
-                disabled={index === 0}
               />
               {error && <span className="text-xs text-error">{error}</span>}
             </div>
@@ -97,6 +97,7 @@ export const SettingsVariables = () => {
         btnLabel="Add var"
         defaultValue={{ key: '', value: '' }}
         error={errors.settings?.env_vars?.root?.message}
+        required={false}
         renderField={(field, remove, index) => {
           const keyError = errors.settings?.env_vars?.[index]?.key?.message;
           const valueError = errors.settings?.env_vars?.[index]?.value?.message;
@@ -121,7 +122,6 @@ export const SettingsVariables = () => {
               />
               <DeleteButton
                 onClick={() => remove(index)}
-                disabled={index === 0}
               />
               {keyError && (
                 <span className="text-xs text-error">{keyError}</span>
@@ -148,6 +148,7 @@ export const SettingsVariables = () => {
         defaultValue={{ name: '' }}
         error={errors.settings?.ports?.root?.message}
         fieldsWrapperStyles="flex-row flex-wrap"
+        required={false}
         renderField={(field, remove, index) => (
           <TaggedInput
             key={field.id}

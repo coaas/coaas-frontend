@@ -1,8 +1,7 @@
 const conditionItems = [
-  { label: 'Any', value: 0 },
+  { label: 'None', value: 0 },
   { label: 'On-failure', value: 1 },
-  { label: 'Always', value: 2 },
-  { label: 'Unless-stopped', value: 3 },
+  { label: 'Any', value: 2 },
 ];
 
 const orderItems = [
@@ -11,9 +10,14 @@ const orderItems = [
 ];
 
 const failureActionItems = [
-  { label: 'Pause', value: 0 },
-  { label: 'Stop', value: 1 },
-  { label: 'RmRF', value: 2 },
+  { label: 'Continue', value: 0 },
+  { label: 'Pause', value: 1 },
+  { label: 'Rollback', value: 2 },
+];
+
+const rollbackFailureActionItems = [
+  { label: 'Continue', value: 0 },
+  { label: 'Pause', value: 1 },
 ];
 
 export const healthCheckFields = [
@@ -47,5 +51,19 @@ export const configItems = [
     name: 'failure_action',
     asNumber: true,
     items: failureActionItems,
+  },
+] as const;
+
+export const rollbackConfigItems = [
+  { label: 'Parallelism', name: 'parallelism', asNumber: true },
+  { label: 'Delay', name: 'delay', asNumber: true },
+  { label: 'Monitor', name: 'monitor', asNumber: true },
+  { label: 'Max failure ratio', name: 'max_failure_ratio', asNumber: true },
+  { label: 'Order', name: 'order', asNumber: true, items: orderItems },
+  {
+    label: 'Failure action',
+    name: 'failure_action',
+    asNumber: true,
+    items: rollbackFailureActionItems,
   },
 ] as const;

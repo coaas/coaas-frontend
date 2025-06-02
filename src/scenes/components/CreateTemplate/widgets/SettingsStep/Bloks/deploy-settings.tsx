@@ -1,8 +1,8 @@
 import { Input } from '@components/Input';
-import { Select } from '@components/Select';
+import { Select } from '@components/Select/index.tsx';
 import { FormField } from '@scenes/components/CreateTemplate/components/FormField';
 import { Controller, useFormContext } from 'react-hook-form';
-import { configItems, restartPolicyFields } from '../constants';
+import { configItems, rollbackConfigItems, restartPolicyFields } from '../constants';
 import {
   numberRule,
   requiredRule,
@@ -52,6 +52,7 @@ export const DeploySettings = () => {
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
                       defaultLabel={defaultItem?.label || 'Select'}
+                      multiple={false}
                     />
                   )}
                 </FormField>
@@ -111,6 +112,7 @@ export const DeploySettings = () => {
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
                       defaultLabel={defaultItem?.label || 'Select'}
+                      multiple={false}
                     />
                   )}
                 </FormField>
@@ -140,7 +142,7 @@ export const DeploySettings = () => {
       <h3 className="text-[18] font-semibold font-inter text-white">
         Rollback config
       </h3>
-      {configItems.map((field, key) => {
+      {rollbackConfigItems.map((field, key) => {
         const { label, name, asNumber } = field;
 
         return 'items' in field ? (
@@ -168,6 +170,7 @@ export const DeploySettings = () => {
                       withChevron
                       defaultValue={defaultItem ? [defaultItem.value] : []}
                       defaultLabel={defaultItem?.label || 'Select'}
+                      multiple={false}
                     />
                   )}
                 </FormField>

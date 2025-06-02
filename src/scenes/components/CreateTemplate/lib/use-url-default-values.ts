@@ -1,21 +1,15 @@
-import { getTemplateDraft } from '@api/queries';
-import { useApiQuery } from '@utils/lib/use-api-query';
 import { useOutletContext } from 'react-router-dom';
 import { TemplateOutletContext } from '../types';
 import { MapperType, TemplateType } from '@globalTypes/templates.draft';
+import { useUrlDraft } from './use-url-draft';
 
-export const useDefaultValues = () => {
-  const { id: draftId, state: templateState } =
-    useOutletContext<TemplateOutletContext>();
+export const useUrlDefaultValues = () => {
+  const { state: templateState } = useOutletContext<TemplateOutletContext>();
+  const { draftId, draftData: draftResponse } = useUrlDraft();
 
-  const { data: draftResponse } = useApiQuery({
-    request: getTemplateDraft,
-    payload: { id: draftId },
-  });
-
-  if (!draftResponse) {
+  if (!draftResponse || !draftId) {
     const draftInfo = {
-      id: draftId,
+      id: draftId || '',
       state: templateState,
       name: '',
       categories: [],
@@ -23,14 +17,14 @@ export const useDefaultValues = () => {
     };
 
     const dockerImage = {
-      id: draftId,
+      id: draftId || '',
       state: templateState,
       type: TemplateType.managed,
       managed: { versions: [{ name: 'latest' }] },
     };
 
     const draftSettings = {
-      id: draftId,
+      id: draftId || '',
       state: templateState,
       settings: {
         secrets: [{ name: 'DATABASE_URI' }],
@@ -38,7 +32,7 @@ export const useDefaultValues = () => {
         env_vars: [{ key: 'DOCS_PATH', value: '/docs' }],
         ports: [],
         health_check: {
-          test: 'curl --fail -s http://localhost:8080/health/check',
+          test: 'true',
           interval: 30,
           timeout: 10,
           retries: 6,
@@ -73,7 +67,7 @@ export const useDefaultValues = () => {
     };
 
     const mapper = {
-      id: draftId,
+      id: draftId || '',
       state: templateState,
       serviceName: draftInfo.name,
       previewName: 'Untitled',
@@ -97,7 +91,7 @@ export const useDefaultValues = () => {
     mapper: mapperResponse,
   } = draftResponse;
 
-  const { ports, ...restSettings } = settings;
+  const { ports, health_check, ...restSettings } = settings;
 
   const { id, type, status, name, description, languages, categories, docs } =
     info;
@@ -124,7 +118,14 @@ export const useDefaultValues = () => {
 
   const draftSettings = {
     ...state,
-    settings: { ...restSettings, ports: ports.map(port => ({ name: port })) },
+    settings: { 
+      ...restSettings, 
+      ports: ports.map(port => ({ name: port })),
+      health_check: {
+        ...health_check,
+        test: health_check.test || 'true'
+      }
+    },
     dependencies,
   };
 
@@ -133,12 +134,12 @@ export const useDefaultValues = () => {
     serviceName: name,
     previewName: 'Untitled',
     previewDescription: '',
-    secrets: draftSettings.settings.secrets,
-    configs: draftSettings.settings.configs,
-    env_vars: draftSettings.settings.env_vars,
-    ports: draftSettings.settings.ports,
+    secrets: settings.secrets,
+    configs: settings.configs,
+    env_vars: settings.env_vars,
+    ports: ports.map(port => ({ name: port })),
     mapper: mapperResponse,
   };
 
-  return { draftInfo, dockerImage, draftSettings, mapper, status };
-};
+  return { draftInfo, dockerImage, draftSettings, mapper };
+}; 

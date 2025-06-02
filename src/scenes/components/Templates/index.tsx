@@ -1,7 +1,7 @@
-import { getTemplateFilters, getTemplates } from '@api/queries';
+import { getTemplateFilters, getTemplates, createTemplateDraft } from '@api/queries';
 import { Banner } from '@components/Banner';
-import { useInfiniteApiQuery, useApiQuery } from '@utils/lib/use-api-query';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useInfiniteApiQuery, useApiQuery, useApiMutation } from '@utils/lib/use-api-query';
+import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { templateStatus, templateTypes } from './constants';
 import { objectEntries } from '@utils/lib/object-entries';
 import { Search } from '@components/Search';
@@ -14,11 +14,36 @@ import { createDynamicPath } from '@utils/lib/create-dynamic-path';
 import { Select } from './components/Select';
 
 export const Templates = () => {
-  const search = useLocation().search;
-  const [searchParams, setSearchParams] = useSearchParams(search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { mutate: createDraft, isPending: isCreatingDraft } = useApiMutation({
+    request: createTemplateDraft,
+  });
+
+  const handleCreateTemplate = () => {
+    createDraft({}, {
+      onSuccess: (response) => {
+        if (response?.id) {
+          navigate(
+            createDynamicPath(RouteMap.templatesDraftCreateStepInfo, {
+              draft_id: response.id,
+            }),
+          );
+        }
+      },
+      onError: (error) => {
+        console.error('Failed to create draft:', error);
+      },
+    });
+  };
+
   const { query, categories, types, languages, status } = Object.fromEntries([
     ...searchParams.entries(),
-  ]);
+  ]) as Record<string, string>;
+
+  const search = location.search;
 
   const {
     data: filters = { categories: [], languages: [] },
@@ -131,12 +156,13 @@ export const Templates = () => {
         )}
       </div>
       <div className="flex row justify-between">
-        <Link
-          className="block mt-[14px] max-w-fit"
-          to={RouteMap.templatesCreateStepInfo}
+        <Button 
+          className="mt-[14px] max-w-fit" 
+          onClick={handleCreateTemplate}
+          disabled={isCreatingDraft}
         >
-          <Button>Create template</Button>
-        </Link>
+          {isCreatingDraft ? 'Creating...' : 'Create template'}
+        </Button>
         <Link
           className="block mt-[14px] max-w-fit mr-5"
           to={RouteMap.currentUserTemplates}

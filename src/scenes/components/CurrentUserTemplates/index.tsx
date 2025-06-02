@@ -7,8 +7,12 @@ import { useCurrentUserTemplates } from '@scenes/components/CurrentUserTemplates
 import { cn } from '@utils/styles';
 import { Draft, Template } from '@globalTypes/templates';
 
-const Section = (props: { name: string; entries: Template[] | Draft[] }) => {
-  const { name, entries } = props;
+const Section = (props: { 
+  name: string; 
+  entries: Template[] | Draft[]; 
+  isDraft?: boolean;
+}) => {
+  const { name, entries, isDraft } = props;
 
   return (
     <>
@@ -23,12 +27,15 @@ const Section = (props: { name: string; entries: Template[] | Draft[] }) => {
           </p>
         </div>
       )}
-      <div className={cn('max-h-[564px] overflow-auto mt-5')}>
+      <div className={cn('mt-5 flex flex-col gap-4')}>
         <h5 className="capitalize">{name}</h5>
         {entries.map(({ name, description, id }, key) => (
           <Link
             key={key}
-            to={createDynamicPath(RouteMap.template, { template_slug: id })}
+            to={createDynamicPath(
+              isDraft ? RouteMap.templateDraft : RouteMap.template, 
+              { template_slug: id }
+            )}
           >
             <Card
               type={CardType.simpleInfo}
@@ -58,8 +65,8 @@ export const CurrentUserTemplates = () => {
         title="Template Hub"
         subtitle={`Сервис предоставляет масштабируемые вычислительные мощности\nдля размещения и тестирования ваших проектов.`}
       />
-      <Section name={'шаблоны'} entries={templates} />
-      <Section name={'черновики'} entries={drafts} />
+      <Section name={'шаблоны'} entries={templates} isDraft={false} />
+      <Section name={'черновики'} entries={drafts} isDraft={true} />
     </section>
   );
 };

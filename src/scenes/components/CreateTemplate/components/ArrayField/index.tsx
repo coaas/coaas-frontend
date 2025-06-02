@@ -25,6 +25,7 @@ interface ArrayFieldProps<T extends FieldValues> {
   defaultValue: FieldArray<T, ArrayPath<T>> | FieldArray<T, ArrayPath<T>>[];
   children?: ReactNode;
   fieldsWrapperStyles?: string;
+  required?: boolean;
 }
 
 export const ArrayField = <T extends FieldValues>({
@@ -37,13 +38,14 @@ export const ArrayField = <T extends FieldValues>({
   error,
   children,
   fieldsWrapperStyles,
+  required = false,
 }: ArrayFieldProps<T>) => {
   const { append, fields, remove } = useFieldArray({
     name: name,
     control,
-    rules: {
+    rules: required ? {
       validate: fields => fields.length > 0 || 'required at least one entity',
-    },
+    } : undefined,
   });
 
   return (

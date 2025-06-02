@@ -15,24 +15,28 @@ import { FormButton } from '../../components/FormButton';
 import { ArrayField } from '../../components/ArrayField';
 import { TaggedInput } from '../../components/TaggedInput';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDefaultValues } from '../../lib/use-default-values';
+import { useDraftContext } from '../../lib/use-draft-context';
 import { useNotificationContext } from '@components/Notification';
 
 export const DockerImageStep = () => {
-  const queryClient = useQueryClient();
   const { open } = useNotificationContext();
-  const defaultValues = useDefaultValues().dockerImage;
+  const queryClient = useQueryClient();
+  const { defaultValues } = useDraftContext();
+  const defaultImageValues = defaultValues.dockerImage;
+
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftImage,
   });
 
   const {
-    control,
     formState: { errors },
     register,
+    control,
     handleSubmit,
+    watch,
+    setValue,
   } = useForm<TemplateDockerImageForm>({
-    defaultValues,
+    defaultValues: defaultImageValues,
   });
 
   const onSubmit = handleSubmit(data => {
@@ -59,6 +63,19 @@ export const DockerImageStep = () => {
 
   const selectedType = useWatch({ control, name: 'type' });
 
+  const handleTabChange = ({ value }: { value: TemplateType }) => {
+    if (value === TemplateType.custom) {
+      open({ 
+        title: 'Функциональность недоступна', 
+        description: 'Custom шаблоны пока не поддерживаются',
+        variant: 'error' 
+      });
+      return;
+    }
+    // Если это Managed тип, то устанавливаем значение
+    setValue('type', value);
+  };
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-[15px] mt-[25px]">
       <h3 className="text-2xl font-semibold font-inter text-white">
@@ -67,13 +84,12 @@ export const DockerImageStep = () => {
       <Controller
         control={control}
         name="type"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { value } }) => (
           <FormTabs
             currentTab={
               InfoTabsData.find(tab => tab.value === value) || InfoTabsData[0]
             }
-            disabled={tabId => tabId === InfoTabsData[1].id}
-            onTabChange={({ value }) => onChange(value)}
+            onTabChange={handleTabChange}
             tabs={InfoTabsData}
           />
         )}
@@ -104,6 +120,7 @@ export const DockerImageStep = () => {
             defaultValue={{ name: '' }}
             error={errors.managed?.root?.message}
             fieldsWrapperStyles="flex-row flex-wrap"
+            required={true}
             renderField={(field, remove, index) => (
               <TaggedInput
                 key={field.id}

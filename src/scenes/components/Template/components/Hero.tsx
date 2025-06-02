@@ -2,9 +2,16 @@ import { Icon, IconType } from '@components/Icon';
 import { Template } from '@globalTypes/templates';
 import { FormButton } from '@scenes/components/CreateTemplate/components/FormButton';
 import { useUser } from '@utils/lib/use-user';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { CreateServiceModal } from './CreateServiceModal';
+import { RouteMap } from '@components/Layout/components/types';
+import { createDynamicPath } from '@utils/lib/create-dynamic-path';
+
+interface HeroProps extends Template {
+  isDraft?: boolean;
+  draftId?: string;
+}
 
 export const Hero = ({
   name,
@@ -14,11 +21,23 @@ export const Hero = ({
   downloads,
   languages,
   id,
-}: Template) => {
+  isDraft = false,
+  draftId,
+}: HeroProps) => {
   const user = useUser();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   //
   const isAuthor = author.id == user?.id;
+  
+  const handleEditClick = () => {
+    if (isDraft && draftId) {
+      navigate(createDynamicPath(RouteMap.templatesDraftCreateStepInfo, { 
+        draft_id: draftId 
+      }));
+    }
+  };
+
   return (
     <div className="py-[22px] px-8 rounded-xl border border-blue flex gap-[33px]">
       <span className="text-blue">
@@ -74,23 +93,30 @@ export const Hero = ({
         </div>
         <div className="flex justify-between mt-auto">
           <nav className="flex gap-[6px]">
-            <FormButton
-              size="sm"
-              className="whitespace-nowrap"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Use template
-            </FormButton>
+            {!isDraft && (
+              <FormButton
+                size="sm"
+                className="whitespace-nowrap"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Use template
+              </FormButton>
+            )}
             {isAuthor && (
               <>
                 <FormButton
                   size="sm"
                   variant="unfilled"
-                  className="rounded-[4px]"
+                  className="rounded-[4px] whitespace-nowrap"
+                  onClick={isDraft ? handleEditClick : undefined}
                 >
                   Edit
                 </FormButton>
-                <FormButton size="sm" variant="red" className="rounded-[4px]">
+                <FormButton 
+                  size="sm" 
+                  variant="red" 
+                  className="rounded-[4px] whitespace-nowrap"
+                >
                   Delete
                 </FormButton>
               </>

@@ -1,5 +1,4 @@
 import { FormButton } from '../../components/FormButton';
-import { useDefaultValues } from '../../lib/use-default-values';
 
 import { useApiMutation } from '@utils/lib/use-api-query';
 import {
@@ -11,19 +10,19 @@ import { DefaultMapper } from './Mappers';
 import { Controller, useForm } from 'react-hook-form';
 import { FormTabs } from '../../components/FormTabs';
 import { MapperTabsData } from '../../constants';
-import { MapperForm } from '@globalTypes/templates.draft';
+import { MapperForm, MapperType } from '@globalTypes/templates.draft';
 import { useNotificationContext } from '@components/Notification';
-import { useDraftIdStorage } from '../../lib/use-draft-id-storage';
+import { useDraftContext } from '../../lib/use-draft-context';
 import { useNavigate } from 'react-router-dom';
 import { RouteMap } from '@components/Layout/components/types';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const MapperStep = () => {
   const { open } = useNotificationContext();
-  const { deleteDraftId } = useDraftIdStorage();
+  const { deleteDraftId, defaultValues, draftId, isUrlBased } = useDraftContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mapper: mapperValues } = useDefaultValues();
+  const { mapper: mapperValues } = defaultValues;
   const { id, state, mapper } = mapperValues;
   const { mutate, isPending: savePending } = useApiMutation({
     request: saveTemplateDraftMapper,
@@ -35,7 +34,7 @@ export const MapperStep = () => {
   const methods = useForm<MapperForm>({
     defaultValues: { id, state, mapper },
   });
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, setValue } = methods;
 
   const handleSave = handleSubmit(dto => {
     mutate(dto, {
@@ -47,7 +46,7 @@ export const MapperStep = () => {
 
   const handlePublish = () => {
     publishDraft(
-      { id },
+      { id: draftId || id },
       {
         onSuccess: async () => {
           deleteDraftId();
@@ -55,56 +54,62 @@ export const MapperStep = () => {
             queryKey: [getTemplates.endpoint],
           });
           open({ title: 'Draft Published' });
-          navigate(RouteMap.templates);
+          navigate(isUrlBased ? RouteMap.currentUserTemplates : RouteMap.templates);
         },
       },
     );
   };
 
+  const handleTabChange = (tab: { id: string; label: string; value: MapperType }) => {
+    // Проверяем, если это Custom (id: '1') или External (id: '2')
+    if (tab.id === '1' || tab.id === '2') {
+      const tabName = tab.id === '1' ? 'Custom' : 'External';
+      open({ 
+        title: 'Функциональность недоступна', 
+        description: `${tabName} mapper пока не поддерживается`,
+        variant: 'error' 
+      });
+      return;
+    }
+    // Если это Managed тип, то устанавливаем значение
+    setValue('mapper.type', tab.value);
+  };
+
   return (
-    <section className="flex flex-col gap-[30px]">
-      <h4 className="text-xl font-semibold font-inter text-white">
-        Add template mapper
-      </h4>
-      <form onSubmit={handleSave} className="flex flex-col gap-5">
-        <Controller
-          control={control}
-          name="mapper.type"
-          render={({ field: { onChange, value } }) => (
-            <FormTabs
-              currentTab={
-                MapperTabsData.find(tab => tab.value === value) ||
-                MapperTabsData[0]
-              }
-              disabled={tabId => tabId !== MapperTabsData[0].id}
-              onTabChange={({ value }) => onChange(value)}
-              tabs={MapperTabsData}
-            />
-          )}
-        />
-        <DefaultMapper mapper={mapperValues} />
-        <div className="mt-5 flex flex-col gap-[10px]">
-          <FormButton
-            type="submit"
-            onClick={handleSave}
-            disabled={savePending}
-            isLoading={savePending}
-          >
-            Save
-          </FormButton>
-          <FormButton
-            type="button"
-            onClick={handlePublish}
-            disabled={publishPending}
-            isLoading={publishPending}
-          >
-            Publish
-          </FormButton>
-          <FormButton type="button" variant="red">
-            Delete
-          </FormButton>
-        </div>
-      </form>
-    </section>
+    <>
+      <Controller
+        control={control}
+        name="mapper.type"
+        render={({ field: { value } }) => (
+          <FormTabs
+            currentTab={
+              MapperTabsData.find(tab => tab.value === value) ||
+              MapperTabsData[0]
+            }
+            onTabChange={handleTabChange}
+            tabs={MapperTabsData}
+          />
+        )}
+      />
+      <DefaultMapper mapper={mapperValues} />
+      <div className="flex gap-3 mt-5">
+        <FormButton
+          disabled={savePending}
+          onClick={handleSave}
+          isLoading={savePending}
+          loadingText="Saving..."
+        >
+          Save
+        </FormButton>
+        <FormButton
+          disabled={publishPending}
+          onClick={handlePublish}
+          isLoading={publishPending}
+          loadingText="Publishing..."
+        >
+          Publish
+        </FormButton>
+      </div>
+    </>
   );
 };

@@ -3,7 +3,7 @@ import { TemplateSettingsForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
 import { useApiMutation } from '@utils/lib/use-api-query';
 import { getTemplateDraft, saveTemplateDraftSettings } from '@api/queries';
-import { useDefaultValues } from '../../lib/use-default-values';
+import { useDraftContext } from '../../lib/use-draft-context';
 import { DeploySettings, HealthCheck, SettingsVariables } from './Bloks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNotificationContext } from '@components/Notification';
@@ -12,13 +12,14 @@ export const SettingsStep = () => {
   const { open } = useNotificationContext();
   const queryClient = useQueryClient();
 
-  const defaultValues = useDefaultValues().draftSettings;
+  const { defaultValues } = useDraftContext();
+  const defaultSettingsValues = defaultValues.draftSettings;
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftSettings,
   });
 
   const methods = useForm<TemplateSettingsForm>({
-    defaultValues,
+    defaultValues: defaultSettingsValues,
   });
 
   const { handleSubmit } = methods;

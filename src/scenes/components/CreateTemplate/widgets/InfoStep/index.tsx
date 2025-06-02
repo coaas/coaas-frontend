@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 
 import { FormField } from '../../components/FormField';
 import { Input } from '@components/Input';
@@ -10,21 +10,24 @@ import {
   getTemplateFilters,
   saveTemplateDraftInfo,
 } from '@api/queries';
-import { TaggedSelect } from '../../components/TaggedSelect';
 
 import { TemplateInfoForm } from '@globalTypes/templates.draft';
 import { FormButton } from '../../components/FormButton';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDefaultValues } from '../../lib/use-default-values';
+import { useDraftContext } from '../../lib/use-draft-context';
 import { useNotificationContext } from '@components/Notification';
+import { TagLikeButton } from '../../components/TaglikeButton';
 
 export const InfoStep = () => {
   const { open } = useNotificationContext();
   const queryClient = useQueryClient();
-  const defaultValues = useDefaultValues().draftInfo;
+  const { defaultValues } = useDraftContext();
+  const defaultInfoValues = defaultValues.draftInfo;
+  
   const { data: filters = { categories: [], languages: [] } } = useApiQuery({
     request: getTemplateFilters,
   });
+
   const { mutate, isPending } = useApiMutation({
     request: saveTemplateDraftInfo,
   });
@@ -35,8 +38,45 @@ export const InfoStep = () => {
     control,
     handleSubmit,
   } = useForm<TemplateInfoForm>({
-    defaultValues,
+    defaultValues: defaultInfoValues,
   });
+
+  const {
+    field: { value: categoriesValue, onChange: onCategoriesChange },
+  } = useController({
+    control,
+    name: 'categories',
+  });
+
+  const {
+    field: { value: languagesValue, onChange: onLanguagesChange },
+  } = useController({
+    control,
+    name: 'languages',
+  });
+
+  const selectedCategories = Array.isArray(categoriesValue) ? categoriesValue : [];
+  const selectedLanguages = Array.isArray(languagesValue) ? languagesValue : [];
+
+  const addCategory = (categoryKey: string) => {
+    if (!selectedCategories.includes(categoryKey)) {
+      onCategoriesChange([...selectedCategories, categoryKey]);
+    }
+  };
+
+  const removeCategory = (categoryKey: string) => {
+    onCategoriesChange(selectedCategories.filter(key => key !== categoryKey));
+  };
+
+  const addLanguage = (languageKey: string) => {
+    if (!selectedLanguages.includes(languageKey)) {
+      onLanguagesChange([...selectedLanguages, languageKey]);
+    }
+  };
+
+  const removeLanguage = (languageKey: string) => {
+    onLanguagesChange(selectedLanguages.filter(key => key !== languageKey));
+  };
 
   const onSubmit = handleSubmit(data => {
     mutate(data, {
@@ -48,6 +88,8 @@ export const InfoStep = () => {
       },
     });
   });
+
+  const hasFilters = filters.categories.length > 0 && filters.languages.length > 0;
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
@@ -73,28 +115,85 @@ export const InfoStep = () => {
           />
         )}
       </FormField>
-      <TaggedSelect
-        control={control}
-        rules={requiredRule}
-        name="categories"
-        fieldLabel="Categories"
-        selectLabel="Add category"
-        options={filters.categories.map(({ key, value }) => ({
-          label: value,
-          value: key,
-        }))}
-      />
-      <TaggedSelect
-        control={control}
-        rules={requiredRule}
-        name="languages"
-        fieldLabel="Languages"
-        selectLabel="Add language"
-        options={filters.languages.map(({ key, value }) => ({
-          label: value,
-          value: key,
-        }))}
-      />
+      {hasFilters && (
+        <>
+          <FormField error={errors.categories?.message} label="Categories">
+            <div className="flex flex-col gap-3">
+              <select
+                className="max-w-[200px] px-3 py-2 border border-stroke-gray-dark bg-stroke-gray rounded-md text-white"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    addCategory(e.target.value);
+                    e.target.value = '';
+                  }
+                }}
+                defaultValue=""
+              >
+                <option value="">Add category</option>
+                {filters.categories
+                  .filter(cat => !selectedCategories.includes(cat.key))
+                  .map(cat => (
+                    <option key={cat.key} value={cat.key}>
+                      {cat.value}
+                    </option>
+                  ))}
+              </select>
+              {selectedCategories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {filters.categories
+                    .filter(cat => selectedCategories.includes(cat.key))
+                    .map(cat => (
+                      <TagLikeButton
+                        key={cat.key}
+                        onClick={() => removeCategory(cat.key)}
+                      >
+                        {cat.value}
+                      </TagLikeButton>
+                    ))}
+                </div>
+              )}
+            </div>
+          </FormField>
+
+          <FormField error={errors.languages?.message} label="Languages">
+            <div className="flex flex-col gap-3">
+              <select
+                className="max-w-[200px] px-3 py-2 border border-stroke-gray-dark bg-stroke-gray rounded-md text-white"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    addLanguage(e.target.value);
+                    e.target.value = '';
+                  }
+                }}
+                defaultValue=""
+              >
+                <option value="">Add language</option>
+                {filters.languages
+                  .filter(lang => !selectedLanguages.includes(lang.key))
+                  .map(lang => (
+                    <option key={lang.key} value={lang.key}>
+                      {lang.value}
+                    </option>
+                  ))}
+              </select>
+              {selectedLanguages.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {filters.languages
+                    .filter(lang => selectedLanguages.includes(lang.key))
+                    .map(lang => (
+                      <TagLikeButton
+                        key={lang.key}
+                        onClick={() => removeLanguage(lang.key)}
+                      >
+                        {lang.value}
+                      </TagLikeButton>
+                    ))}
+                </div>
+              )}
+            </div>
+          </FormField>
+        </>
+      )}
       <FormField
         clickable
         error={errors.docs?.message}

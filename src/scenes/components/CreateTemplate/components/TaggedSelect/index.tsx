@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form';
 
 import { FormField } from '../FormField';
-import { Select } from '@components/Select';
+import { Select } from '@components/Select/index.tsx';
 import { TagLikeButton } from '../TaglikeButton';
 import { ButtonVariant } from '../TaglikeButton/styles';
 
@@ -46,51 +46,56 @@ export const TaggedSelect = <T extends FieldValues>({
     rules,
   });
 
+  const selectedValues: (string | number)[] = Array.isArray(value) ? value : [];
+
+  const handleOptionChange = (option: Option<string | number>) => {
+    const optionValue = option.value;
+    const isSelected = selectedValues.includes(optionValue);
+    
+    if (isSelected) {
+      const newValues = selectedValues.filter((item: string | number) => item !== optionValue);
+      onChange(newValues);
+    } else {
+      const newValues = [...selectedValues, optionValue];
+      onChange(newValues);
+    }
+  };
+
+  const handleTagRemove = (optionValue: string | number) => {
+    const newValues = selectedValues.filter((item: string | number) => item !== optionValue);
+    onChange(newValues);
+  };
+
   return (
     <FormField className={className} error={error?.message} label={fieldLabel}>
-      {() => (
-        <div className="flex flex-wrap gap-[10px]">
-          <Select
-            className="max-w-[137px]  py-[6px]"
-            onOptionChange={option =>
-              onChange(
-                value.includes(String(option.value))
-                  ? value.filter(
-                      (item: string | number) => item !== option.value,
-                    )
-                  : [...value, option.value],
-              )
-            }
-            defaultValue={value}
-            options={options}
-            defaultLabel={selectLabel}
-            multiple
-            withSearch
-            onSearchChange={onSearch}
-            variant="formView"
-          >
-            {(options, setSelectItems) => (
-              <>
-                {options.map(option => (
-                  <TagLikeButton
-                    variant={buttonVariant}
-                    key={option.value}
-                    onClick={() => {
-                      const newItems = value.filter(
-                        (v: string | number) => v !== option.value,
-                      );
-                      onChange(newItems);
-                      setSelectItems(newItems);
-                    }}
-                  >
-                    {option.label}
-                  </TagLikeButton>
-                ))}
-              </>
-            )}
-          </Select>
-        </div>
-      )}
+      <div className="flex flex-col gap-[10px]">
+        <Select
+          className="max-w-[137px] py-[6px]"
+          onOptionChange={handleOptionChange}
+          defaultValue={selectedValues}
+          options={options}
+          defaultLabel={selectLabel}
+          multiple={true}
+          withSearch
+          onSearchChange={onSearch}
+          variant="formView"
+        />
+        {selectedValues.length > 0 && (
+          <div className="flex flex-wrap gap-[10px]">
+            {options
+              .filter(option => selectedValues.includes(option.value))
+              .map(option => (
+                <TagLikeButton
+                  variant={buttonVariant}
+                  key={option.value}
+                  onClick={() => handleTagRemove(option.value)}
+                >
+                  {option.label}
+                </TagLikeButton>
+              ))}
+          </div>
+        )}
+      </div>
     </FormField>
   );
 };
