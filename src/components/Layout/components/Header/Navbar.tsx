@@ -46,14 +46,18 @@ export const Navbar = () => {
   const currentNamespaceSlug = params.namespace_slug;
   const currentProjectSlug = params.project_slug;
 
+  const user = useUser();
+
   const { data } = useApiQuery({
     request: getUserNamespacesAndProjects,
+    payload: { user_id: user?.id },
     requestOptions: {
       prefixUrl: '/api',
     },
+    options: {
+      enabled: !!user, // Запрос выполняется только когда пользователь загружен
+    },
   });
-
-  const user = useUser();
 
   if (!data) return null;
 

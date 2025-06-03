@@ -1,4 +1,4 @@
-import { authApi } from '@api/constants.ts';
+import { authApi, queryClient } from '@api/constants.ts';
 import { setAccess } from '@api/setAccess/setAccess';
 import { useNavigate, Link } from 'react-router-dom';
 import { RouteMap } from '@components/Layout/components/types';
@@ -22,6 +22,13 @@ export const Login = () => {
           access_token: string;
         }>();
         setAccess(data.access_token);
+        await queryClient.invalidateQueries({
+          queryKey: ['UserService/GetCurrentUserData'],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ['NamespacesManager/GetUserNamespacesAndProjectsList'],
+        });
+        await queryClient.clear();
         return true;
       }
     } catch (error) {
