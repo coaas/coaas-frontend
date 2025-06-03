@@ -30,6 +30,8 @@ const isAccessExpired = () => {
   return data.exp === undefined || data.exp < Date.now() / 1000;
 };
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const obtainAccess = async () => {
   if (mutex.isLocked()) {
     await mutex.waitForUnlock();
@@ -39,26 +41,40 @@ export const obtainAccess = async () => {
   const release = await mutex.acquire();
 
   const REFRESH_PATH = 'auth/refresh';
+  const MAX_RETRIES = 3;
+  const BASE_DELAY = 500; // 500ms базовая задержка
+  
   try {
-    const resp = await authApi.post(REFRESH_PATH, {
-      credentials: 'include',
-    });
-    if (resp.ok) {
-      const data = await resp.json<{
-        access_token: string;
-      }>();
-      setAccess(data.access_token);
-      return data.access_token;
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        const resp = await authApi.post(REFRESH_PATH, {
+          credentials: 'include',
+        });
+        if (resp.ok) {
+          const data = await resp.json<{
+            access_token: string;
+          }>();
+          setAccess(data.access_token);
+          return data.access_token;
+        }
+      } catch (error) {
+        if (attempt === MAX_RETRIES) {
+          // Только после всех попыток делаем редирект
+          if (
+            error instanceof HTTPError &&
+            !error.response.ok &&
+            window.location.pathname !== '/login'
+          ) {
+            window.location.href = '/login';
+          }
+          console.error(error);
+        } else {
+          // Экспоненциальная задержка: 500ms, 1000ms, 2000ms...
+          const delay = BASE_DELAY * Math.pow(2, attempt - 1);
+          await sleep(delay);
+        }
+      }
     }
-  } catch (error) {
-    if (
-      error instanceof HTTPError &&
-      !error.response.ok &&
-      window.location.pathname !== '/login'
-    ) {
-      window.location.href = '/login';
-    }
-    console.error(error);
   } finally {
     release();
   }
