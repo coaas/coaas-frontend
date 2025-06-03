@@ -7,7 +7,7 @@ export const useNamespace = () => {
 
   return useApiQuery({
     request: getNamespace,
-    payload: {},
+    payload: { namespace_slug },
     options: {
       enabled: !!namespace_slug,
     },

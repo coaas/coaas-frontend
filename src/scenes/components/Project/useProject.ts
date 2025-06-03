@@ -7,7 +7,10 @@ import { tourMode } from '../../../utils/tourMode';
 import { getProjectMockData } from './mocks';
 
 export const useProject = () => {
-  const { project_slug } = useParams<{ project_slug: string }>();
+  const { namespace_slug, project_slug } = useParams<{ 
+    namespace_slug: string; 
+    project_slug: string; 
+  }>();
   const [isTourMode, setIsTourMode] = useState(tourMode.isActive());
 
   // Subscribe to tour mode changes
@@ -18,18 +21,18 @@ export const useProject = () => {
 
   // Use mock data in tour mode
   const mockQuery = useQuery({
-    queryKey: ['project', project_slug, 'mock'],
+    queryKey: ['project', namespace_slug, project_slug, 'mock'],
     queryFn: getProjectMockData,
-    enabled: isTourMode && !!project_slug,
+    enabled: isTourMode && !!project_slug && !!namespace_slug,
     staleTime: 0,
   });
 
   // Use real API in normal mode
   const apiQuery = useApiQuery({
     request: getProject,
-    payload: {},
+    payload: { namespace_slug, project_slug },
     options: {
-      enabled: !isTourMode && !!project_slug,
+      enabled: !isTourMode && !!project_slug && !!namespace_slug,
     },
     requestOptions: {
       prefixUrl: '/api',

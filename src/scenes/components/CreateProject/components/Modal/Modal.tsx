@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { api } from '@api/constants';
 import {
@@ -15,12 +15,15 @@ const ENDPOINT = 'ProjectsManager/ProjectSlugExists';
 
 export const Modal: FC<ModalProps> = ({ isOpen, onIsOpenChange }) => {
   const { namespace_slug: namespaceSlug } = useParams();
+  const navigate = useNavigate();
 
   const mutation = useCreateProject({
     namespaceSlug,
     onError: () => console.log('error'),
-    onSuccess: newProject => {
-      console.log('newProject', newProject);
+    onSuccess: createdProject => {
+      console.log('newProject', createdProject);
+      navigate(`/namespaces/${namespaceSlug}/projects/${createdProject.slug}`);
+      onIsOpenChange(false);
     },
   });
 

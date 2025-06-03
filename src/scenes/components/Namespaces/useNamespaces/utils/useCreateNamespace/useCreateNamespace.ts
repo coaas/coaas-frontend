@@ -6,8 +6,8 @@ import { UseCreateNamespaceParams } from './types';
 export const useCreateNamespace = ({ refetch }: UseCreateNamespaceParams) => {
   const createNamespaceMutation = useCreateNamespaceMutation({
     onError: () => console.log('error'),
-    onSuccess: newNamespace => {
-      console.log('newNamespace', newNamespace);
+    onSuccess: createdNamespace => {
+      console.log('newNamespace', createdNamespace);
       refetch();
     },
   });

@@ -9,6 +9,7 @@ import { cn } from '@utils/styles';
 import { useApiQuery } from '@utils/lib/use-api-query';
 import { getUserNamespacesAndProjects } from '@api/queries';
 import { useUser } from '@utils/lib/use-user';
+import { useState } from 'react';
 
 // Функция для получения инициалов namespace (первые 2 заглавные буквы)
 const getNamespaceInitials = (namespace: string) => {
@@ -38,6 +39,7 @@ const getProjectColor = (projectSlug: string) => {
 
 export const Navbar = () => {
   const { state, off, setState } = useToggle();
+  const [hoveredNamespace, setHoveredNamespace] = useState<string | null>(null);
 
   const params = useParams();
 
@@ -58,10 +60,11 @@ export const Navbar = () => {
   const namespacesSlugs = objectKeys(data.namespaces);
 
   const currentNamespace = data.namespaces[currentNamespaceSlug || ''];
-
-  const currentNamespaceProjectsSlugs = objectKeys(
-    currentNamespace?.projects || {},
-  );
+  
+  // Определяем namespace для показа проектов - либо тот, на который навели, либо текущий
+  const displayNamespaceSlug = hoveredNamespace || currentNamespaceSlug;
+  const displayNamespace = displayNamespaceSlug ? data.namespaces[displayNamespaceSlug] : null;
+  const displayNamespaceProjectsSlugs = objectKeys(displayNamespace?.projects || {});
 
   const currentProject = currentNamespace?.projects?.[currentProjectSlug || ''];
 
@@ -76,6 +79,7 @@ export const Navbar = () => {
         <div
           onClick={close}
           className="py-[14px] z-10 px-[22px] border-stroke-gray-dark dark:border-stroke-gray-dark border-gray-300 border-[1.5px] rounded-lg flex gap-[22px] w-full max-w-fit bg-background dark:bg-background bg-white max-h-[400px] overflow-auto shadow-xl"
+          onMouseLeave={() => setHoveredNamespace(null)}
         >
           {namespacesSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
@@ -84,13 +88,9 @@ export const Navbar = () => {
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
                 {namespacesSlugs.map(namespaceSlug => {
-                  console.log(
-                    createDynamicPath(RouteMap.namespace, {
-                      namespace_slug: namespaceSlug.toString(),
-                    }),
-                  );
                   const namespace = data.namespaces[namespaceSlug];
                   if (!namespace) return null;
+                  const hasProjects = objectKeys(namespace.projects).length > 0;
                   return (
                     <li key={namespaceSlug}>
                       <Link
@@ -98,14 +98,15 @@ export const Navbar = () => {
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900 flex items-center gap-3',
                           {
                             'bg-area dark:bg-area bg-gray-100':
-                              currentNamespaceSlug === namespaceSlug,
+                              currentNamespaceSlug === namespaceSlug || hoveredNamespace === namespaceSlug,
                             'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
-                              currentNamespaceSlug !== namespaceSlug,
+                              currentNamespaceSlug !== namespaceSlug && hoveredNamespace !== namespaceSlug,
                           },
                         )}
                         to={createDynamicPath(RouteMap.namespace, {
                           namespace_slug: namespaceSlug.toString(),
                         })}
+                        onMouseEnter={() => hasProjects && setHoveredNamespace(namespaceSlug.toString())}
                       >
                         <div className="w-8 h-6 bg-blue/20 border border-blue rounded-sm flex items-center justify-center text-xs font-bold text-blue">
                           {getNamespaceInitials(namespaceSlug.toString())}
@@ -118,17 +119,17 @@ export const Navbar = () => {
               </ul>
             </div>
           )}
-          {currentNamespace && currentNamespaceProjectsSlugs.length > 0 && (
+          {displayNamespace && displayNamespaceProjectsSlugs.length > 0 && (
             <span className="w-[1px] bg-stroke-gray-dark dark:bg-stroke-gray-dark bg-gray-300" />
           )}
-          {currentNamespace && currentNamespaceProjectsSlugs.length > 0 && (
+          {displayNamespace && displayNamespaceProjectsSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
               <h3 className="text-blue-light dark:text-blue-light text-blue text-xl font-inter leading-5 font-semibold">
                 Projects
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
-                {currentNamespaceProjectsSlugs.map(projectSlug => {
-                  const project = currentNamespace?.projects[projectSlug];
+                {displayNamespaceProjectsSlugs.map(projectSlug => {
+                  const project = displayNamespace?.projects[projectSlug];
                   if (!project) return null;
                   const projectColor = getProjectColor(projectSlug.toString());
                   return (
@@ -138,13 +139,13 @@ export const Navbar = () => {
                           'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900 flex items-center gap-3',
                           {
                             'bg-area dark:bg-area bg-gray-100':
-                              currentProjectSlug === projectSlug,
+                              currentProjectSlug === projectSlug && displayNamespaceSlug === currentNamespaceSlug,
                             'hover:bg-area dark:hover:bg-area hover:bg-gray-50':
-                              currentNamespaceSlug !== projectSlug,
+                              !(currentProjectSlug === projectSlug && displayNamespaceSlug === currentNamespaceSlug),
                           },
                         )}
                         to={createDynamicPath(RouteMap.project, {
-                          ...params,
+                          namespace_slug: displayNamespaceSlug,
                           project_slug: projectSlug.toString(),
                         })}
                       >
