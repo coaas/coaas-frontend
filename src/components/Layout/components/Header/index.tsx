@@ -3,14 +3,24 @@ import { ThemeToggle } from '@components/ThemeToggle';
 import { Icon, IconType } from '@components/Icon';
 import { LogoutUser } from '@scenes/components/Logout/api';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RouteMap } from '../types';
 
 export const Header = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    await LogoutUser();
-    setIsLoggingOut(false);
+    try {
+      await LogoutUser();
+      // Переходим на страницу логина через React Router
+      navigate(RouteMap.login);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (

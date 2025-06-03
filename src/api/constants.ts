@@ -4,19 +4,18 @@ import { beforeRequest } from '@api/authBeforeRequest/beforeRequest';
 import { afterResponse } from '@api/authBeforeRequest/afterResponse.ts';
 import { apiErrorHandler } from './errorHandler';
 
+export const IS_PREFIX = import.meta.env.VITE_PROXY_BACK === 'True';
+
 export const authApi = ky.create({
-  prefixUrl: import.meta.env.VITE_API_AUTH_PREFIX,
+  prefixUrl: IS_PREFIX ? '/auth' : '/api',
   credentials: 'include',
   hooks: {
     afterResponse: [apiErrorHandler],
   },
 });
 
-export const IS_PREFIX = import.meta.env.VITE_PROXY_BACK === 'True';
 export const api = ky.create({
-  prefixUrl: IS_PREFIX
-    ? '/api/' + String(import.meta.env.VITE_API_PREFIX)
-    : '/api',
+  prefixUrl: '/api',
   credentials: 'include',
   hooks: {
     beforeRequest: [beforeRequest],
