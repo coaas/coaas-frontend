@@ -50,7 +50,12 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
     false,
   );
   const [selectClusterId, setSelectClusterId] = useState<string | null>(null);
-  const [serverInfo, setServerInfo] = useState({ cpu: '', ram: '', disk: '' });
+  const [serverInfo, setServerInfo] = useState({
+    server_id: '',
+    cpu: '',
+    ram: '',
+    disk: '',
+  });
 
   const noneRulesClusters = useMemo(
     () =>
@@ -236,6 +241,7 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
             const server = selectedCluster.servers.find(s => s.id === value);
             if (!server) return;
             setServerInfo({
+              server_id: value,
               cpu: server.cpu.toString(),
               ram: server.ram.toString(),
               disk: server.disk.toString(),
@@ -250,10 +256,11 @@ export const DeployRules = ({ clusters }: { clusters: ClustersResponse }) => {
                   ['cpu', 'ram', 'disk', 'replicas'],
                   Number,
                 );
+                console.log('sv inputModal', inputModal);
                 addServerRule({
-                  service_id: service_id,
+                  service_id,
                   cluster_id: selectedCluster?.id,
-                  fixed_rule: obj,
+                  fixed_rule: { ...obj, server_id: serverInfo.server_id },
                 });
                 setModalType(false);
               }}
