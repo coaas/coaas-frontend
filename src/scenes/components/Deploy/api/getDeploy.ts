@@ -30,7 +30,10 @@ const getDeploy = () => {
         r(clusters as unknown as ClustersResponse);
       })
     : api
-        .post(DEPLOY_ENDPOINT, { body: JSON.stringify({}) })
+        .post(DEPLOY_ENDPOINT, { 
+          body: JSON.stringify({}),
+          timeout: 60000 // 60 seconds timeout
+        })
         .json<ClustersResponse>();
 };
 

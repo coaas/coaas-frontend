@@ -6,6 +6,7 @@ export * from './GitIcon';
 export * from './GraphIcon';
 export * from './HintIcon';
 export * from './LayersIcon';
+export * from './LogoutIcon';
 export * from './MetricsIcon';
 export * from './SearchIcon';
 export * from './SecretIcon';

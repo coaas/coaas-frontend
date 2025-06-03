@@ -45,6 +45,7 @@ export default {
       },
       stroke: {
         DEFAULT: '#4E608D',
+        blue: '#507EF5',
         gray: {
           DEFAULT: '#43424A',
           dark: '#4C4958',

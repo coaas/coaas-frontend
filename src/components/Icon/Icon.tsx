@@ -10,6 +10,7 @@ import {
   GraphIcon,
   HintIcon,
   LayersIcon,
+  LogoutIcon,
   MenuIcon,
   MetricsIcon,
   SearchIcon,
@@ -99,6 +100,10 @@ export const Icon: FC<IconProps> = props => {
 
     case IconType.menu: {
       return <MenuIcon {...props.props} />;
+    }
+
+    case IconType.logout: {
+      return <LogoutIcon {...props.props} />;
     }
 
     default: {

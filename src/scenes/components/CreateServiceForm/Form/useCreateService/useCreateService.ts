@@ -7,6 +7,14 @@ import { FormState } from '../types';
 
 const ENDPOINT = 'ServicesManager/CreateService';
 
+interface CreateServiceResponse {
+  id: string;
+  name: string;
+  description: string;
+  type: number;
+  created_at: string;
+}
+
 export const useCreateService = () => {
   const navigate = useNavigate();
   const { namespace_slug, project_slug, template_id } = useParams();
@@ -33,7 +41,10 @@ export const useCreateService = () => {
           'x-project-slug': project_slug,
         },
       }),
-    onSuccess: () => navigate('../../../'),
+    onSuccess: async (response) => {
+      const data = await response.json() as CreateServiceResponse;
+      navigate(`/namespaces/${namespace_slug}/projects/${project_slug}/services/${data.id}`);
+    },
   });
 
   return mutation;

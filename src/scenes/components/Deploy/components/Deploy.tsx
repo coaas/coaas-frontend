@@ -119,11 +119,23 @@ export const Deploy = ({
         </h1>
         {type === 'deploy' && (
           <div className="flex gap-2" data-tour="deploy-status">
-            {deployTags.map(tag => (
-              <Achieve key={tag} status={Status.UNKNOWN} size={'lg'}>
-                {tag}
-              </Achieve>
-            ))}
+            {deployTags.map(tag => {
+              const getTagColor = (tagName: string) => {
+                if (tagName === 'docker' || tagName === 'kubernetes') {
+                  return { color: 'blue' as const };
+                }
+                if (tagName === 'regions' || tagName === 'servers') {
+                  return { color: 'gray' as const };
+                }
+                return { status: Status.UNKNOWN };
+              };
+
+              return (
+                <Achieve key={tag} {...getTagColor(tag)} size={'lg'}>
+                  {tag}
+                </Achieve>
+              );
+            })}
           </div>
         )}
       </div>

@@ -14,9 +14,9 @@ export const DeployButton = ({
   const variants = {
     base: 'rounded-lg w-full font-medium py-1',
     color: {
-      blue: 'bg-stroke-blue',
-      area: 'bg-area',
-      transparent: '',
+      blue: 'bg-stroke-blue text-white',
+      area: 'bg-area text-white',
+      transparent: 'text-white',
     },
     border: 'border-4 border-area-dark',
   };

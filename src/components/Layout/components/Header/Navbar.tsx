@@ -10,6 +10,32 @@ import { useApiQuery } from '@utils/lib/use-api-query';
 import { getUserNamespacesAndProjects } from '@api/queries';
 import { useUser } from '@utils/lib/use-user';
 
+// Функция для получения инициалов namespace (первые 2 заглавные буквы)
+const getNamespaceInitials = (namespace: string) => {
+  return namespace.substring(0, 2).toUpperCase();
+};
+
+// Функция для генерации рандомного цвета для проекта
+const getProjectColor = (projectSlug: string) => {
+  const colors = [
+    '#507EF5', // blue
+    '#1EA574', // green
+    '#FFBB4F', // orange
+    '#FF4F52', // red
+    '#D24FD0', // violet
+    '#7086A6', // blue-light
+    '#708DA6', // blue-soft
+  ];
+  
+  // Используем простой хэш строки для детерминированного выбора цвета
+  let hash = 0;
+  for (let i = 0; i < projectSlug.length; i++) {
+    hash = projectSlug.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+};
+
 export const Navbar = () => {
   const { state, off, setState } = useToggle();
 
@@ -53,7 +79,7 @@ export const Navbar = () => {
         >
           {namespacesSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
-              <h3 className="text-gray dark:text-gray text-gray-700 text-xl font-inter leading-5 font-semibold">
+              <h3 className="text-blue-light dark:text-blue-light text-blue text-xl font-inter leading-5 font-semibold">
                 Namespaces
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
@@ -69,7 +95,7 @@ export const Navbar = () => {
                     <li key={namespaceSlug}>
                       <Link
                         className={cn(
-                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
+                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900 flex items-center gap-3',
                           {
                             'bg-area dark:bg-area bg-gray-100':
                               currentNamespaceSlug === namespaceSlug,
@@ -81,7 +107,10 @@ export const Navbar = () => {
                           namespace_slug: namespaceSlug.toString(),
                         })}
                       >
-                        {namespaceSlug}
+                        <div className="w-8 h-6 bg-blue/20 border border-blue rounded-sm flex items-center justify-center text-xs font-bold text-blue">
+                          {getNamespaceInitials(namespaceSlug.toString())}
+                        </div>
+                        <span>{namespaceSlug}</span>
                       </Link>
                     </li>
                   );
@@ -94,18 +123,19 @@ export const Navbar = () => {
           )}
           {currentNamespace && currentNamespaceProjectsSlugs.length > 0 && (
             <div className="flex-1 min-w-[247px]">
-              <h3 className="text-gray dark:text-gray text-gray-700 text-xl font-inter leading-5 font-semibold">
+              <h3 className="text-blue-light dark:text-blue-light text-blue text-xl font-inter leading-5 font-semibold">
                 Projects
               </h3>
               <ul className="flex flex-col gap-[2px] mt-[14px]">
                 {currentNamespaceProjectsSlugs.map(projectSlug => {
                   const project = currentNamespace?.projects[projectSlug];
                   if (!project) return null;
+                  const projectColor = getProjectColor(projectSlug.toString());
                   return (
                     <li key={projectSlug}>
                       <Link
                         className={cn(
-                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900',
+                          'p-3 rounded-[10px] block transition-colors text-[15px] leading-5 text-white dark:text-white text-gray-900 flex items-center gap-3',
                           {
                             'bg-area dark:bg-area bg-gray-100':
                               currentProjectSlug === projectSlug,
@@ -118,7 +148,11 @@ export const Navbar = () => {
                           project_slug: projectSlug.toString(),
                         })}
                       >
-                        {projectSlug}
+                        <div 
+                          className="w-4 h-4 rounded-sm" 
+                          style={{ backgroundColor: projectColor }}
+                        />
+                        <span>{projectSlug}</span>
                       </Link>
                     </li>
                   );
@@ -132,14 +166,16 @@ export const Navbar = () => {
       <nav className="flex items-center gap-2 px-2 py-[6px] rounded-lg select-none max-w-fit cursor-pointer hover:bg-area-dark dark:hover:bg-area-dark hover:bg-gray-100 transition-colors">
         <div className="flex items-center gap-1">
           <Icon type={IconType.cube} props={{ size: 20 }} />
-          <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
+          <span className="text-[15px] leading-5 font-medium text-blue-light dark:text-blue-light text-blue">
             {user?.username}
           </span>
         </div>
         {currentNamespace && (
           <div className="flex items-center gap-1">
-            <Icon type={IconType.support} props={{ size: 20 }} />
-            <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
+            <div className="w-6 h-4 bg-blue/20 border border-blue rounded-sm flex items-center justify-center text-xs font-bold text-blue mr-1">
+              {getNamespaceInitials(currentNamespaceSlug || '')}
+            </div>
+            <span className="text-[15px] leading-5 font-medium text-blue-light dark:text-blue-light text-blue">
               {currentNamespaceSlug}
             </span>
             {objectKeys(currentNamespace.projects).length > 0 && (
@@ -149,7 +185,11 @@ export const Navbar = () => {
         )}
         {currentProject && (
           <div className="flex items-center gap-1">
-            <span className="text-[15px] leading-5 font-medium text-gray dark:text-gray text-gray-700">
+            <div 
+              className="w-3 h-3 rounded-sm mr-1" 
+              style={{ backgroundColor: getProjectColor(currentProjectSlug || '') }}
+            />
+            <span className="text-[15px] leading-5 font-medium text-blue-light dark:text-blue-light text-blue">
               {currentProjectSlug}
             </span>
           </div>
