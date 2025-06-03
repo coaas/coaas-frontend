@@ -5,7 +5,7 @@ import type { ResponseLogoutUser } from './types';
 
 export async function LogoutUser(): Promise<ResponseLogoutUser> {
   try {
-    const response = await authApi.delete('auth/logout');
+    const response = await authApi.delete('logout');
     if (response.ok) {
       deleteAccess();
     }

@@ -26,7 +26,7 @@ const getProjectColor = (projectSlug: string) => {
     '#7086A6', // blue-light
     '#708DA6', // blue-soft
   ];
-  
+
   // Используем простой хэш строки для детерминированного выбора цвета
   let hash = 0;
   for (let i = 0; i < projectSlug.length; i++) {
@@ -148,8 +148,8 @@ export const Navbar = () => {
                           project_slug: projectSlug.toString(),
                         })}
                       >
-                        <div 
-                          className="w-4 h-4 rounded-sm" 
+                        <div
+                          className="w-4 h-4 rounded-sm"
                           style={{ backgroundColor: projectColor }}
                         />
                         <span>{projectSlug}</span>
@@ -185,9 +185,11 @@ export const Navbar = () => {
         )}
         {currentProject && (
           <div className="flex items-center gap-1">
-            <div 
-              className="w-3 h-3 rounded-sm mr-1" 
-              style={{ backgroundColor: getProjectColor(currentProjectSlug || '') }}
+            <div
+              className="w-3 h-3 rounded-sm mr-1"
+              style={{
+                backgroundColor: getProjectColor(currentProjectSlug || ''),
+              }}
             />
             <span className="text-[15px] leading-5 font-medium text-blue-light dark:text-blue-light text-blue">
               {currentProjectSlug}

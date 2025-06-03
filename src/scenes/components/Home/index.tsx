@@ -12,14 +12,18 @@ export const Home: FC = () => {
     if (justRegistered === 'true') {
       // Clear the flag
       localStorage.removeItem('just_registered');
-      
+
       // Show welcome notification
-      showNotification({
-        title: 'Welcome to CloudOps! 🎉',
-        description: 'Your account has been successfully created. Let\'s take a tour to explore the platform!',
-        variant: 'success',
-      }, 5000);
-      
+      showNotification(
+        {
+          title: 'Welcome to CloudOps! 🎉',
+          description:
+            "Your account has been successfully created. Let's take a tour to explore the platform!",
+          variant: 'success',
+        },
+        5000,
+      );
+
       // Start auto tour after a short delay to ensure page is fully loaded
       setTimeout(() => {
         tour.startTour(true);

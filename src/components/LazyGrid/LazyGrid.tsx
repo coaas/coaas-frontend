@@ -12,12 +12,15 @@ export const LazyGrid: FC<LazyGridProps> = ({ className, Item, ...props }) => {
 
   // Extract data-tour and other data attributes
   const dataTour = (props as any)['data-tour'];
-  const dataAttributes = Object.keys(props).reduce((acc, key) => {
-    if (key.startsWith('data-')) {
-      acc[key] = (props as any)[key];
-    }
-    return acc;
-  }, {} as Record<string, any>);
+  const dataAttributes = Object.keys(props).reduce(
+    (acc, key) => {
+      if (key.startsWith('data-')) {
+        acc[key] = (props as any)[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
 
   if (isFetchingAllGrid) {
     return <div ref={wrapperRef}>Loading...</div>;

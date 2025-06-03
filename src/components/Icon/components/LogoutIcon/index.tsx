@@ -23,4 +23,4 @@ export const LogoutIcon: FC<SquareIconProps> = ({
       strokeLinejoin="round"
     />
   </svg>
-); 
+);

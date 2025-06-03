@@ -41,9 +41,11 @@ export const useCreateService = () => {
           'x-project-slug': project_slug,
         },
       }),
-    onSuccess: async (response) => {
-      const data = await response.json() as CreateServiceResponse;
-      navigate(`/namespaces/${namespace_slug}/projects/${project_slug}/services/${data.id}`);
+    onSuccess: async response => {
+      const data = (await response.json()) as CreateServiceResponse;
+      navigate(
+        `/namespaces/${namespace_slug}/projects/${project_slug}/services/${data.id}`,
+      );
     },
   });
 

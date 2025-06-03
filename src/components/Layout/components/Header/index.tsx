@@ -29,7 +29,7 @@ export const Header = () => {
       <div className="flex items-center gap-2">
         {/* Переключатель темы */}
         <ThemeToggle />
-        
+
         {/* Кнопка logout */}
         <button
           onClick={handleLogout}
@@ -37,7 +37,10 @@ export const Header = () => {
           className="flex items-center justify-center p-2 rounded-lg hover:bg-area-dark dark:hover:bg-area-dark hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           title={isLoggingOut ? 'Logging out...' : 'Logout'}
         >
-          <Icon type={IconType.logout} props={{ size: 20, color: isLoggingOut ? '#B6B6B6' : '#507EF5' }} />
+          <Icon
+            type={IconType.logout}
+            props={{ size: 20, color: isLoggingOut ? '#B6B6B6' : '#507EF5' }}
+          />
         </button>
       </div>
     </header>

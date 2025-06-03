@@ -122,8 +122,14 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
           // Keep tooltip within viewport (except for center position)
           if (currentStep.position !== 'center') {
             const padding = 20;
-            top = Math.max(padding, Math.min(top, window.innerHeight - tooltipRect.height - padding));
-            left = Math.max(padding, Math.min(left, window.innerWidth - tooltipRect.width - padding));
+            top = Math.max(
+              padding,
+              Math.min(top, window.innerHeight - tooltipRect.height - padding),
+            );
+            left = Math.max(
+              padding,
+              Math.min(left, window.innerWidth - tooltipRect.width - padding),
+            );
           }
 
           setTooltipPosition({ top, left });
@@ -189,7 +195,10 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
     // For service-categories step, use retry logic
     if (currentStep.id === 'service-categories') {
       setTimeout(() => tryUpdatePosition(), 500);
-    } else if (currentStep.id === 'deploy-services-content' || currentStep.id === 'deploy-servers-content') {
+    } else if (
+      currentStep.id === 'deploy-services-content' ||
+      currentStep.id === 'deploy-servers-content'
+    ) {
       // For deploy content steps, use retry logic with more attempts
       setTimeout(() => tryUpdatePosition(), 800);
     } else {
@@ -241,16 +250,20 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
 
     // Auto-click on Services tab and show content
     if (currentStep.id === 'deploy-services-content') {
-      const servicesTab = document.querySelector('[data-tour="deploy-tabs"] button') as HTMLElement;
-      const allTabs = document.querySelectorAll('[data-tour="deploy-tabs"] button');
+      const servicesTab = document.querySelector(
+        '[data-tour="deploy-tabs"] button',
+      ) as HTMLElement;
+      const allTabs = document.querySelectorAll(
+        '[data-tour="deploy-tabs"] button',
+      );
       let targetTab: HTMLElement | null = null;
-      
+
       allTabs.forEach(tab => {
         if (tab.textContent?.includes('Services')) {
           targetTab = tab as HTMLElement;
         }
       });
-      
+
       if (targetTab) {
         setTimeout(() => {
           targetTab!.click();
@@ -265,15 +278,20 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
 
     // Auto-click on Servers/Data Centers tab and show content
     if (currentStep.id === 'deploy-servers-content') {
-      const allTabs = document.querySelectorAll('[data-tour="deploy-tabs"] button');
+      const allTabs = document.querySelectorAll(
+        '[data-tour="deploy-tabs"] button',
+      );
       let targetTab: HTMLElement | null = null;
-      
+
       allTabs.forEach(tab => {
-        if (tab.textContent?.includes('Servers') || tab.textContent?.includes('Data Centers')) {
+        if (
+          tab.textContent?.includes('Servers') ||
+          tab.textContent?.includes('Data Centers')
+        ) {
           targetTab = tab as HTMLElement;
         }
       });
-      
+
       if (targetTab) {
         setTimeout(() => {
           targetTab!.click();
@@ -350,7 +368,7 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
         return;
       }
     }
-    
+
     // Handle tour completion - navigate to home page
     if (currentStep?.id === 'tour-complete') {
       // Navigate to home page after a short delay
@@ -359,7 +377,7 @@ export const TourOverlay: React.FC<TourOverlayProps> = ({
       }, 500);
       return;
     }
-    
+
     onNext();
   };
 

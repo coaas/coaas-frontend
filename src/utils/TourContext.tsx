@@ -5,7 +5,8 @@ const tourSteps: TourStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to CloudOps Platform! 🚀',
-    description: 'Thanks for joining CloudOps! Let us take you on a quick tour to show you the main features and capabilities of our cloud infrastructure management platform. This tour will help you get started and explore everything you can do here.',
+    description:
+      'Thanks for joining CloudOps! Let us take you on a quick tour to show you the main features and capabilities of our cloud infrastructure management platform. This tour will help you get started and explore everything you can do here.',
     target: 'h1',
     position: 'center',
   },
@@ -132,7 +133,8 @@ const tourSteps: TourStep[] = [
   {
     id: 'services-list',
     title: 'Your Services Overview 📋',
-    description: 'Here you can see all services in your project. Each service card shows the name, description, and type. In tour mode, we\'ve created some sample services to demonstrate the platform.',
+    description:
+      "Here you can see all services in your project. Each service card shows the name, description, and type. In tour mode, we've created some sample services to demonstrate the platform.",
     target: '[data-tour="namespace-grid"]',
     position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/services',
@@ -200,7 +202,8 @@ const tourSteps: TourStep[] = [
   {
     id: 'deploy-page',
     title: 'Deploy Dashboard 🚀',
-    description: 'Welcome to the Deploy dashboard! Here you can view and manage your deployed infrastructure: clusters, services, and deployment configurations.',
+    description:
+      'Welcome to the Deploy dashboard! Here you can view and manage your deployed infrastructure: clusters, services, and deployment configurations.',
     target: '[data-tour="deploy-content"]',
     position: 'top',
     navigateTo: '/namespaces/tour-demo-workspace/projects/web-app/deploy',
@@ -225,21 +228,24 @@ const tourSteps: TourStep[] = [
   {
     id: 'deploy-services-content',
     title: 'Deployed Services Management 📦',
-    description: 'Now let\'s switch to the Services tab to see deployed services and deploy new ones. Here you can manage individual service deployments and monitor their status.',
+    description:
+      "Now let's switch to the Services tab to see deployed services and deploy new ones. Here you can manage individual service deployments and monitor their status.",
     target: '[data-tour="services-content"]',
     position: 'top',
   },
   {
     id: 'deploy-servers-content',
     title: 'Infrastructure Servers 🖥️',
-    description: 'Now let\'s switch to the Servers view to see detailed information about the physical servers and data centers where your services are running.',
+    description:
+      "Now let's switch to the Servers view to see detailed information about the physical servers and data centers where your services are running.",
     target: '[data-tour="servers-content"]',
     position: 'top',
   },
   {
     id: 'tour-complete',
     title: 'Tour Complete! 🎉',
-    description: 'Congratulations! You\'ve completed the CloudOps platform tour. You now know how to navigate namespaces, manage projects, create services, and monitor deployments. You\'ll now be taken back to the home page to start building your cloud infrastructure!',
+    description:
+      "Congratulations! You've completed the CloudOps platform tour. You now know how to navigate namespaces, manage projects, create services, and monitor deployments. You'll now be taken back to the home page to start building your cloud infrastructure!",
     target: 'main',
     position: 'bottom',
     navigateTo: '/',

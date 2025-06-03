@@ -20,7 +20,9 @@ export const Dotted = ({
 
   if (isHidden) {
     return (
-      <div className="w-full flex flex-col items-start gap-4" {...restProps}>{children}</div>
+      <div className="w-full flex flex-col items-start gap-4" {...restProps}>
+        {children}
+      </div>
     );
   }
 

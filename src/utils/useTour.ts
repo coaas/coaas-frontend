@@ -33,7 +33,7 @@ export const useTour = (steps: TourStep[]) => {
   const autoTimerRef = useRef<NodeJS.Timeout | null>(null);
   const tourCompletedRef = useRef<boolean>(false);
   const tourStoppedRef = useRef<boolean>(false);
-  
+
   const [tourState, setTourState] = useState<TourState>({
     isActive: false,
     currentStep: 0,
@@ -93,7 +93,7 @@ export const useTour = (steps: TourStep[]) => {
       isAutoMode: false,
       isPaused: false,
     }));
-    
+
     // Mark tour as stopped for navigation in useEffect
     tourStoppedRef.current = true;
   }, []);
@@ -161,10 +161,10 @@ export const useTour = (steps: TourStep[]) => {
           clearTimeout(autoTimerRef.current);
           autoTimerRef.current = null;
         }
-        
+
         // Mark tour as completed for navigation in useEffect
         tourCompletedRef.current = true;
-        
+
         return {
           ...prev,
           isActive: false,
