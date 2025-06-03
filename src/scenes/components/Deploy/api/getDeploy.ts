@@ -27,12 +27,13 @@ const getDeploy = () => {
 
   return IS_MOCK_ACTIVE
     ? new Promise<ClustersResponse>(r => {
+        console.log('sv getDeploy');
         r(clusters as unknown as ClustersResponse);
       })
     : api
-        .post(DEPLOY_ENDPOINT, { 
+        .post(DEPLOY_ENDPOINT, {
           body: JSON.stringify({}),
-          timeout: 60000 // 60 seconds timeout
+          timeout: 60000, // 60 seconds timeout
         })
         .json<ClustersResponse>();
 };

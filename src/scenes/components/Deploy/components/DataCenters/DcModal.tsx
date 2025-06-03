@@ -53,8 +53,10 @@ export const DcModal = ({
 
   const { mutate: addProject } = useMutation({
     mutationFn: addProjectDeployCluster,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [clusterOptions.queryKey] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: clusterOptions.queryKey,
+      });
     },
   });
 
